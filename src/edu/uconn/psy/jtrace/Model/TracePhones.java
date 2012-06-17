@@ -1,8 +1,12 @@
 package edu.uconn.psy.jtrace.Model;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.TreeMap;
 import java.text.*;
 import java.util.regex.*;
+
+import edu.uconn.psy.jtrace.Model.TracePhones.Phon;
+import edu.uconn.psy.jtrace.UI.traceProperties;
 
 /**
  * TracePhones defines TRACE phonemes, input representations, and ambiguous
@@ -31,7 +35,7 @@ import java.util.regex.*;
  *
  */
 public class TracePhones {
-    TreeMap phonemes;
+    TreeMap<String, Phon> phonemes;
     
     double PhonDefs[][];
     double DurationScalar[][];
@@ -50,7 +54,7 @@ public class TracePhones {
     private int offset;         // maximum spread
     
     // having to do with ambiguous phones
-    private TreeMap ambigPhonemes;
+    private TreeMap<String, Phon> ambigPhonemes;
     private double AmbiguousPhonDefs[][];    
     private double AmbiguousDurScalars[][];
     private int[] ambigSpreadOffset;
@@ -72,7 +76,7 @@ public class TracePhones {
         try{
             //the phoneme map will be alphabetically organized.
             collator = new RuleBasedCollator(en_USRules);
-            phonemes = new TreeMap(collator);                        
+            phonemes = new TreeMap<String, Phon>(collator);                        
             for(int i=0;i<DefaultPhonDefs.length;i++){
                 phonemes.put(defaultLabels[i],new Phon(DefaultPhonDefs[i],DefaultDurationScalar[i],defaultLabels[i],Phon.PHON_ROLE_NORMAL));
             }
@@ -114,7 +118,7 @@ public class TracePhones {
             String en_USRules = en_USCollator.getRules();        
             //the phoneme map will be alphabetically organized.
             RuleBasedCollator newCollator = new RuleBasedCollator(en_USRules);
-            phonemes = new TreeMap(newCollator);                        
+            phonemes = new TreeMap<String, Phon>(newCollator);                        
             for(int i=0;i<_p.length;i++){
                 phonemes.put(_p[i],new Phon(_f[i],_d[i],_p[i],Phon.PHON_ROLE_NORMAL));
             }            
@@ -257,7 +261,7 @@ public class TracePhones {
     private double[][] compilePhonDefs(){
         NPHONS = phonemes.size();
         PhonDefs = new double[phonemes.size()][];
-        java.util.Iterator iter = phonemes.values().iterator();
+        Iterator<Phon> iter = phonemes.values().iterator();
         for(int i=0;iter.hasNext();i++)
             PhonDefs[i]=((Phon)iter.next()).features;
         return PhonDefs;
@@ -267,7 +271,7 @@ public class TracePhones {
     }        
     private double[][] compileDurationScalars(){
         DurationScalar = new double[phonemes.size()][];
-        java.util.Iterator iter = phonemes.values().iterator();
+        Iterator<Phon> iter = phonemes.values().iterator();
         for(int i=0;iter.hasNext();i++)
             DurationScalar[i]=((Phon)iter.next()).durationScalar;
         return DurationScalar;
@@ -277,7 +281,7 @@ public class TracePhones {
     }    
     private String[] compileLabels(){
         labels = new String[phonemes.size()];
-        java.util.Iterator iter = phonemes.values().iterator();
+        Iterator<Phon> iter = phonemes.values().iterator();
         for(int i=0;iter.hasNext();i++)
             labels[i]=((Phon)iter.next()).label;
         return labels;
@@ -361,8 +365,8 @@ public class TracePhones {
      *@param symbol The phoneme symbol.
      */
     public Phon getPhon(String symbol){
-        java.util.Iterator iter = phonemes.values().iterator();
-        for(int i=0;iter.hasNext();i++){
+        Iterator<Phon> iter = phonemes.values().iterator();
+        while(iter.hasNext()){
             Phon nex = ((Phon)iter.next());
             if(symbol.equals(nex.label))
                 return nex;
@@ -370,14 +374,14 @@ public class TracePhones {
         if(ambigPhonemes==null||ambigPhonemes.size()==0)
             return null;
         iter = ambigPhonemes.values().iterator();
-        for(int i=0;iter.hasNext();i++){
+        while(iter.hasNext()){
             Phon nex = ((Phon)iter.next());
             if(symbol.equals(nex.label))
                 return nex;
         }
         return null;
     }
-    public TreeMap getPhonemes(){
+    public TreeMap<String, Phon> getPhonemes(){
         return phonemes;
     }
     public char toChar(int idx){
@@ -420,17 +424,6 @@ public class TracePhones {
         Pattern p = Pattern.compile(getInputPattern());
         Matcher m = p.matcher(tw);
         return m.matches();
-        
-        /*if (tw.length() != 0)
-        {
-            for (int i = 0; i < tw.length(); i++)
-            {
-                if (mapPhon(tw.charAt(i)) == -1)
-                    return false;
-            }
-            return true;
-        }        
-        return false;*/
     }
     
     public String getLexemePattern(){
@@ -673,7 +666,7 @@ public class TracePhones {
         }
         //System.out.print("continuum\t");            
         // now create the phon objects
-        ambigPhonemes = new TreeMap(collator); 
+        ambigPhonemes = new TreeMap<String, Phon>(collator); 
         for (int i=0;i<numAmbiguousPhons;i++)            
         {
             //System.out.print(i+"\t");
@@ -742,7 +735,7 @@ public class TracePhones {
         result+="<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+
             "<phonology xmlns=\'http://xml.netbeans.org/examples/targetNS\'"+
             "\nxmlns:xsi=\'http://www.w3.org/2001/XMLSchema-instance\'"+
-            "\nxsi:schemaLocation=\'http://xml.netbeans.org/examples/targetNS file:"+edu.uconn.psy.jtrace.UI.jTRACEMDI.properties.rootPath.getAbsolutePath()+"/Schema/jTRACESchema.xsd\'>\n";
+            "\nxsi:schemaLocation=\'http://xml.netbeans.org/examples/targetNS file:"+traceProperties.rootPath.getAbsolutePath()+"/Schema/jTRACESchema.xsd\'>\n";
         //result+="<phonology>";
         result+="<languageName>"+languageName+"</languageName>\n";
         result+="<phonemes>\n";
@@ -831,6 +824,7 @@ public class TracePhones {
     
     // define peak values of each feature/continuum.
     double DefaultPhonDefs[][] = {         
+    // 8      7     6     5     4     3     2     1     -
 /*p*/  {0  ,  0  ,  0  ,  0  ,  1. ,  0  ,  0  ,  0   , 0 , /* POW */
 	0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  1.  , 0 , /* VOC */
 	0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* DIF */
@@ -1058,89 +1052,4 @@ public class TracePhones {
 
     };  
     
-    /*
-     *BACKUP OF spreadPhones(), july 18, 2006
-     public void spreadPhons(int spread[], double scale[], double min, double max) throws TraceException
-    {
-        int spreadSteps, maxspread = 0;
-        double delta;
-        
-        if(spread.length != scale.length)
-            throw new TraceException("spread and scale parameters have different scale");
-        
-        //norm = new double[NPHONS];
-        // ambiguous phones start at #50, so allocate enough room for them
-        norm = new double[50+MAXSTEPS];
-        
-        // find the max spread (spread*scale) for all features and scale the spread
-        // values we received from our caller
-        for(int i = 0 ; i < spread.length; i++)
-        {
-            if (spread[i]*scale[i] > maxspread)
-                maxspread = (int)java.lang.Math.ceil(spread[i]*scale[i]);
-            
-            spread[i] = (int)(spread[i]*scale[i]);
-        }
-        
-        //allocate the table
-        //phonSpread = new double [NPHONS][NFEATS*NCONTS][maxspread*2+1]; //add one double for safer code
-        phonSpread = new double [50+MAXSTEPS][NFEATS*NCONTS][maxspread*2+1]; //add one double for safer code
-        
-        // save to private field for some reason
-        offset = maxspread; // middle of the phonSpread matrix, so we can iterate to 
-                            // left and right to ramp up and ramp down
-        
-        if(min<0) min = 0; //this appears to be how C trace is implemented.
-        
-        for(int phon = 0; phon < NPHONS; phon++) //loop over phonemes
-        {
-            norm[phon] = 0;
-            
-            for(int cont = 0; cont < NFEATS*NCONTS; cont++) //loop over continuoum
-                
-                if(PhonDefs[phon][cont] > 0)
-                {
-                    spreadSteps = cont/NFEATS;//maxspread;
-                    
-                    // delta is the amount to ramp up/down
-                    delta = ((PhonDefs[phon][cont]*max)-((PhonDefs[phon][cont]*min)))/(double) spread[spreadSteps];
-                        
-                    for(int i = 0; i < spread[spreadSteps]; i++)
-                    {                        
-                        // compute spread
-                        phonSpread[phon][cont][offset+i] = (PhonDefs[phon][cont] * max) - (delta * i);
-                        phonSpread[phon][cont][offset-i] = (PhonDefs[phon][cont] * max) - (delta * i);
-                        // and normalization info
-                        norm[phon] +=   phonSpread[phon][cont][offset+i]*phonSpread[phon][cont][offset+i] + 
-                                        phonSpread[phon][cont][offset-i]*phonSpread[phon][cont][offset-i];
-                    }
-                }
-        }
-        
-        //loop over ambiguous phonemes too
-        // this is just like above, but with AmbiguousPhonDefs instead of phonDefs.
-        for(int phon = 50; phon < 50+numAmbiguousPhons; phon++) //loop over phonemes            
-        {
-            norm[phon] = 0;
-            for(int cont = 0; cont < NFEATS*NCONTS; cont++) //loop over continuoum
-            {
-                if (AmbiguousPhonDefs[phon-50][cont] > 0)
-                {
-                    spreadSteps = cont/NFEATS;//maxspread;
-                    
-                    delta = ((AmbiguousPhonDefs[phon-50][cont]*max)-((AmbiguousPhonDefs[phon-50][cont]*min)))/(double) spread[spreadSteps];
-                        
-                    for(int i = 0; i < spread[spreadSteps]; i++)
-                    {
-                        phonSpread[phon][cont][offset+i] = AmbiguousPhonDefs[phon-50][cont] - delta * i;
-                        phonSpread[phon][cont][offset-i] = AmbiguousPhonDefs[phon-50][cont] - delta * i;
-                        
-                        norm[phon] +=   phonSpread[phon][cont][offset+i]*phonSpread[phon][cont][offset+i] + 
-                                        phonSpread[phon][cont][offset-i]*phonSpread[phon][cont][offset-i];
-                    }
-                }
-            }
-        }
-    }
-     */
 }

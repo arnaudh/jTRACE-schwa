@@ -144,28 +144,36 @@ public class TraceSim {
                 
         // store initial set of data
         
-	double[][] in=tn.getInputLayer();
-        double[][] ft=tn.getFeatureLayer();
-        double[][] ph=tn.getPhonemeLayer();
-        double[][] wd=tn.getWordLayer();
-        
-        inputD[stepsRun]=new double[in.length][in[0].length];
-        for(int i=0;i<in.length;i++)
-            for(int j=0;j<in[0].length;j++)
-                inputD[stepsRun][i][j]=in[i][j];
-        featureD[stepsRun]=new double[ft.length][ft[0].length];
-        for(int i=0;i<ft.length;i++)
-            for(int j=0;j<ft[0].length;j++)
-                featureD[stepsRun][i][j]=ft[i][j];
-        phonemeD[stepsRun]=new double[ph.length][ph[0].length];
-        for(int i=0;i<ph.length;i++)
-            for(int j=0;j<ph[0].length;j++)
-                phonemeD[stepsRun][i][j]=ph[i][j];
-        wordD[stepsRun]=new double[wd.length][wd[0].length];
-        for(int i=0;i<wd.length;i++)
-            for(int j=0;j<wd[0].length;j++)
-                wordD[stepsRun][i][j]=wd[i][j];
+        storeSetOfData();
     }
+
+	/**
+	 * 
+	 */
+	private void storeSetOfData() {
+		double[][] in=tn.getInputLayer();
+		    double[][] ft=tn.getFeatureLayer();
+		    double[][] ph=tn.getPhonemeLayer();
+		    double[][] wd=tn.getWordLayer();
+
+            // and store it for others to peruse
+		    inputD[stepsRun]=new double[in.length][in[0].length];
+		    for(int i=0;i<in.length;i++)
+		        for(int j=0;j<in[0].length;j++)
+		            inputD[stepsRun][i][j]=in[i][j];
+		    featureD[stepsRun]=new double[ft.length][ft[0].length];
+		    for(int i=0;i<ft.length;i++)
+		        for(int j=0;j<ft[0].length;j++)
+		            featureD[stepsRun][i][j]=ft[i][j];
+		    phonemeD[stepsRun]=new double[ph.length][ph[0].length];
+		    for(int i=0;i<ph.length;i++)
+		        for(int j=0;j<ph[0].length;j++)
+		            phonemeD[stepsRun][i][j]=ph[i][j];
+		    wordD[stepsRun]=new double[wd.length][wd[0].length];
+		    for(int i=0;i<wd.length;i++)
+		        for(int j=0;j<wd[0].length;j++)
+		            wordD[stepsRun][i][j]=wd[i][j];
+	}
 
     /**
      * Run the model the specified number of times. Internal state is stored.
@@ -183,36 +191,18 @@ public class TraceSim {
             
         for (int c = 0; c < numCycles; c++)            
         {                        
-            // get references to the data
-            double[][] in=tn.getInputLayer();
-            double[][] ft=tn.getFeatureLayer();
-            double[][] ph=tn.getPhonemeLayer();
-            double[][] wd=tn.getWordLayer();
             
-            // and store it for others to peruse
             try{
-                inputD[stepsRun]=new double[in.length][in[0].length];
-                for(int i=0;i<in.length;i++)
-                    for(int j=0;j<in[0].length;j++)
-                        inputD[stepsRun][i][j]=in[i][j];
-                featureD[stepsRun]=new double[ft.length][ft[0].length];
-                for(int i=0;i<ft.length;i++)
-                    for(int j=0;j<ft[0].length;j++)
-                        featureD[stepsRun][i][j]=ft[i][j];
-                phonemeD[stepsRun]=new double[ph.length][ph[0].length];
-                for(int i=0;i<ph.length;i++)
-                    for(int j=0;j<ph[0].length;j++)
-                        phonemeD[stepsRun][i][j]=ph[i][j];
-                wordD[stepsRun]=new double[wd.length][wd[0].length];
-                for(int i=0;i<wd.length;i++)
-                    for(int j=0;j<wd[0].length;j++)
-                        wordD[stepsRun][i][j]=wd[i][j]; 
+                storeSetOfData(); 
                 
                 globalLexicalCompetition[stepsRun]=tn.getGlobalLexicalCompetition();
                 //System.out.println("TraceSim-212: "+stepsRun+"\t"+globalLexicalCompetition[stepsRun]);
                 globalPhonemeCompetition[stepsRun]=tn.getGlobalPhonemeCompetition();        
             }
-            catch(Exception e){e.printStackTrace();}
+            catch(Exception e){
+            	System.err.println("EXCEPTION IN TraceSim.java (STORING OF DATA):\n");
+            	e.printStackTrace();
+            }
                         
             stepsRun++;
             
