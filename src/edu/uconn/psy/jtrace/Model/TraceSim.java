@@ -18,40 +18,40 @@ import java.text.DecimalFormat;
  */
 public class TraceSim {
     
-    private TraceNet tn;
-    private TraceParam tp;
+    protected TraceNet tn;
+    protected TraceParam tp;
     
     // full history of TraceNet object
-    private double [][][] inputD;
-    private double [][][] featureD;
-    private double [][][] phonemeD;
-    private double [][][] wordD;
+    protected double [][][] inputD;
+    protected double [][][] featureD;
+    protected double [][][] phonemeD;
+    protected double [][][] wordD;
     
-    private double [] globalLexicalCompetition;
-    private double [] globalPhonemeCompetition;
+    protected double [] globalLexicalCompetition;
+    protected double [] globalPhonemeCompetition;
     
     // computed maximum size of various things
-    private int maxDuration;
+    protected int maxDuration;
 
     /**
      * Holds value of property paramUpdateCt.
      */
-    private long paramUpdateCt;
+    protected long paramUpdateCt;
 
     /**
      * Holds value of property stepsRun.
      */
-    private int stepsRun;
+    protected int stepsRun;
 
     /**
      * Utility field used by bound properties.
      */
-    private java.beans.PropertyChangeSupport propertyChangeSupport =  new java.beans.PropertyChangeSupport (this);
+    protected java.beans.PropertyChangeSupport propertyChangeSupport =  new java.beans.PropertyChangeSupport (this);
 
     /**
      * Holds value of property inputString.
      */
-    private String inputString;
+    protected String inputString;
 
     /**
      * Getter for property stepsRun.
@@ -343,7 +343,7 @@ public class TraceSim {
         }
         return result;
     }
-    private double competitionStrength(int targIdx,int targAlign,int compIdx,int compAlign,int type,int cycle){
+    protected double competitionStrength(int targIdx,int targAlign,int compIdx,int compAlign,int type,int cycle){
         double result;
         if(type==0){
             double[][] data = wordD[cycle-1];
@@ -442,7 +442,7 @@ public class TraceSim {
     /**
      * If the param object has been updated, reset.
      */
-    private void checkForParamUpdate() {
+    protected void checkForParamUpdate() {
         if (tp.getUpdateCt() > paramUpdateCt)
         {
             paramUpdateCt = tp.getUpdateCt();
@@ -454,7 +454,7 @@ public class TraceSim {
      *If parameter functions have been added, calculate function
      *values, and apply values to appropriate parameters. 
      */
-    private void applyParameterFunctions(int cyc) {
+    protected void applyParameterFunctions(int cyc) {
        if(tp.getFunctionList().size()==0) 
            return;
        for(int _i=0;_i<tp.getFunctionList().size();_i++){
