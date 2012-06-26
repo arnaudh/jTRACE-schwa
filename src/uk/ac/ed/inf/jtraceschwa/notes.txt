@@ -1,0 +1,80 @@
+
+****************************************************************
+*********************** TracePhones.java ***********************
+****************************************************************
+
+//OLD INDEXING (as in the Trace paper) used only for Default.. variables
+//  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
+// "p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "^", "-"
+//NEW INDEXING (used in the TraceNet, alphabetical order)
+//  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
+// "-", "^", "a", "b", "d", "g", "i", "k", "l", "p", "r", "s", "S", "t", "u"  
+*NFEATS* = 9
+*NCONTS* = 7  
+*MAXSTEPS* = 9 is the number of different steps an ambiguous phoneme can go through (?)
+*phonemes* is a Map from phoneme character to Phon
+*PhonDefs* [NPHONS][NFEATS*NCONT] is, for each phoneme, the value of each feat*cont 
+e.g. for "^":
+   {0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* POW */
+	1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* VOC */
+	0  ,  0  ,  0  ,  1. ,  0  ,  0  ,  0  ,  0   , 0 , /* DIF */
+	0  ,  0  ,  0  ,  0  ,  0  , .1  , .3  ,  1   , 0 , /* ACU */
+	0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* GRD */
+	1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* VOI */
+	0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 } /* BUR */
+*phonSpread* [50+MAXSTEPS][NFEATS*NCONT][24] is, for each phoneme, the spread across time of each of the feat*cont 
+e.g. for "^":
+ 0 [_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ]
+ 1 [_ , . - ¡ 1 ¡ - . , _ _ _ _ _ _ _ _ _ ]
+ 2 [_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ]
+...
+ 9 [_ , . - ¡ 1 ¡ - . , _ _ _ _ _ _ _ _ _ ]
+...
+21 [_ , . - ¡ 1 ¡ - . , _ _ _ _ _ _ _ _ _ ]
+...
+32 [_ , . - ¡ .1 ¡ - . , _ _ _ _ _ _ _ _ _ ]
+33 [_ , . - ¡ .3 ¡ - . , _ _ _ _ _ _ _ _ _ ]
+34 [_ , . - ¡ 1  ¡ - . , _ _ _ _ _ _ _ _ _ ]
+...
+
+
+
+
+
+****************************************************************
+*********************** TraceParam.java ************************
+****************************************************************
+
+*alpha* strength of excitatory connections (IF=1.0, FP=0.02, PW=0.05, WP=0.03, PF=0.0)
+*gamma* strength of inhibitory connections within layers (F=0.04, P=0.04, W=0.03)
+
+
+
+
+
+****************************************************************
+************************ TraceNet.java *************************
+****************************************************************
+
+*inputLayer* [NFEATS*NCONTS][fSlices] is the value of each feat*cont for each time slice.
+It is built at once in createInput() by overlaying the phonSpread of all the phonemes 
+of the input string, adding gaussian noise and clipping values out of the range [-0.3; 1].
+
+*featLayer* [NFEATS*NCONTS][fSlices] is the features layer. It is updated in featUpdate()
+using featNet (+ noise and thresholding) 
+
+*featNet* [NFEATS*NCONTS][fSlices] 
+created in act_features(), reset in featUpdate() 
+
+*phonLayer* [NPHONS][pSlices]
+*phonNet* [NPHONS][pSlices]
+*wordLayer* [nwords][wSlices]
+*wordNet* [nwords][wSlices]
+
+example:    "-   a   r   t   ^   s   t   -"
+	   phon= 0   2   10  13  1   11  13  0
+	  slice= 6   12  18  24  30  36  42  48
+inputOffset= 0   6   12  18  24  30  36  42
+
+
+	

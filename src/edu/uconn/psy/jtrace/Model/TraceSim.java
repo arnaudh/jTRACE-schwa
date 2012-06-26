@@ -18,40 +18,40 @@ import java.text.DecimalFormat;
  */
 public class TraceSim {
     
-    protected TraceNet tn;
-    protected TraceParam tp;
+    public TraceNet tn;
+    public TraceParam tp;
     
     // full history of TraceNet object
-    protected double [][][] inputD;
-    protected double [][][] featureD;
-    protected double [][][] phonemeD;
-    protected double [][][] wordD;
+    public double [][][] inputD;
+    public double [][][] featureD;
+    public double [][][] phonemeD;
+    public double [][][] wordD;
     
-    protected double [] globalLexicalCompetition;
-    protected double [] globalPhonemeCompetition;
+    public double [] globalLexicalCompetition;
+    public double [] globalPhonemeCompetition;
     
     // computed maximum size of various things
-    protected int maxDuration;
+    public int maxDuration;
 
     /**
      * Holds value of property paramUpdateCt.
      */
-    protected long paramUpdateCt;
+    public long paramUpdateCt;
 
     /**
      * Holds value of property stepsRun.
      */
-    protected int stepsRun;
+    public int stepsRun;
 
     /**
      * Utility field used by bound properties.
      */
-    protected java.beans.PropertyChangeSupport propertyChangeSupport =  new java.beans.PropertyChangeSupport (this);
+    public java.beans.PropertyChangeSupport propertyChangeSupport =  new java.beans.PropertyChangeSupport (this);
 
     /**
      * Holds value of property inputString.
      */
-    protected String inputString;
+    public String inputString;
 
     /**
      * Getter for property stepsRun.
@@ -89,6 +89,9 @@ public class TraceSim {
         return this.paramUpdateCt;
     }
     
+    //Simply to enable subclasses to perform their own construction
+    public TraceSim() {
+	}
     
     /** Creates a new instance of TraceSim */
     public TraceSim(TraceParam _tp) {
@@ -343,7 +346,7 @@ public class TraceSim {
         }
         return result;
     }
-    protected double competitionStrength(int targIdx,int targAlign,int compIdx,int compAlign,int type,int cycle){
+    public double competitionStrength(int targIdx,int targAlign,int compIdx,int compAlign,int type,int cycle){
         double result;
         if(type==0){
             double[][] data = wordD[cycle-1];
@@ -442,7 +445,7 @@ public class TraceSim {
     /**
      * If the param object has been updated, reset.
      */
-    protected void checkForParamUpdate() {
+    public void checkForParamUpdate() {
         if (tp.getUpdateCt() > paramUpdateCt)
         {
             paramUpdateCt = tp.getUpdateCt();
@@ -454,7 +457,7 @@ public class TraceSim {
      *If parameter functions have been added, calculate function
      *values, and apply values to appropriate parameters. 
      */
-    protected void applyParameterFunctions(int cyc) {
+    public void applyParameterFunctions(int cyc) {
        if(tp.getFunctionList().size()==0) 
            return;
        for(int _i=0;_i<tp.getFunctionList().size();_i++){

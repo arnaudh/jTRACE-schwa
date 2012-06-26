@@ -23,38 +23,38 @@ import java.util.*;
  *  
  */
 public class TraceNet {
-    protected int nwords; //number of words, calculated from the lexicon
-    protected int inputSlice = 0; //
-    protected double inputLayer[][], featLayer[][], phonLayer[][], wordLayer[][]; //current activation values
-    protected double featNet[][], phonNet[][], wordNet[][]; //used during processing to store intermediate states
-    protected int fSlices, pSlices, wSlices; //width of arrays (number of slices)
+    public int nwords; //number of words, calculated from the lexicon
+    public int inputSlice = 0; //
+    public double inputLayer[][], featLayer[][], phonLayer[][], wordLayer[][]; //current activation values
+    public double featNet[][], phonNet[][], wordNet[][]; //used during processing to store intermediate states
+    public int fSlices, pSlices, wSlices; //width of arrays (number of slices)
     double phonarr[][][]; //phoneme representations, fetched from TracePhones
-    protected TracePhones pd = null; //phoneme representations
-    protected TraceParam tp = null; //parameters for this net
-    protected TraceError terr = null;
-    protected double pOverlap;        //holds the overlap between instances of phoneme detectors, similar to <NPNODESp,ps>
-    protected double pww[][], wpw[][], pfw[][][], fpw[][][]; //represents the extent to which a unit can activate a non-overlapping unit on a different layer.
-    protected double wpdur = 2; //constant replicated cTrace
-    protected double pdur = 2; //constant replicated from cTrace
-    protected int __nreps;
+    public TracePhones pd = null; //phoneme representations
+    public TraceParam tp = null; //parameters for this net
+    public TraceError terr = null;
+    public double pOverlap;        //holds the overlap between instances of phoneme detectors, similar to <NPNODESp,ps>
+    public double pww[][], wpw[][], pfw[][][], fpw[][][]; //represents the extent to which a unit can activate a non-overlapping unit on a different layer.
+    public double wpdur = 2; //constant replicated cTrace
+    public double pdur = 2; //constant replicated from cTrace
+    public int __nreps;
             
     //public double[] reportCompetition; //tmp
     //public double[][] reportCompetition2; //tmp
     edu.uconn.psy.jtrace.IO.WTFileWriter diagnosticFileWriter; //tmp
     public String inputstring; //tmp    
     
-    protected edu.uconn.psy.jtrace.Model.GaussianDistr stochasticGauss; //gaussian noise applied to processing layers
-    protected edu.uconn.psy.jtrace.Model.GaussianDistr inputGauss; //gaussian noise applied to input representation
+    public edu.uconn.psy.jtrace.Model.GaussianDistr stochasticGauss; //gaussian noise applied to processing layers
+    public edu.uconn.psy.jtrace.Model.GaussianDistr inputGauss; //gaussian noise applied to input representation
     
-    protected double atten=1d;
-    protected double bias=0d;
-    protected double learningrate=0d;    
+    public double atten=1d;
+    public double bias=0d;
+    public double learningrate=0d;    
     
-    protected boolean length_normalization;
-    protected double length_normalization_fulcrum;
-    protected double length_normalization_scale;
-    double globalPhonemeCompetitionIndex;
-    double globalLexicalCompetitionIndex;
+    public boolean length_normalization;
+    public double length_normalization_fulcrum;
+    public double length_normalization_scale;
+    public double globalPhonemeCompetitionIndex;
+    public double globalLexicalCompetitionIndex;
     /** Creates a new instance of TraceNet */
     public TraceNet(TraceParam tp) {
         terr = new TraceError();
@@ -353,7 +353,7 @@ public class TraceNet {
         initialSlice(); 
     }
     
-    public double[][][] cycle() {                
+    public double[][][] cycle() {   
         //int __nreps=tp.getNReps();
         //if(__nreps<=0) __nreps=1;
     
@@ -1033,7 +1033,7 @@ public class TraceNet {
         return d;
     }
     //rounds a double to the third significant digit
-    protected double roundingOp(double x){
+    public double roundingOp(double x){
         double y;
         String str=(new Double(x)).toString();
         if(str.length()<=5) return x;
@@ -1212,7 +1212,7 @@ public class TraceNet {
      *compute running average of rmse, giving greater weight to onset
      *non-overlapping portions are ignored.
      */
-    /*protected double difference(String s1,String s2,double dist){
+    /*public double difference(String s1,String s2,double dist){
         //boolean b = Pattern.matches("a*b", "aaaaab");
         if(dist>0)
             dist = Math.ceil(dist);
@@ -1257,7 +1257,7 @@ public class TraceNet {
      *average over length of overlapping region
      *non-overlapping portions are ignored.
      */
-    protected double difference_2(String s1,String s2,double dist){
+    public double difference_2(String s1,String s2,double dist){
         //boolean b = Pattern.matches("a*b", "aaaaab");
         if(dist>0)
             dist = Math.ceil(dist);

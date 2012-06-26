@@ -22,58 +22,58 @@ import edu.uconn.psy.jtrace.Model.Scripting.*;
 public class TraceParam implements Primitive{
     
     // parameters, with defaults
-    private String user;
-    private String dateTime;
-    private String comment;    
-    private String modelInput = "-^br^pt-";    
-    private int spread[] = {6, 6, 6, 6, 6, 6, 6};
-    private double spreadScale[] = {1, 1, 1, 1, 1, 1, 1 };  // silly -- only first element is used!
-    private double min=-0.3;
-    private double max = 1.0; 
-    private int nreps = 1; //how many cycles should trace do in each step; 
+    public String user;
+    public String dateTime;
+    public String comment;    
+    public String modelInput = "-^br^pt-";    
+    public int spread[] = {6, 6, 6, 6, 6, 6, 6};
+    public double spreadScale[] = {1, 1, 1, 1, 1, 1, 1 };  // silly -- only first element is used!
+    public double min=-0.3;
+    public double max = 1.0; 
+    public int nreps = 1; //how many cycles should trace do in each step; 
         //nreps can seriously affect the rate at which perceptual affects seem to take effect
         //versus how recently the input was presented.  with a high nreps value, an input will
         //be presented but words may seem to take relatively long time to become active.
-    private int slicesPerPhon = 3; //tracenet will put a new phoneme/word unit every slicesPerPhon fslices
-    private int fSlices = 99; //number of feature slices
-    private Decay decay; //rate at which F P W layers dacay.
-    private Rest rest; //resting level at F P W layers.
-    private Alpha alpha; //strength of excitatory connections between following layer pairs: IF FP PF PW WP 
-    private Gamma gamma; //strength of inhibitory connections at F P W layers.
-    //private Lambda lambda; //strength of alternate inhibitory connections at F P W layers.
-    private TraceLexicon lexicon; //current lexicon.
-    private TraceFunctionList functionList;
-    private int deltaInput = 6; //input a new feature every deltaInput slices, similar to PEAKp(i) calculation
+    public int slicesPerPhon = 3; //tracenet will put a new phoneme/word unit every slicesPerPhon fslices
+    public int fSlices = 99; //number of feature slices
+    public Decay decay; //rate at which F P W layers dacay.
+    public Rest rest; //resting level at F P W layers.
+    public Alpha alpha; //strength of excitatory connections between following layer pairs: IF FP PF PW WP 
+    public Gamma gamma; //strength of inhibitory connections at F P W layers.
+    //public Lambda lambda; //strength of alternate inhibitory connections at F P W layers.
+    public TraceLexicon lexicon; //current lexicon.
+    public TraceFunctionList functionList;
+    public int deltaInput = 6; //input a new feature every deltaInput slices, similar to PEAKp(i) calculation
     //noise parameters 
-    private double noiseSD = 0; //amount of input noise 
-    private double stochasticitySD = 0; //amount of processing noise
+    public double noiseSD = 0; //amount of input noise 
+    public double stochasticitySD = 0; //amount of processing noise
     //attention, phoneme learning rate params (cf. Mirman et al. 2005)
-    private double atten = 1.0;
-    private double bias = 0;
-    private double learningrate = 0; 
+    public double atten = 1.0;
+    public double bias = 0;
+    public double learningrate = 0; 
     // length normalization: binary
-    private int lengthNormalization = 0;
+    public int lengthNormalization = 0;
 
 
     //lexical frequency parameters        
-    private wordFrequency freqNode; //stores variables for three type of lexical frequency effects
+    public wordFrequency freqNode; //stores variables for three type of lexical frequency effects
     //priming parameters
-    private wordPriming primeNode; //stores variables for three type of lexical priming
+    public wordPriming primeNode; //stores variables for three type of lexical priming
     //ambiguous phoneme continuum parameters.
-    private String continuumSpec = ""; //three character mnemonic specify the current phoneme continuum.
+    public String continuumSpec = ""; //three character mnemonic specify the current phoneme continuum.
         /*
          * char #1 = phoneme at which the continuum starts
          * char #2 = phoneme at which the continuum ends
          * char #3 = number of continuum steps created, including the two end-points
          */
-    private TracePhones phonology; 
+    public TracePhones phonology; 
     
     // other, non parameter variables
-    //private int nwords = 0;
-    //private String phonemeLabels[]={"/p/", "/b/", "/t/", "/d/", "/k/", "/g/", "/s/", "/S/", "/r/", "/l/", "/a/", "/i/", "/u/", "/^/", "/-/"};     
-    private int legalPhonemeChars[] = {'p', 'b', 't', 'd', 'k', 'g', 's', 'S', 'r', 'l', 'a', 'i', 'u', '^', '-'};
-    private int maxSpread; //max(spread[])
-    private long updateCt = 0; //bookkeeping variable monitoring whether parameter have been changed from GUI panels.
+    //public int nwords = 0;
+    //public String phonemeLabels[]={"/p/", "/b/", "/t/", "/d/", "/k/", "/g/", "/s/", "/S/", "/r/", "/l/", "/a/", "/i/", "/u/", "/^/", "/-/"};     
+    public int legalPhonemeChars[] = {'p', 'b', 't', 'd', 'k', 'g', 's', 'S', 'r', 'l', 'a', 'i', 'u', '^', '-'};
+    public int maxSpread; //max(spread[])
+    public long updateCt = 0; //bookkeeping variable monitoring whether parameter have been changed from GUI panels.
     
     
     // structures for main parameters
@@ -748,7 +748,7 @@ public class TraceParam implements Primitive{
         return weight;
     }
     
-    private void loadDefaultlexicon()
+    public void loadDefaultlexicon()
     {
         // default lexicon is first 20 words of slex, plus silence
         
