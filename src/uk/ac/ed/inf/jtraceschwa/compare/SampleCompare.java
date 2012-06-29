@@ -1,29 +1,16 @@
 package uk.ac.ed.inf.jtraceschwa.compare;
 
-import java.io.File;
-import java.io.IOException;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.xy.XYSeriesCollection;
-
+import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
 import uk.ac.ed.inf.jtraceschwa.UI.TraceSimViewer;
-
-import edu.uconn.psy.jtrace.Model.TraceParam;
-import edu.uconn.psy.jtrace.Model.TraceParam.Decay;
-import edu.uconn.psy.jtrace.Model.TraceParam.Gamma;
-import edu.uconn.psy.jtrace.Model.TraceSim;
-import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
-import edu.uconn.psy.jtrace.UI.GraphParameters;
 
 public class SampleCompare {
 	
 	public static void main(String[] args) {
-		TraceParam param = new TraceParam();
+		SchwaParam param = new SchwaParam();
         param.setModelInput("-art^st-");
         
 //		TraceSim sim = new TraceSim(param);

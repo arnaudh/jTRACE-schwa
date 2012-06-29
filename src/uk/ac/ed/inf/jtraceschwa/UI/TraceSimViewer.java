@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.jtraceschwa.UI;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,38 +13,54 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
+
+import edu.uconn.psy.jtrace.IO.WTFileReader;
+import edu.uconn.psy.jtrace.IO.XMLFileFilter;
 import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
 import edu.uconn.psy.jtrace.UI.FeatureSimGraph;
 import edu.uconn.psy.jtrace.UI.GraphParameters;
 import edu.uconn.psy.jtrace.UI.PhonemeSimGraph;
 import edu.uconn.psy.jtrace.UI.WordSimGraph;
+import edu.uconn.psy.jtrace.UI.traceProperties;
 
 public class TraceSimViewer extends JFrame {
 
 	//trace
 	private TraceSim sim;
+	private TraceSim originalSim;
 	
 	//ui
 	private MatrixViewer mv1;
 	private MatrixViewer mv2;
 	private MatrixViewer mv3;
-	private ChartPanel chartPanelPhonemes;
-	private ChartPanel chartPanelWords;
+	private TraceGraph chartPanelPhonemes;
+	private TraceGraph chartPanelWords;
+	private TraceGraph originalChartPanelPhonemes;
+	private TraceGraph originalChartPanelWords;
 	//ui - controls
 	private JPanel controls;
 	private LabelledSpinner[] spinners;
@@ -51,6 +68,7 @@ public class TraceSimViewer extends JFrame {
 	
 	public TraceSimViewer(TraceSim sim_, final String title) {
 		this.sim = sim_;
+		this.originalSim = new TraceSim(sim.tp);
 		// Net representation
 		mv1 = new MatrixViewer(sim.tn.featLayer, sim);
 		mv2 = new MatrixViewer(sim.tn.phonLayer, sim);
@@ -61,9 +79,14 @@ public class TraceSimViewer extends JFrame {
 		Dimension size = mv2.getPreferredSize();
 		size.height+=20; size.width = 0;
 		sc2.setMinimumSize(size);
-		chartPanelPhonemes = new ChartPanel(null);
-		chartPanelWords = new ChartPanel(null);
-		chartPanelWords.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.BLACK));
+		chartPanelPhonemes = new TraceGraph(sim, TraceSimAnalysis.PHONEMES);
+		chartPanelWords = new TraceGraph(sim, TraceSimAnalysis.WORDS);
+		originalChartPanelPhonemes = new TraceGraph(originalSim, TraceSimAnalysis.PHONEMES);
+		originalChartPanelWords = new TraceGraph(originalSim, TraceSimAnalysis.WORDS);
+		
+		originalChartPanelPhonemes.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.BLACK));
+		originalChartPanelWords.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		chartPanelPhonemes.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK));
 		updateGraphs();
 
 		// Simulation controls
@@ -74,36 +97,28 @@ public class TraceSimViewer extends JFrame {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx=0;
 		gbc.gridy=0;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = 1;
+		gbc.weightx = 0;
 		gbc.weighty = 1;
 		gbc.gridwidth = 1;
 		gbc.gridheight = GridBagConstraints.REMAINDER;
-		JPanel leftPanel = new JPanel(new BorderLayout());
-		leftPanel.add(sc1, BorderLayout.CENTER);
-		leftPanel.add(controls, BorderLayout.SOUTH);
-		this.getContentPane().add(leftPanel, gbc);
-		gbc.weighty = 0;
-		gbc.weightx = 0;
-		gbc.gridy=2;
+		gbc.insets = new Insets(0, 5, 0, 5);
+		this.getContentPane().add(controls, gbc);
+		gbc.insets = new Insets(0, 0, 0, 0);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1;
+		gbc.gridx++;
 		gbc.gridheight = 1;
-//		this.getContentPane().add(controls, gbc);
-		gbc.gridy = 0;
-		gbc.weightx = 2;
-		gbc.weighty = 0;
-		gbc.gridx++;
-		this.getContentPane().add(sc2, gbc);
-		gbc.gridx++;
-		this.getContentPane().add(chartPanelPhonemes, gbc);
-//		gbc.gridx++;
-		gbc.gridx--;
+		this.getContentPane().add(originalChartPanelPhonemes, gbc);
 		gbc.gridy++;
-		this.getContentPane().add(sc3, gbc);
+		this.getContentPane().add(chartPanelPhonemes, gbc);
 		gbc.gridx++;
+		gbc.gridy--;
+		this.getContentPane().add(originalChartPanelWords, gbc);
+		gbc.gridy++;
 		this.getContentPane().add(chartPanelWords, gbc);
-		gbc.gridx--;
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-
+		
+		
+		
 		this.pack();
 		this.setTitle(title);
 		this.setLocationRelativeTo(null);
@@ -111,47 +126,26 @@ public class TraceSimViewer extends JFrame {
 
 	
 	private void initControlPanel() {
-		JButton resetButton = new JButton("Reset");
-		resetButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				sim.reset();
-				mv1.setMatrix(sim.tn.featLayer);
-				mv2.setMatrix(sim.tn.phonLayer);
-				mv3.setMatrix(sim.tn.wordLayer);
-			}
-		});
-		JButton cycleButton = new JButton("Cycle 1");
-		cycleButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				sim.cycle(1);
-				updateGraphs();
-				TraceSimViewer.this.repaint();
-			}
-		});
-		JButton cycleButton10 = new JButton("Cycle 10");
-		cycleButton10.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				sim.cycle(10);
-				updateGraphs();
-				TraceSimViewer.this.repaint();
-			}
-		});
-		JButton analysisButton = new JButton("Update graphs");
-		analysisButton.addActionListener(new ActionListener() {
+		final JTextField inputField = new JTextField(sim.getInputString());
+		ActionListener resetListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateGraphs();
+				if( sim.getParameters().getPhonology().validTraceWord(inputField.getText())){
+					inputField.setBackground(Color.WHITE);
+					sim.tp.setModelInput(inputField.getText());
+					originalSim.tp.setModelInput(inputField.getText());
+					resetAndRun();
+				}else{
+					inputField.setBackground(Color.RED);
+				}
 			}
-		});		
+		};
+		inputField.addActionListener(resetListener);
+		JButton runButton = new JButton("Run");
+		runButton.addActionListener(resetListener);
 		JPanel simulationControls = new JPanel();
-		simulationControls.add(resetButton);
-		simulationControls.add(cycleButton);
-		simulationControls.add(cycleButton10);
-//		simulationControls.add(analysisButton);
+		simulationControls.add(inputField);
+		simulationControls.add(runButton);
 		
 		//Parameter controls
 		spinners = new LabelledSpinner[14];
@@ -229,23 +223,56 @@ public class TraceSimViewer extends JFrame {
 	}
 	
 	private void updateGraphs(){
-        chartPanelPhonemes.setChart(generateChartFromAnalysis(TraceSimAnalysis.PHONEMES));
-        chartPanelWords.setChart(generateChartFromAnalysis(TraceSimAnalysis.WORDS));
+		originalChartPanelPhonemes.updateGraph();
+		chartPanelPhonemes.updateGraphUsingColors(originalChartPanelPhonemes);
+		originalChartPanelWords.updateGraph();
+		chartPanelWords.updateGraphUsingColors(originalChartPanelWords);
 	}
 	
-	private JFreeChart generateChartFromAnalysis(int _domain){
-        // create an analysis object
-        TraceSimAnalysis an = new TraceSimAnalysis(_domain,
-                TraceSimAnalysis.WATCHTOPN, new java.util.Vector(), 15, 
-                TraceSimAnalysis.STATIC, 4, TraceSimAnalysis.FORCED, 4);
-        // analyze the current run
-        XYSeriesCollection analysis = an.doAnalysis(sim);
-		
-        GraphParameters graphParams = new GraphParameters();
-        JFreeChart graph = edu.uconn.psy.jtrace.UI.GraphPanel.createJTRACEChart(analysis, graphParams);
-        graph = edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(graph, graphParams, sim.getParameters());
-        return graph;
+	private void resetAndRun(){
+		sim.reset();
+		originalSim.reset();
+
+		sim.cycle(99);
+		originalSim.cycle(99);
+		updateGraphs();
 	}
+	
+
+    private void loadLexicon() {
+        java.io.File lexFile;
+        javax.swing.JFileChooser lexFileChooser = new javax.swing.JFileChooser(traceProperties.rootPath.getAbsolutePath());
+            
+        lexFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        lexFileChooser.addChoosableFileFilter(new XMLFileFilter());
+        lexFileChooser.setCurrentDirectory(traceProperties.workingPath);            
+        
+        // show dialog
+        int returnVal = lexFileChooser.showOpenDialog(this);
+        
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            // we got a file...
+            lexFile = lexFileChooser.getSelectedFile();
+            traceProperties.workingPath = lexFile.getParentFile();    
+        
+            // try to read it
+            WTFileReader fileReader = new WTFileReader(lexFile);
+            if (!fileReader.validateLexiconFile()){             
+                javax.swing.JOptionPane.showMessageDialog(null, "Invalid lexicon file.", "Error", javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            
+            // LOAD LEXICON
+            sim.tp.setLexicon(fileReader.loadJTLexicon());
+            originalSim.tp.setLexicon(fileReader.loadJTLexicon());
+            resetAndRun();
+            
+            return;
+        }
+        else{ //if(returnVal == javax.swing.JFileChooser.CANCEL_OPTION){
+            return;
+        }
+    }
 
 
 }
