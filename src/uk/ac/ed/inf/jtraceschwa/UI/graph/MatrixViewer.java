@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.jtraceschwa.UI;
+package uk.ac.ed.inf.jtraceschwa.UI.graph;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

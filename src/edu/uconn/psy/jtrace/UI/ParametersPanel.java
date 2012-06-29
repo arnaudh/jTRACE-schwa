@@ -1283,7 +1283,7 @@ public class ParametersPanel extends JPanel implements TableModelListener {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.ButtonGroup lexiconButtonGroup;
-    private javax.swing.JPanel lexiconPanel;
+    public javax.swing.JPanel lexiconPanel;
     private javax.swing.JButton loadLexiconButton;
     private javax.swing.JPanel mainParametersPanel;
     private javax.swing.JTable manualLexiconTable;

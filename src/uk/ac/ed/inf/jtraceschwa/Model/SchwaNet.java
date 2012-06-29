@@ -1,6 +1,6 @@
 package uk.ac.ed.inf.jtraceschwa.Model;
 
-import uk.ac.ed.inf.jtraceschwa.UI.MatrixViewer;
+import uk.ac.ed.inf.jtraceschwa.UI.graph.MatrixViewer;
 import edu.uconn.psy.jtrace.Model.TraceNet;
 import edu.uconn.psy.jtrace.Model.TraceParam;
 

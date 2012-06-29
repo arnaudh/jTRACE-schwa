@@ -36,6 +36,8 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
+import uk.ac.ed.inf.jtraceschwa.UI.graph.MatrixViewer;
+import uk.ac.ed.inf.jtraceschwa.UI.graph.TraceGraph;
 
 import edu.uconn.psy.jtrace.IO.WTFileReader;
 import edu.uconn.psy.jtrace.IO.XMLFileFilter;
@@ -43,6 +45,7 @@ import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
 import edu.uconn.psy.jtrace.UI.FeatureSimGraph;
 import edu.uconn.psy.jtrace.UI.GraphParameters;
+import edu.uconn.psy.jtrace.UI.ParametersPanel;
 import edu.uconn.psy.jtrace.UI.PhonemeSimGraph;
 import edu.uconn.psy.jtrace.UI.WordSimGraph;
 import edu.uconn.psy.jtrace.UI.traceProperties;
@@ -64,6 +67,7 @@ public class TraceSimViewer extends JFrame {
 	//ui - controls
 	private JPanel controls;
 	private LabelledSpinner[] spinners;
+	private JPanel lexiconPanel;
 	
 	
 	public TraceSimViewer(TraceSim sim_, final String title) {
@@ -91,6 +95,8 @@ public class TraceSimViewer extends JFrame {
 
 		// Simulation controls
 		initControlPanel();
+		// Lexicon panel
+		lexiconPanel = new SchwaParametersPanel(sim.tp).lexiconPanel;
 		
 		// Layout
 		this.getContentPane().setLayout(new GridBagLayout());
@@ -100,12 +106,15 @@ public class TraceSimViewer extends JFrame {
 		gbc.weightx = 0;
 		gbc.weighty = 1;
 		gbc.gridwidth = 1;
-		gbc.gridheight = GridBagConstraints.REMAINDER;
+		gbc.gridheight = 1;
 		gbc.insets = new Insets(0, 5, 0, 5);
+		gbc.fill = GridBagConstraints.BOTH;
+		this.getContentPane().add(lexiconPanel, gbc);
+		gbc.gridy++;
 		this.getContentPane().add(controls, gbc);
 		gbc.insets = new Insets(0, 0, 0, 0);
-		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
+		gbc.gridy=0;
 		gbc.gridx++;
 		gbc.gridheight = 1;
 		this.getContentPane().add(originalChartPanelPhonemes, gbc);
