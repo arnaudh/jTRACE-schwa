@@ -1,6 +1,6 @@
 
 
-*** Up to the Friday 22nd of June
+*** Up to Friday 22nd of June
 Looked at the jTrace code
 Started off alternate model
 Started off own simulation viewer (comparing directly our model to the original trace)
@@ -13,10 +13,11 @@ Results of "locking" the schwa phoneme :
 - the silence word "-" is recognised when word not recognised, e.g. "tart" -> "-" instead of "tart" -> "bar"
 
 
+*** Saturday 30th of June
+Built a simple Lexicon Editor. Extracted the provided lexicons into "simple" files.
+
 
 TODO
-simple lexicon editor (without frequency and all other additional parameters, we don't nedd them since they are not part of the core of the Trace model).
-extract the provided lexicons into "simple" files, and make them easily interchangeable (i.e combo box with list of files in the lexicons/ directory)
 Phonemes : extend the code to contain all possible phonemes. No editor. Phonemes actually used are the ones present in the lexicon.
 
  

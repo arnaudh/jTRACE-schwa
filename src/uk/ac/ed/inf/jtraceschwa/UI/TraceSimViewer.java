@@ -96,7 +96,7 @@ public class TraceSimViewer extends JFrame {
 		// Simulation controls
 		initControlPanel();
 		// Lexicon panel
-		lexiconPanel = new SchwaParametersPanel(sim.tp).lexiconPanel;
+		lexiconPanel = new LexiconEditor(sim.tp);
 		
 		// Layout
 		this.getContentPane().setLayout(new GridBagLayout());
