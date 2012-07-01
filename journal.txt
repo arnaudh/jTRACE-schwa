@@ -16,8 +16,12 @@ Results of "locking" the schwa phoneme :
 *** Saturday 30th of June
 Built a simple Lexicon Editor. Extracted the provided lexicons into "simple" files.
 
+*** Sunday 1st of July
+Built Schwa component, which receives activation from schwa phoneme in phonLayer.
+Built a lexicon activator (schwa listener) which sends extra activation to the words containing schwa
 
 TODO
+Schwa graph
 Phonemes : extend the code to contain all possible phonemes. No editor. Phonemes actually used are the ones present in the lexicon.
 
  

@@ -43,7 +43,14 @@ public class LexiconEditor extends JPanel {
 		this.tp = tp;
 		
 		//ui
-		textcomp = new JTextArea(10, 10);
+		textcomp = new JTextArea(){ //no preferred or minimum size so that it adapts to teh LayoutManager
+			public Dimension getPreferredSize() {
+				return new Dimension();
+			};
+			public Dimension getMinimumSize() {
+				return new Dimension();
+			};
+		};
 		updateEditorFromLexicon();
 		addUndoRedo();
 		textcomp.getDocument().addDocumentListener(new DocumentListener() {
@@ -61,17 +68,24 @@ public class LexiconEditor extends JPanel {
 			}
 		});
 		
-		JScrollPane scrollPane = new JScrollPane(textcomp);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(textcomp);
 		
 		//layout
-		this.setLayout(new BorderLayout());
-		this.add(new JLabel("Lexicon"), BorderLayout.NORTH);
-		this.add(scrollPane, BorderLayout.CENTER);
-	}
-	
-	@Override
-	public Dimension getMinimumSize() {
-		return new Dimension(300, 300);
+//		this.setLayout(new BorderLayout());
+//		this.add(new JLabel("Lexicon"), BorderLayout.NORTH);
+//		this.add(scrollPane, BorderLayout.CENTER);
+		
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0; gbc.gridy = 0;
+		gbc.weighty = 0;
+		this.add(new JLabel("Lexicon"), gbc);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1;
+		gbc.gridy++;
+		gbc.weighty = 1;
+		this.add(scrollPane, gbc);
 	}
 
 	private void updateEditorFromLexicon(){
@@ -84,12 +98,10 @@ public class LexiconEditor extends JPanel {
 	}
 	
 	private void updateLexiconFromEditor(){
-		System.out.println("****************");
 		tp.getLexicon().reset();
 		Pattern pattern = Pattern.compile(tp.getPhonology().getInputPattern());
 		Matcher matcher = pattern.matcher(textcomp.getText());
 		while( matcher.find() ){
-			System.out.println("LexiconEditor.updateLexiconFromEditor() : "+matcher.group());
 			tp.getLexicon().add(new TraceWord(matcher.group()));
 		}
 	}

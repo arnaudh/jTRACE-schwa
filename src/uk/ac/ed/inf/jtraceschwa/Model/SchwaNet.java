@@ -1,13 +1,20 @@
 package uk.ac.ed.inf.jtraceschwa.Model;
 
+import uk.ac.ed.inf.jtraceschwa.Model.schwa.Schwa;
+import uk.ac.ed.inf.jtraceschwa.Model.schwa.SchwaLexiconActivator;
 import uk.ac.ed.inf.jtraceschwa.UI.graph.MatrixViewer;
 import edu.uconn.psy.jtrace.Model.TraceNet;
 import edu.uconn.psy.jtrace.Model.TraceParam;
 
 public class SchwaNet extends TraceNet {
+	
+	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
+	private Schwa schwa;
 
 	public SchwaNet(TraceParam tp) {
 		super(tp);
+		schwa = new Schwa();
+		schwa.addSchwaListener(new SchwaLexiconActivator(this));
 	}
 	
 	//Override desired methods...
@@ -21,6 +28,9 @@ public class SchwaNet extends TraceNet {
         featToPhon();
         phonToPhon();
         phonToWord();
+        //update Schwa component
+        phonToSchwa();
+        
         wordToPhon();
         wordToWord();
         featUpdate();
@@ -32,6 +42,11 @@ public class SchwaNet extends TraceNet {
         if(inputSlice >= fSlices) 
             inputSlice = fSlices-1;
 		return null; //return value never used...
+	}
+	
+	private void phonToSchwa(){
+		double schwaVal = phonLayer[schwaIndex][inputSlice/3];
+		schwa.setActivation(schwaVal);
 	}
 	
 	@Override
@@ -66,7 +81,7 @@ public class SchwaNet extends TraceNet {
             for(int slice = 0; slice < pSlices; slice++)  //loop over phoneme slices (original configuration 33)                
             {
             	// SCHWA doesn't get inhibited
-            	if( ((SchwaParam)tp).shcwaPhonemeLocked && phon==1 ) continue phonLoop;
+            	if( ((SchwaParam)tp).shcwaPhonemeLocked && phon==schwaIndex ) continue phonLoop;
             	
                 pmax=slice+halfdur;
                 if(pmax>=pSlices){
@@ -102,5 +117,11 @@ public class SchwaNet extends TraceNet {
             }            
         }
     }
+	
+	@Override
+	public void reset() {
+		super.reset();
+		if( schwa!=null) schwa.reset();
+	}
 	
 }

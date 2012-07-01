@@ -14,6 +14,7 @@ public class IOTools {
 		    BufferedReader in = new BufferedReader(new FileReader(file));
 		    String str;
 		    while ((str = in.readLine()) != null) {
+		    	if(sb.length()!=0) sb.append('\n');
 		        sb.append(str);
 		    }
 		    in.close();

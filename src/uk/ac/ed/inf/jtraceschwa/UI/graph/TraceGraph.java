@@ -18,6 +18,8 @@ import org.jfree.chart.title.Title;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
+
 import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
 import edu.uconn.psy.jtrace.UI.GraphParameters;
@@ -48,6 +50,12 @@ public class TraceGraph extends ChartPanel {
         	title+="Phonemes";
         }else if( _domain == TraceSimAnalysis.WORDS ){
         	title+="Words";
+        }
+        if( sim instanceof SchwaSim ){
+        	title+=" (modified)";
+        }else{ //original
+        	title+=" (original)";
+        	
         }
         graph.setTitle(title);
 

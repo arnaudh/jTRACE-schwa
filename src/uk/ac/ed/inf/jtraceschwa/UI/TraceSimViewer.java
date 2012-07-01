@@ -80,9 +80,6 @@ public class TraceSimViewer extends JFrame {
 		JScrollPane sc1 = new JScrollPane(mv1);
 		JScrollPane sc2 = new JScrollPane(mv2);
 		JScrollPane sc3 = new JScrollPane(mv3);
-		Dimension size = mv2.getPreferredSize();
-		size.height+=20; size.width = 0;
-		sc2.setMinimumSize(size);
 		chartPanelPhonemes = new TraceGraph(sim, TraceSimAnalysis.PHONEMES);
 		chartPanelWords = new TraceGraph(sim, TraceSimAnalysis.WORDS);
 		originalChartPanelPhonemes = new TraceGraph(originalSim, TraceSimAnalysis.PHONEMES);
@@ -97,17 +94,24 @@ public class TraceSimViewer extends JFrame {
 		initControlPanel();
 		// Lexicon panel
 		lexiconPanel = new LexiconEditor(sim.tp);
+
+		JPanel p1 = new JPanel(); p1.setBackground(Color.RED);
+		JPanel p2 = new JPanel(); p2.setBackground(Color.GREEN);
+		JPanel p3 = new JPanel(); p3.setBackground(Color.BLUE);
+		JPanel p4 = new JPanel(); p4.setBackground(Color.MAGENTA);
+		JPanel p5 = new JPanel(); p5.setBackground(Color.BLACK);
+		JPanel p6 = new JPanel(); p6.setBackground(Color.GRAY);
 		
 		// Layout
 		this.getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx=0;
 		gbc.gridy=0;
-		gbc.weightx = 0;
+		gbc.weightx = 1;
 		gbc.weighty = 1;
 		gbc.gridwidth = 1;
 		gbc.gridheight = 1;
-		gbc.insets = new Insets(0, 5, 0, 5);
+//		gbc.insets = new Insets(0, 5, 0, 5);
 		gbc.fill = GridBagConstraints.BOTH;
 		this.getContentPane().add(lexiconPanel, gbc);
 		gbc.gridy++;
@@ -116,12 +120,11 @@ public class TraceSimViewer extends JFrame {
 		gbc.weightx = 1;
 		gbc.gridy=0;
 		gbc.gridx++;
-		gbc.gridheight = 1;
-		this.getContentPane().add(originalChartPanelPhonemes, gbc);
-		gbc.gridy++;
-		this.getContentPane().add(chartPanelPhonemes, gbc);
-		gbc.gridx++;
-		gbc.gridy--;
+//		this.getContentPane().add(originalChartPanelPhonemes, gbc);
+//		gbc.gridy++;
+//		this.getContentPane().add(chartPanelPhonemes, gbc);
+//		gbc.gridx++;
+//		gbc.gridy--;
 		this.getContentPane().add(originalChartPanelWords, gbc);
 		gbc.gridy++;
 		this.getContentPane().add(chartPanelWords, gbc);
@@ -226,7 +229,7 @@ public class TraceSimViewer extends JFrame {
 		//Layout
 		controls = new JPanel(new BorderLayout());
 		controls.add(simulationControls, BorderLayout.NORTH);
-		controls.add(parametersPanel, BorderLayout.CENTER);
+//		controls.add(parametersPanel, BorderLayout.CENTER);
 		
 		
 	}
@@ -241,47 +244,12 @@ public class TraceSimViewer extends JFrame {
 	private void resetAndRun(){
 		sim.reset();
 		originalSim.reset();
-
-		sim.cycle(99);
-		originalSim.cycle(99);
+		int cycle = sim.inputString.length() * 7 + 6;
+		sim.cycle(cycle);
+		originalSim.cycle(cycle);
 		updateGraphs();
 	}
 	
-
-    private void loadLexicon() {
-        java.io.File lexFile;
-        javax.swing.JFileChooser lexFileChooser = new javax.swing.JFileChooser(traceProperties.rootPath.getAbsolutePath());
-            
-        lexFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        lexFileChooser.addChoosableFileFilter(new XMLFileFilter());
-        lexFileChooser.setCurrentDirectory(traceProperties.workingPath);            
-        
-        // show dialog
-        int returnVal = lexFileChooser.showOpenDialog(this);
-        
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            // we got a file...
-            lexFile = lexFileChooser.getSelectedFile();
-            traceProperties.workingPath = lexFile.getParentFile();    
-        
-            // try to read it
-            WTFileReader fileReader = new WTFileReader(lexFile);
-            if (!fileReader.validateLexiconFile()){             
-                javax.swing.JOptionPane.showMessageDialog(null, "Invalid lexicon file.", "Error", javax.swing.JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-            
-            // LOAD LEXICON
-            sim.tp.setLexicon(fileReader.loadJTLexicon());
-            originalSim.tp.setLexicon(fileReader.loadJTLexicon());
-            resetAndRun();
-            
-            return;
-        }
-        else{ //if(returnVal == javax.swing.JFileChooser.CANCEL_OPTION){
-            return;
-        }
-    }
 
 
 }
