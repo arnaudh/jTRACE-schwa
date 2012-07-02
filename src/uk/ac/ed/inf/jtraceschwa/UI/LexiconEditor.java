@@ -44,9 +44,6 @@ public class LexiconEditor extends JPanel {
 		
 		//ui
 		textcomp = new JTextArea(){ //no preferred or minimum size so that it adapts to teh LayoutManager
-			public Dimension getPreferredSize() {
-				return new Dimension();
-			};
 			public Dimension getMinimumSize() {
 				return new Dimension();
 			};

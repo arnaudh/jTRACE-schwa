@@ -21,18 +21,15 @@ public class Schwa {
 		listeners.add(lis);
 	}
 	
-	/**
-	 * Called when any parameter of the component is updated : sends a message to all listeners
-	 */
 	private void updated(){
 		for(SchwaListener lis : listeners){
 			lis.schwaUpdated(this);
 		}
 	}
-	
 
 	public void setActivation(double activation) {
-		if( activation < this.activation ) activation = this.activation;
+		double threshold = 0;
+		if( activation < threshold ) activation = threshold;
 		System.out.println("Schwa.setActivation("+activation+")");
 		this.activation = activation;
 		updated();
@@ -44,5 +41,8 @@ public class Schwa {
 	
 	public void reset(){
 		activation = 0;
+		for( SchwaListener lis : listeners ){
+			lis.reset(this);
+		}
 	}
 }

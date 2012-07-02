@@ -2,6 +2,7 @@ package uk.ac.ed.inf.jtraceschwa.UI.graph;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Transparency;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -52,12 +53,13 @@ public class TraceGraph extends ChartPanel {
         	title+="Words";
         }
         if( sim instanceof SchwaSim ){
-        	title+=" (modified)";
+        	title+=" (modified model)";
         }else{ //original
         	title+=" (original)";
         	
         }
         graph.setTitle(title);
+        graph.setBackgroundPaint(null);
 
 		this.setChart(graph);
 

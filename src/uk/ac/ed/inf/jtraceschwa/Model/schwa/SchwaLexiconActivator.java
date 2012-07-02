@@ -79,4 +79,11 @@ public class SchwaLexiconActivator implements SchwaListener {
         }
 	}
 
+
+
+	@Override
+	public void reset(Schwa schwa) {
+		//nothing to do
+	}
+
 }

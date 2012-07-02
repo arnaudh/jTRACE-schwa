@@ -9,7 +9,7 @@ import edu.uconn.psy.jtrace.Model.TraceParam;
 public class SchwaNet extends TraceNet {
 	
 	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
-	private Schwa schwa;
+	public Schwa schwa;
 
 	public SchwaNet(TraceParam tp) {
 		super(tp);

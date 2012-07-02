@@ -8,4 +8,6 @@ package uk.ac.ed.inf.jtraceschwa.Model.schwa;
 public interface SchwaListener {
 
 	public void schwaUpdated( Schwa schwa );
+	public void reset( Schwa schwa );
+	
 }

@@ -35,8 +35,11 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import uk.ac.ed.inf.jtraceschwa.Model.SchwaNet;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
+import uk.ac.ed.inf.jtraceschwa.Model.schwa.Schwa;
 import uk.ac.ed.inf.jtraceschwa.UI.graph.MatrixViewer;
+import uk.ac.ed.inf.jtraceschwa.UI.graph.SchwaGraph;
 import uk.ac.ed.inf.jtraceschwa.UI.graph.TraceGraph;
 
 import edu.uconn.psy.jtrace.IO.WTFileReader;
@@ -53,7 +56,7 @@ import edu.uconn.psy.jtrace.UI.traceProperties;
 public class TraceSimViewer extends JFrame {
 
 	//trace
-	private TraceSim sim;
+	private SchwaSim sim;
 	private TraceSim originalSim;
 	
 	//ui
@@ -70,7 +73,7 @@ public class TraceSimViewer extends JFrame {
 	private JPanel lexiconPanel;
 	
 	
-	public TraceSimViewer(TraceSim sim_, final String title) {
+	public TraceSimViewer(SchwaSim sim_, final String title) {
 		this.sim = sim_;
 		this.originalSim = new TraceSim(sim.tp);
 		// Net representation
@@ -85,36 +88,28 @@ public class TraceSimViewer extends JFrame {
 		originalChartPanelPhonemes = new TraceGraph(originalSim, TraceSimAnalysis.PHONEMES);
 		originalChartPanelWords = new TraceGraph(originalSim, TraceSimAnalysis.WORDS);
 		
-		originalChartPanelPhonemes.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.BLACK));
-		originalChartPanelWords.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
-		chartPanelPhonemes.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK));
 		updateGraphs();
-
+		
 		// Simulation controls
 		initControlPanel();
 		// Lexicon panel
 		lexiconPanel = new LexiconEditor(sim.tp);
-
-		JPanel p1 = new JPanel(); p1.setBackground(Color.RED);
-		JPanel p2 = new JPanel(); p2.setBackground(Color.GREEN);
-		JPanel p3 = new JPanel(); p3.setBackground(Color.BLUE);
-		JPanel p4 = new JPanel(); p4.setBackground(Color.MAGENTA);
-		JPanel p5 = new JPanel(); p5.setBackground(Color.BLACK);
-		JPanel p6 = new JPanel(); p6.setBackground(Color.GRAY);
 		
 		// Layout
 		this.getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx=0;
 		gbc.gridy=0;
-		gbc.weightx = 1;
+		gbc.weightx = 0;
 		gbc.weighty = 1;
 		gbc.gridwidth = 1;
-		gbc.gridheight = 1;
+		gbc.gridheight = 2;
 //		gbc.insets = new Insets(0, 5, 0, 5);
 		gbc.fill = GridBagConstraints.BOTH;
 		this.getContentPane().add(lexiconPanel, gbc);
-		gbc.gridy++;
+		gbc.gridy+=2;
+		gbc.gridheight = 1;
+		controls.setBackground(Color.red);
 		this.getContentPane().add(controls, gbc);
 		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.weightx = 1;
@@ -128,6 +123,8 @@ public class TraceSimViewer extends JFrame {
 		this.getContentPane().add(originalChartPanelWords, gbc);
 		gbc.gridy++;
 		this.getContentPane().add(chartPanelWords, gbc);
+		gbc.gridy++;
+		this.getContentPane().add(new SchwaGraph(sim), gbc);
 		
 		
 		
@@ -138,7 +135,8 @@ public class TraceSimViewer extends JFrame {
 
 	
 	private void initControlPanel() {
-		final JTextField inputField = new JTextField(sim.getInputString());
+		final JTextField inputField = new JTextField(8);
+		inputField.setText(sim.getInputString());
 		ActionListener resetListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -156,8 +154,10 @@ public class TraceSimViewer extends JFrame {
 		JButton runButton = new JButton("Run");
 		runButton.addActionListener(resetListener);
 		JPanel simulationControls = new JPanel();
+		simulationControls.add(new JLabel("Input"));
 		simulationControls.add(inputField);
 		simulationControls.add(runButton);
+		simulationControls.setMinimumSize(new Dimension(200, 0));
 		
 		//Parameter controls
 		spinners = new LabelledSpinner[14];
@@ -228,7 +228,7 @@ public class TraceSimViewer extends JFrame {
 		
 		//Layout
 		controls = new JPanel(new BorderLayout());
-		controls.add(simulationControls, BorderLayout.NORTH);
+		controls.add(simulationControls, BorderLayout.CENTER);
 //		controls.add(parametersPanel, BorderLayout.CENTER);
 		
 		
