@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/afs/inf.ed.ac.uk/user/s11/s1149815/Desktop/dissertation/code/jTRACE-schwa/dist/jTRACE.jar"/>
+	<classpathentry kind="lib" path="dist/jTRACE.jar"/>
 	<classpathentry kind="lib" path="lib/swing-layout-1.0.jar"/>
 	<classpathentry kind="lib" path="package/jTRACE.jar"/>
 	<classpathentry kind="lib" path="package/libs/castor-0.9.5.3-xml.jar"/>
@@ -22,8 +22,6 @@
 	<classpathentry kind="lib" path="package/libs/jaxfront-swing.jar"/>
 	<classpathentry kind="lib" path="package/libs/jaxfront-xuieditor.jar"/>
 	<classpathentry kind="lib" path="package/libs/jaxp-api.jar"/>
-	<classpathentry kind="lib" path="package/libs/jcommon-1.0.0-pre2.jar"/>
-	<classpathentry kind="lib" path="package/libs/jfreechart-1.0.0-pre2.jar"/>
 	<classpathentry kind="lib" path="package/libs/jgoodiesLF.jar"/>
 	<classpathentry kind="lib" path="package/libs/jimi.jar"/>
 	<classpathentry kind="lib" path="package/libs/junit.jar"/>
@@ -38,5 +36,7 @@
 	<classpathentry kind="lib" path="package/libs/xml-apis.jar"/>
 	<classpathentry kind="lib" path="package/libs/xsdlib.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="package/libs/jcommon-1.0.0-pre2.jar"/>
+	<classpathentry kind="lib" path="package/libs/jfreechart-1.0.0-pre2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

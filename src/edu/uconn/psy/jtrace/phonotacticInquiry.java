@@ -15,7 +15,7 @@ public class phonotacticInquiry {
             String[] _NFA={"artxst","kard","sis","klu","kalig","krip","krap","kruSxl","kruxl","kxt","glu","lxkSxri","parSxl","partli","parti","palxsi","pul","prabxbli","skul","sil","sikrxt","sid","startxl","strxgxl","stxdid","stupxd","sxksid","triti","trup","truli","trxsti"};
             String phonemeLabels[]={"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "x", "-"};     
 
-            Tree t=new Tree();
+            TreeO t=new TreeO();
             for(int i=0;i<FA.length;i++){
                 //t=new Tree();
                 //t.branchCharacteristics(NFA[i],8);
@@ -57,7 +57,7 @@ public class phonotacticInquiry {
             
         }
     }
-        class Tree{
+        class TreeO{
             double[][] phonRep={{1,0.76,0.706666667,0.573333333,0.56,0.426666667,0.36,0.213333333,0.22,0.086666667,0.133333333,0.093333333,0.206666667,0.133333333,0.053333333},
             {0.76,1,0.573333333,0.706666667,0.426666667,0.56,0.226666667,0.08,0.22,0.086666667,0.133333333,0.093333333,0.206666667,0.133333333,0.053333333},
             {0.706666667,0.573333333,1,0.76,0.52,0.386666667,0.4,0.2,0.086666667,0.086666667,0.093333333,0.133333333,0.073333333,0.093333333,0.053333333},
@@ -83,13 +83,13 @@ public class phonotacticInquiry {
             String[] _NFA={"artxst","kard","sis","klu","kalig","krip","krap","kruSxl","kruxl","kxt","glu","lxkSxri","parSxl","partli","parti","palxsi","pul","prabxbli","skul","sil","sikrxt","sid","startxl","strxgxl","stxdid","stupxd","sxksid","triti","trup","truli","trxsti"};
             String phonemeLabels[]={"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "x", "-"};     
             int phoneCount[]={29,22,18,16,21,9,40,11,14,13,5,2,0,12,1};
-            Node[] tree;
-            public Tree(){
+            NodeO[] tree;
+            public TreeO(){
                 
                 //System.out.println("slex "+slex.length);
-                tree=new Node[phonemeLabels.length];            
+                tree=new NodeO[phonemeLabels.length];            
                 for(int i=0;i<tree.length;i++){
-                    tree[i]=new Node(null,phonemeLabels[i]);  
+                    tree[i]=new NodeO(null,phonemeLabels[i]);  
                     tree[i].normalizeProbabilities();
                     tree[i].calculateNumNodes();
                     tree[i].calculateWeight();
@@ -112,8 +112,8 @@ public class phonotacticInquiry {
                         idx=phons;        
                         break;
                     }
-                Node tgt=tree[idx];
-                Node emy=tree[idx];
+                NodeO tgt=tree[idx];
+                NodeO emy=tree[idx];
                 for(int j=0;j<tgt.children().length;j++){
                     if(null==tgt.children()[j]) continue;
                     if(tgt.children()[j].label().equals(target.substring(1,2))){ 
@@ -182,13 +182,13 @@ public class phonotacticInquiry {
                     for(int j=0;j<tgtCumList.size();j++){
                         //if(((Node)tgtCumList.get(j)).isWord()) 
                         //totalTgt+=((Node)tgtCumList.get(j)).prob();
-                        totalTgt+=((Node)tgtCumList.get(j)).cardinality();
+                        totalTgt+=((NodeO)tgtCumList.get(j)).cardinality();
                     }
                     emyCumList=l2;
                     for(int j=0;j<emyCumList.size();j++){
                         //if(((Node)emyCumList.get(j)).isWord()) 
                         //totalEmy+=((Node)emyCumList.get(j)).prob();
-                        totalEmy+=((Node)emyCumList.get(j)).cardinality();;
+                        totalEmy+=((NodeO)emyCumList.get(j)).cardinality();;
                     }
                     tgtList.addAll((Collection)tgt.subsumedNodes());
                     //emyList.addAll((Collection)emy.subsumedNodes()); 
@@ -197,7 +197,7 @@ public class phonotacticInquiry {
                     //terminals have been satisfied.
                     for(int j=0;j<tgtList.size();j++)
                         for(int k=0;k<tgtCumList.size();k++)
-                            if(((Node)tgtList.get(j))==((Node)tgtCumList.get(k))){
+                            if(((NodeO)tgtList.get(j))==((NodeO)tgtCumList.get(k))){
                                 //((Node)tgtList.get(j)).isWord()&&
                                 //accumTgt+=((Node)tgtCumList.get(k)).prob();
                                 accumTgt++;
@@ -208,7 +208,7 @@ public class phonotacticInquiry {
                     //terminals have been satisfied.
                     for(int j=0;j<tgtList.size();j++)
                         for(int k=0;k<emyCumList.size();k++)
-                            if(((Node)tgtList.get(j))==((Node)emyCumList.get(k))){
+                            if(((NodeO)tgtList.get(j))==((NodeO)emyCumList.get(k))){
                                 //((Node)tgtList.get(j)).isWord()&&
                                 //accumEmy+=((Node)emyCumList.get(k)).prob();
                                 accumEmy++;
@@ -258,7 +258,7 @@ public class phonotacticInquiry {
                 //double[] probability=new double[target.length()];
                 
                 
-                Node tgt=tree[idx];                
+                NodeO tgt=tree[idx];                
                 double targetWeight=0,maxWeight=0;
                 for(int i=0;i<target.length()-1;i++){
                     lbl[i]=tgt.label();
@@ -328,8 +328,8 @@ public class phonotacticInquiry {
                 double cumPrbTgt=0d,cumPrbEmy=0d;
                 //calculate summed-lexical-probability-for-target, summed-lexical-probability-for-enemy
                 double cumLexPrbTgt=0d,cumLexPrbEmy=0d;
-                Node tgt=tree[idx];
-                Node emy=tree[idx];
+                NodeO tgt=tree[idx];
+                NodeO emy=tree[idx];
                 for(int j=0;j<tgt.children().length;j++){
                     if(null==tgt.children()[j]) continue;
                     if(tgt.children()[j].label().equals(target.substring(1,2))){ 
@@ -426,7 +426,7 @@ public class phonotacticInquiry {
                 for(int phons=0;phons<phonemeLabels.length;phons++)
                     if(target.substring(0,1).equals(phonemeLabels[phons]))
                         idx=phons;        
-                Node curr=tree[idx];
+                NodeO curr=tree[idx];
                 if(verbosity==0){                    
                     for(int i=1;i<target.length();i++){
                         //System.out.println(curr.isWord());
@@ -497,7 +497,7 @@ public class phonotacticInquiry {
                 else if(verbosity==4){
                     double targetDensity;
                     double competDensity;
-                    Node next=curr;
+                    NodeO next=curr;
                     for(int i=1;i<target.length();i++){                    
                         for(int j=0;j<curr.children().length;j++){
                             if(null==curr.children()[j]) continue;
@@ -527,8 +527,8 @@ public class phonotacticInquiry {
                 else if(verbosity==5){
                     double targetDensity;
                     double competDensity;
-                    Node next=curr;
-                    Node comp=curr;
+                    NodeO next=curr;
+                    NodeO comp=curr;
                     System.out.print(target+"\t");
                     for(int i=1;i<target.length();i++){                    
                         for(int j=0;j<curr.children().length;j++){
@@ -560,10 +560,10 @@ public class phonotacticInquiry {
                 else if(verbosity==6){
                     double targetWeight;
                     double competWeight;
-                    Node next=curr;
-                    Node comp=curr;
+                    NodeO next=curr;
+                    NodeO comp=curr;
                     System.out.print(target+"\t");
-                    Node UP=curr;
+                    NodeO UP=curr;
                     for(int i=1;i<target.length();i++){                    
                         for(int j=0;j<UP.children().length;j++){
                             if(null==UP.children()[j]) continue;
@@ -609,8 +609,8 @@ public class phonotacticInquiry {
                 else if(verbosity==7){
                     int targetWeight;
                     int competWeight;
-                    Node next=curr;
-                    Node comp=curr;
+                    NodeO next=curr;
+                    NodeO comp=curr;
                     System.out.print(target+"\t");
                     for(int i=1;i<target.length();i++){                    
                         for(int j=0;j<curr.children().length;j++){
@@ -1074,7 +1074,7 @@ public class phonotacticInquiry {
             }
         
         }
-        class Node{
+        class NodeO{
             String slex[]={"-x-","-xbrxpt-","-xdapt-","-xdxlt-","-xgri-","-xlat-","-xpart-","-xpil-","-ark-","-ar-","-art-","-artxst-","-xslip-","-bar-","-bark-","-bi-","-bit-","-bist-","-blak-","-blxd-","-blu-","-bab-","-babi-","-badi-","-bust-","-but-","-batxl-","-baks-","-brid-","-brud-","-brxS-","-bxbxl-","-bxk-","-bxs-","-bxt-","-kar-","-kard-","-karpxt-","-sis-","-klak-","-klxb-","-klu-","-kalig-","-kul-","-kap-","-kapi-","-kxpxl-","-krip-","-kru-","-krap-","-kruSxl-","-kruxl-","-krxS-","-kxp-","-kxt-","-dark-","-dart-","-dil-","-did-","-dip-","-du-","-dal-","-dat-","-dxbxl-","-dru-","-drap-","-drxg-","-dxk-","-dxl-","-dxst-","-duti-","-ist-","-it-","-glu-","-gad-","-gat-","-grik-","-grit-","-gru-","-grup-","-gard-","-gxtar-","-kip-","-ki-","-lid-","-lig-","-lip-","-list-","-ligxl-","-labi-","-lak-","-lup-","-lus-","-lat-","-lxk-","-lxki-","-lxkSxri-","-ad-","-papx-","-park-","-part-","-parSxl-","-partli-","-parti-","-par-","-pi-","-pik-","-pipxl-","-pis-","-plat-","-plxg-","-plxs-","-pakxt-","-pxlis-","-palxsi-","-pul-","-pap-","-pasxbxl-","-pasxbli-","-pat-","-prist-","-prabxbxl-","-prabxbli-","-pradus-","-pradxkt-","-pragrxs-","-pxt-","-rid-","-ril-","-rili-","-rab-","-rak-","-rakxt-","-rad-","-rut-","-rxb-","-rxgxd-","-rul-","-rupi-","-rxS-","-rxsxl-","-skar-","-skul-","-skru-","-sil-","-sit-","-sikrxt-","-si-","-sid-","-sik-","-Sarp-","-Si-","-Sip-","-Sit-","-Sild-","-Sak-","-Sut-","-Sap-","-Sat-","-Srxg-","-Sxt-","-slip-","-slit-","-slxg-","-salxd-","-sari-","-spark-","-spik-","-spid-","-spat-","-star-","-start-","-startxl-","-stil-","-stip-","-stak-","-stap-","-strik-","-strit-","-strxk-","-strxgxl-","-stxdid-","-stxdi-","-stupxd-","-sxbstxtut-","-sxtxl-","-sxksid-","-sxk-","-su-","-sut-","-sutxbxl-","-tar-","-targxt-","-ti-","-tu-","-tul-","-tap-","-trit-","-triti-","-tri-","-trup-","-trat-","-trxbxl-","-trxk-","-tru-","-truli-","-trxst-","-trxsti-","-tub-","-xgli-","-xp-","-xs-","---"};
             String slexEnemies[]={"-xp-","-x-","-x-","-x-","-xgli-","-x-","-xp-","-xp-","-ar-","-ark-","-ar-","-art-","-xs-","-bark-","-bar-","-bit-","-bi-","-bi-","-blu-","-blu-","-brud-","-babi-","-bab-","-babi-","-but-","-bust-","-bab-","-bab-","-brud-","-brid-","-brud-","-bxt-","-bxt-","-bxt-","-bxk-","-kard-","-kar-","-kar-","-si-","-klu-","-klu-","-kru-","-kar-","-skul-","-kapi-","-kap-","-kxp-","-kru-","-skru-","-kru-","-kru-","-kru-","-kru-","-kxpxl-","-kxp-","-dart-","-dark-","-did-","-dip-","-did-","-duti-","-dark-","-dal-","-dxk-","-drap-","-dru-","-dru-","-dxl-","-dxk-","-dxk-","-du-","-bist-","-bit-","-gru-","-gat-","-gad-","-gru-","-gru-","-grup-","-gru-","-gad-","-gat-","-ki-","-kip-","-lig-","-ligxl-","-slip-","-ist-","-lig-","-lak-","-blak-","-lus-","-lup-","-lak-","-lxki-","-lxk-","-lxk-","-gad-","-pap-","-par-","-par-","-par-","-part-","-part-","-park-","-pik-","-pi-","-pi-","-pi-","-lat-","-plxs-","-plxg-","-pap-","-pxt-","-par-","-par-","-papx-","-pasxbli-","-pasxbxl-","-pap-","-pi-","-prabxbli-","-prabxbxl-","-pradxkt-","-pradus-","-pradus-","-pat-","-brid-","-rili-","-ril-","-rad-","-rakxt-","-rak-","-rab-","-rupi-","-rxS-","-rxb-","-rut-","-rut-","-rxb-","-rxS-","-skul-","-skar-","-skar-","-si-","-si-","-sik-","-sis-","-si-","-si-","-Sap-","-Sip-","-Si-","-Si-","-Si-","-Sap-","-Sat-","-Sat-","-Sap-","-rxgxd-","-Sat-","-slit-","-slip-","-slip-","-sari-","-si-","-star-","-spid-","-spik-","-spark-","-start-","-star-","-start-","-stip-","-stil-","-stap-","-stak-","-strit-","-strik-","-strxgxl-","-strxk-","-stxdi-","-stxdid-","-stap-","-sxk-","-sxk-","-sxk-","-sxksid-","-sut-","-su-","-sut-","-targxt-","-tar-","-tu-","-tul-","-tu-","-stap-","-triti-","-trit-","-trit-","-tru-","-tru-","-tru-","-tru-","-trup-","-tru-","-trxsti-","-trxst-","-tu-","-xgri-","-x-","-x-","-xbrxpt-"};
             String NFA[]={"-artxst-","-kard-","-sis-","-klu-","-kalig-","-krip-","-krap-","-kruSxl-","-kruxl-","-kxt-","-glu-","-lxkSxri-","-parSxl-","-partli-","-parti-","-palxsi-","-pul-","-prabxbli-","-skul-","-sil-","-sikrxt-","-sid-","-startxl-","-strxgxl-","-stxdid-","-stupxd-","-sxksid-","-triti-","-trup-","-truli-","-trxsti-"};
@@ -1083,8 +1083,8 @@ public class phonotacticInquiry {
             String[] _NFA={"artxst","kard","sis","klu","kalig","krip","krap","kruSxl","kruxl","kxt","glu","lxkSxri","parSxl","partli","parti","palxsi","pul","prabxbli","skul","sil","sikrxt","sid","startxl","strxgxl","stxdid","stupxd","sxksid","triti","trup","truli","trxsti"};
             String phonemeLabels[]={"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "x", "-"};     
             int phoneCount[]={29,22,18,16,21,9,40,11,14,13,5,2,0,12,1};
-            Node parent;
-            Node[] children; 
+            NodeO parent;
+            NodeO[] children; 
             String label; //the phoneme living here
             double probability; //# lexical items subsumed by this node, including current, divided by total.
             boolean leaf; //no more lexical items  exist below this node.
@@ -1097,13 +1097,13 @@ public class phonotacticInquiry {
             int cardinality; //# nodes subsumed
             double density; //weight/cardinality
             
-            public Node(Node p,String l){
+            public NodeO(NodeO p,String l){
                 parent=p;
                 label=l;
-                children=new Node[15];
+                children=new NodeO[15];
                 
                 //create the string represented here.
-                Node climb=this;
+                NodeO climb=this;
                 String id=label;
                 while(!climb.isRoot()){
                     climb=climb.parent();
@@ -1133,7 +1133,7 @@ public class phonotacticInquiry {
             public String toString(){
                 if(leaf&&!word) return null;
                 //create the string represented here.
-                Node climb=this;
+                NodeO climb=this;
                 String id="";
                 if(!word) id=id.concat("_"); //shows that this is an unfinished word beginning.
                 id=id.concat(label);
@@ -1147,7 +1147,7 @@ public class phonotacticInquiry {
                 return id;
             }
             public String rawCharPath(){
-                Node climb=this;
+                NodeO climb=this;
                 String id="";
                 id=id.concat(label);
                 while(!climb.isRoot()){
@@ -1158,7 +1158,7 @@ public class phonotacticInquiry {
                 climb=null;
                 return id;            
             }
-            public Node lookup(String str){
+            public NodeO lookup(String str){
                 if(this.rawCharPath()==null) return null;
                 if(this.rawCharPath().equals(str)) return this;
                 for(int i=0;i<children.length;i++)
@@ -1267,11 +1267,11 @@ public class phonotacticInquiry {
             public boolean isWord(){return word;}
             public double prob(){return probability;}
             public void setProb(double p){probability=p;}
-            public void addChild(String l,int idx){  children[idx]=new Node(this,l);}
-            public Node parent(){return parent;}
+            public void addChild(String l,int idx){  children[idx]=new NodeO(this,l);}
+            public NodeO parent(){return parent;}
             public String label(){return label;}
             public boolean isRoot(){return (parent==null);}
-            public Node[] children(){return children;}
+            public NodeO[] children(){return children;}
             public int rootIndex(){
                 if(isRoot()){
                     for(int i=0;i<phonemeLabels.length;i++)

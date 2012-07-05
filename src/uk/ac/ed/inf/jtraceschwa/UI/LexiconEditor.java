@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -128,7 +130,7 @@ public class LexiconEditor extends JPanel {
 		   });
 
 		// Bind the undo action to ctl-Z
-		textcomp.getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
+		textcomp.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "Undo");
 
 		// Create a redo action and add it to the text component
 		textcomp.getActionMap().put("Redo",
@@ -144,7 +146,7 @@ public class LexiconEditor extends JPanel {
 		    });
 
 		// Bind the redo action to ctl-Y
-		textcomp.getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
+		textcomp.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()), "Redo");
 	}
 }
 

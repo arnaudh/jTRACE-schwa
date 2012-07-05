@@ -20,8 +20,22 @@ Built a simple Lexicon Editor. Extracted the provided lexicons into "simple" fil
 Built Schwa component, which receives activation from schwa phoneme in phonLayer.
 Built a lexicon activator (schwa listener) which sends extra activation to the words containing schwa
 
+*** Monday 2nd of July
+Built Schwa graph.
+Results : 
+- words containing "^" get a boost in activation
+- when the input contains "^", the word is recognized a bit sooner. For other inputs, the results are essentially the same. 
+
+
+*** Tuesday 3rd of July
+Activations of the original and modified model are now shown on the same graph, for easier comparison.
+
+
 TODO
-Schwa graph
+Read Van Oostendorp
 Phonemes : extend the code to contain all possible phonemes. No editor. Phonemes actually used are the ones present in the lexicon.
 
- 
+NOTES 
+Syllabic structure + Phonemes defined in terms of schwa : Van Oostendorp 1999 "Schwa in phonological theory"
+Coarticaultion : Grosvald and Corina "Exploring the limits of long disatnce V-to-V coarticulation"
+Lexical Stress : Fear et al 1995 "The strong/weak ... in english"

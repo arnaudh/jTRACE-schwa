@@ -23,15 +23,9 @@ public class SchwaGraph extends ChartPanel implements SchwaListener {
 		super(null);
 		this.sim = sim_;
 		
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(new XYSeries("schwa"));
 		
-        JFreeChart chart = ChartFactory.createXYLineChart("Schwa",
-            "Cycle", "activation",
-            dataset, PlotOrientation.VERTICAL,
-            true,       // legend
-            true,       // tooltips
-            false);     // URLs
+        JFreeChart chart = GraphTools.createCycleActivationChart("Schwa", new XYSeriesCollection());
+        
         
         setChart(chart);
         
@@ -40,6 +34,9 @@ public class SchwaGraph extends ChartPanel implements SchwaListener {
 	
 	@Override
 	public void schwaUpdated(Schwa schwa) {
+		if( getChart().getXYPlot().getDataset().getSeriesCount() == 0){
+			((XYSeriesCollection) getChart().getXYPlot().getDataset()).addSeries(new XYSeries("schwa"));
+		}
 		((XYSeriesCollection)getChart().getXYPlot().getDataset()).getSeries(0).add(slice, schwa.getActivation());
 		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(getChart(), new GraphParameters(), sim.getParameters());
         getChart().getSubtitle(0).setPosition(RectangleEdge.RIGHT);
@@ -50,7 +47,7 @@ public class SchwaGraph extends ChartPanel implements SchwaListener {
 	@Override
 	public void reset(Schwa schwa) {
 		slice = 0;
-		((XYSeriesCollection)getChart().getXYPlot().getDataset()).getSeries(0).clear();
+		((XYSeriesCollection)getChart().getXYPlot().getDataset()).removeAllSeries();
 	}
 
 }

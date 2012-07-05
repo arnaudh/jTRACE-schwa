@@ -30,7 +30,6 @@ public class Schwa {
 	public void setActivation(double activation) {
 		double threshold = 0;
 		if( activation < threshold ) activation = threshold;
-		System.out.println("Schwa.setActivation("+activation+")");
 		this.activation = activation;
 		updated();
 	}
