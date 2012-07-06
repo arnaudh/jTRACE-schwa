@@ -40,11 +40,13 @@ public class LexiconEditor extends JPanel {
 	
 	//ui
 	private JTextComponent textcomp;
+	private JLabel lexiconLabel;
 	
 	public LexiconEditor(TraceParam tp) {
 		this.tp = tp;
 		
 		//ui
+		lexiconLabel = new JLabel("Lexicon");
 		textcomp = new JTextArea(){ //no preferred or minimum size so that it adapts to teh LayoutManager
 			public Dimension getMinimumSize() {
 				return new Dimension();
@@ -70,6 +72,7 @@ public class LexiconEditor extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportView(textcomp);
 		
+		
 		//layout
 //		this.setLayout(new BorderLayout());
 //		this.add(new JLabel("Lexicon"), BorderLayout.NORTH);
@@ -79,7 +82,7 @@ public class LexiconEditor extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0; gbc.gridy = 0;
 		gbc.weighty = 0;
-		this.add(new JLabel("Lexicon"), gbc);
+		this.add(lexiconLabel, gbc);
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
 		gbc.gridy++;
@@ -94,6 +97,7 @@ public class LexiconEditor extends JPanel {
 			sb.append('\n');
 		}
 		textcomp.setText(sb.toString());
+		lexiconLabel.setText("Lexicon ("+tp.getLexicon().size()+" words)");
 	}
 	
 	private void updateLexiconFromEditor(){
@@ -103,6 +107,7 @@ public class LexiconEditor extends JPanel {
 		while( matcher.find() ){
 			tp.getLexicon().add(new TraceWord(matcher.group()));
 		}
+		lexiconLabel.setText("Lexicon ("+tp.getLexicon().size()+" words)");
 	}
 
 	private void addUndoRedo(){

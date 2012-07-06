@@ -30,12 +30,28 @@ Results :
 *** Tuesday 3rd of July
 Activations of the original and modified model are now shown on the same graph, for easier comparison.
 
+*** Thursday 5th of July
+Reading on Lexical Stress an full/reduced vowels stuff
+
+*** Friday 6th of July
+Removed schwa phoneme from the net. 
+Trying to get a smooth Schwa curve (pb in my code), brings up the question : should the Schwa component be spread over time ? 
+
 
 TODO
+Remove schwa phoneme
 Read Van Oostendorp
 Phonemes : extend the code to contain all possible phonemes. No editor. Phonemes actually used are the ones present in the lexicon.
+
+
+
 
 NOTES 
 Syllabic structure + Phonemes defined in terms of schwa : Van Oostendorp 1999 "Schwa in phonological theory"
 Coarticaultion : Grosvald and Corina "Exploring the limits of long disatnce V-to-V coarticulation"
-Lexical Stress : Fear et al 1995 "The strong/weak ... in english"
+Lexical Stress : Fear et al 1995 "The strong/weak ... in english", Cutler
+
+
+The exact set of words that have weak forms depends on dialect and speaker; the following is a list of the chief words of this type in Received Pronunciation:
+a, am, an, and, are, as, at, be, been, but, can, could, do, does, for, from, had, has, have, he, her, him, his, just, me, must, of, shall, she, should, some, than, that (as conjunction), the, them, there, to, us, was, we, were, who, would, you
+In most of the above words the weak form contains schwa, or a syllabic consonant in the case of those ending /l/, /m/ or /n/. However in be, he, me, she, we, been, him the vowel may be the reduced form of /ɪ/, or else [i]; and in do, who, you it may be the reduced form of /ʊ/, or [u]. (For the and to, see above.) 

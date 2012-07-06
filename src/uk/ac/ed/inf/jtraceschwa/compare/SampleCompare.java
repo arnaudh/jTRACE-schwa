@@ -23,6 +23,7 @@ public class SampleCompare {
 				TraceSimViewer sv = new TraceSimViewer(sim2, "Schwa");
 				sv.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				sv.setVisible(true);
+				sv.resetAndRun();
 			}
 		});
 	}

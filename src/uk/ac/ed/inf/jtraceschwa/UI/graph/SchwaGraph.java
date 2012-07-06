@@ -17,7 +17,6 @@ import edu.uconn.psy.jtrace.UI.GraphParameters;
 public class SchwaGraph extends ChartPanel implements SchwaListener {
 
 	private SchwaSim sim;
-	private double slice = 0;
 	
 	public SchwaGraph(SchwaSim sim_) {
 		super(null);
@@ -37,16 +36,14 @@ public class SchwaGraph extends ChartPanel implements SchwaListener {
 		if( getChart().getXYPlot().getDataset().getSeriesCount() == 0){
 			((XYSeriesCollection) getChart().getXYPlot().getDataset()).addSeries(new XYSeries("schwa"));
 		}
-		((XYSeriesCollection)getChart().getXYPlot().getDataset()).getSeries(0).add(slice, schwa.getActivation());
+		((XYSeriesCollection)getChart().getXYPlot().getDataset()).getSeries(0).add(sim.tn.inputSlice, schwa.getActivation());
 		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(getChart(), new GraphParameters(), sim.getParameters());
         getChart().getSubtitle(0).setPosition(RectangleEdge.RIGHT);
-		slice++;
 		repaint();
 	}
 
 	@Override
 	public void reset(Schwa schwa) {
-		slice = 0;
 		((XYSeriesCollection)getChart().getXYPlot().getDataset()).removeAllSeries();
 	}
 

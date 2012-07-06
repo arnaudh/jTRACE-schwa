@@ -147,7 +147,7 @@ public class TraceSimViewer extends JFrame {
 	
 	
 	
-	private void resetAndRun(){
+	public void resetAndRun(){
 		sim.reset();
 		originalSim.reset();
 		int cycle = sim.inputString.length() * 7 + 6;

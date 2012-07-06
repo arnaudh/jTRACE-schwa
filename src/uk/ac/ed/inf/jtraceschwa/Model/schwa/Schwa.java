@@ -11,6 +11,7 @@ import java.util.List;
 public class Schwa {
 
 	private double activation;
+	
 	private List<SchwaListener> listeners;
 	
 	public Schwa() {
