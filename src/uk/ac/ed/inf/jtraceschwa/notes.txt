@@ -78,8 +78,21 @@ inputOffset= 0   6   12  18  24  30  36  42
 
 
 
-
-
+****************************************************************
+*********************** Notes about lexicons ************************
+****************************************************************
+(from "Interaction in spoken word recognition models: Feedback helps" by Magnuson)
+We  did  not  have  access  to  FP98’s  “biglex”
+lexicon  of  1024  words,  so  we  generated  our  own
+(“biglex901”)  by following  the  procedures  FP98  describe
+for  compiling  biglex:  we  scanned  a  large  electronic
+dictionary  (20,000  words)  for  all  items  that  could  be
+transcribed using only TRACE’s 14 phonemes (/p/, /b/, /t/,
+/d/, /k/, /g/, /s/, /S/, /r/, /l/, /a/, /i/, /u/, /^/). This yielded a set
+of  462  words,  so  we  substituted  /^/  for  schwa  in  the
+dictionary, which brought the total to 604. Collapsing across
+vocalic  and  consonantal liquids (substituting /l/  and /r/ for
+both) brought the total to 901
 
 
 ========== SCHWA IDEAS ============
