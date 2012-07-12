@@ -17,7 +17,7 @@ public class SchwaParam extends TraceParam {
 	public void loadDefaultlexicon() {
 		lexicon.reset();
 		Pattern pattern = Pattern.compile(getPhonology().getInputPattern());
-		Matcher matcher = pattern.matcher(IOTools.readFile(new File("tools/lexicons_txt/default.txt")));
+		Matcher matcher = pattern.matcher(IOTools.readFile(new File("tools/Lexicons/default.txt")));
 		while( matcher.find() ){
 			lexicon.add(new TraceWord(matcher.group()));
 		}

@@ -11,6 +11,7 @@ import java.util.List;
 public class Schwa {
 
 	private double activation;
+	private double[] activations; //activations across time
 	
 	private List<SchwaListener> listeners;
 	
@@ -35,14 +36,25 @@ public class Schwa {
 		updated();
 	}
 
-	public double getActivation() {
-		return activation;
-	}
 	
 	public void reset(){
 		activation = 0;
 		for( SchwaListener lis : listeners ){
 			lis.reset(this);
 		}
+	}
+
+
+	public double getActivation() {
+		return activation;
+	}
+	
+	public void setActivations(double[] activations) {
+		this.activations = activations;
+		updated();
+	}
+
+	public double[] getActivations() {
+		return activations;
 	}
 }

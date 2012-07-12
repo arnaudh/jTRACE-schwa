@@ -58,7 +58,7 @@ public class SchwaNet extends TraceNet {
 		double schwaVal = 0;
 		if( inputSlice%3 == 0){
 			for( int i = 0; i < phonNet[0].length; i++ ){
-				if( i == inputSlice/3 ) System.out.print("*");
+//				if( i == inputSlice/3 ) System.out.print("*");
 //				System.out.print( phonNet[schwaIndex][i] + " " );
 			}
 			schwaVal = phonNet[schwaIndex][inputSlice/3];
@@ -69,7 +69,8 @@ public class SchwaNet extends TraceNet {
 //			schwaVal = Math.max(schwaVal, phonNet[schwaIndex][slice]);
 //		}
 		
-		schwa.setActivation(schwaVal);
+//		schwa.setActivation(schwaVal);
+		schwa.setActivations(phonNet[schwaIndex]);
 	}
 
     

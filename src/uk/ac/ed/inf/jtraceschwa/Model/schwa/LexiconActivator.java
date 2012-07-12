@@ -24,19 +24,15 @@ public class LexiconActivator implements SchwaListener {
 	/**
 	 * Send activation to the words which contain schwa
 	 * Inspired from TraceNet.phonToWord(). Differences :
-	 *  - only current slice (inputSlice) is concerned
 	 *  - no word frequency / word prime effects
 	 */
 	@Override
 	public void schwaUpdated(Schwa schwa) {
-		//my values
-		int currentSlice = net.inputSlice / 3;
 		
-		int startSlice = currentSlice-3>0 ? currentSlice-3:0;
-		int finishSlice = currentSlice+3;
-		for(int pslice = startSlice; pslice <= finishSlice; pslice++ ){
+		int startSlice = 0;
+		int finishSlice = net.pSlices;
 		
-			
+		for(int pslice = startSlice; pslice <finishSlice; pslice++ ){
 			edu.uconn.psy.jtrace.Model.TraceLexicon dict = net.tp.getLexicon();
 	        String str;     
 	        double t;
@@ -67,16 +63,21 @@ public class LexiconActivator implements SchwaListener {
 	                             wmax = net.pSlices - 1;
 	                         winstart = 1; 
 	                     }
+	                     
+	                     if( pslice == 33 ){
+	                    	 System.out.println("hollaaa");
+	                     }
+	                     
 	                     //determine the raw amount of activation that is sent to the word units
 	                     t = 2 * net.phonLayer[net.schwaIndex][pslice] * net.tp.getAlpha().PW; //cTRACE: the 2 stands for word->scale
-	                    
+                         
 	                     
 	                     double _t;
 	                     //now iterate over the temporal range determined about 15 lines above
 	                     for(int wslice = wmin; wslice<wmax && wslice<net.wSlices; wslice++, winstart++)
 	                         if(winstart>=0 && winstart<4){
 	                             //scale activation by pww; this determines how temporal offset should affect excitation 
-	                             net.wordNet[word][wslice] += net.pww[net.schwaIndex][winstart] * schwa.getActivation();                                                                          
+	                             net.wordNet[word][wslice] += net.pww[net.schwaIndex][winstart] * t;                                                                          
 	                         }
 	                 }
 	            }
