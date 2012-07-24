@@ -39,10 +39,8 @@ Trying to get a smooth Schwa curve (pb in my code), brings up the question : sho
 
 
 TODO
-Remove schwa phoneme
-Read Van Oostendorp
-Phonemes : extend the code to contain all possible phonemes. No editor. Phonemes actually used are the ones present in the lexicon.
-
+Phonemes : extend the code to contain all possible phonemes.
+Expand lexicon
 
 
 

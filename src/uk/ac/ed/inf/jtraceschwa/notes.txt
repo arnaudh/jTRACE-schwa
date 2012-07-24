@@ -6,13 +6,16 @@
 //OLD INDEXING (as in the Trace paper) used only for Default.. variables
 //  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 // "p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "^", "-"
+
 //NEW INDEXING (used in the TraceNet, alphabetical order)
 //  0    1    2    3    4    5    6    7    8    9   10   11   12   13   14
 // "-", "^", "a", "b", "d", "g", "i", "k", "l", "p", "r", "s", "S", "t", "u"  
+
 *NFEATS* = 9
 *NCONTS* = 7  
 *MAXSTEPS* = 9 is the number of different steps an ambiguous phoneme can go through (?)
 *phonemes* is a Map from phoneme character to Phon
+
 *PhonDefs* [NPHONS][NFEATS*NCONT] is, for each phoneme, the value of each feat*cont 
 e.g. for "^":
    {0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* POW */
@@ -22,20 +25,36 @@ e.g. for "^":
 	0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* GRD */
 	1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* VOI */
 	0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 } /* BUR */
+	
 *phonSpread* [50+MAXSTEPS][NFEATS*NCONT][24] is, for each phoneme, the spread across time of each of the feat*cont 
 e.g. for "^":
  0 [_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ]
- 1 [_ , . - ¡ 1 ¡ - . , _ _ _ _ _ _ _ _ _ ]
+ 1 [_ , . - ï¿½ 1 ï¿½ - . , _ _ _ _ _ _ _ _ _ ]
  2 [_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ]
 ...
- 9 [_ , . - ¡ 1 ¡ - . , _ _ _ _ _ _ _ _ _ ]
+ 9 [_ , . - ï¿½ 1 ï¿½ - . , _ _ _ _ _ _ _ _ _ ]
 ...
-21 [_ , . - ¡ 1 ¡ - . , _ _ _ _ _ _ _ _ _ ]
+21 [_ , . - ï¿½ 1 ï¿½ - . , _ _ _ _ _ _ _ _ _ ]
 ...
-32 [_ , . - ¡ .1 ¡ - . , _ _ _ _ _ _ _ _ _ ]
-33 [_ , . - ¡ .3 ¡ - . , _ _ _ _ _ _ _ _ _ ]
-34 [_ , . - ¡ 1  ¡ - . , _ _ _ _ _ _ _ _ _ ]
+32 [_ , . - ï¿½ .1 ï¿½ - . , _ _ _ _ _ _ _ _ _ ]
+33 [_ , . - ï¿½ .3 ï¿½ - . , _ _ _ _ _ _ _ _ _ ]
+34 [_ , . - ï¿½ 1  ï¿½ - . , _ _ _ _ _ _ _ _ _ ]
 ...
+
+
+Note: GRD is "Consonantal" but REVERSED !
+e.g for p,b,t,d,k,g Consonantal = 8 -> GRD = 1
+		for a,i,u,^ Consonantal = 1 -> GRD = 8
+However, there is a slight mistake for the following phonemes : 
+s(4 instead of 5)
+S(4 instead of 5)
+r(5 instead of 3)
+l(5 instead of 3) 
+a(2 instead of 1) 
+i(2 instead of 1) 
+u(2 instead of 1) 
+^(2 instead of 1) 
+
 
 
 
@@ -82,12 +101,12 @@ inputOffset= 0   6   12  18  24  30  36  42
 *********************** Notes about lexicons ************************
 ****************************************************************
 (from "Interaction in spoken word recognition models: Feedback helps" by Magnuson)
-We  did  not  have  access  to  FP98Õs  ÒbiglexÓ
+We  did  not  have  access  to  FP98ï¿½s  ï¿½biglexï¿½
 lexicon  of  1024  words,  so  we  generated  our  own
-(Òbiglex901Ó)  by following  the  procedures  FP98  describe
+(ï¿½biglex901ï¿½)  by following  the  procedures  FP98  describe
 for  compiling  biglex:  we  scanned  a  large  electronic
 dictionary  (20,000  words)  for  all  items  that  could  be
-transcribed using only TRACEÕs 14 phonemes (/p/, /b/, /t/,
+transcribed using only TRACEï¿½s 14 phonemes (/p/, /b/, /t/,
 /d/, /k/, /g/, /s/, /S/, /r/, /l/, /a/, /i/, /u/, /^/). This yielded a set
 of  462  words,  so  we  substituted  /^/  for  schwa  in  the
 dictionary, which brought the total to 604. Collapsing across

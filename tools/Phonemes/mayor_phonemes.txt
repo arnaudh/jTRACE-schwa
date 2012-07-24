@@ -1,0 +1,35 @@
+Power Vocalic Diffuse Acute Consonantal Voiced Burst in TRACE(1986)
+p 4 1 7 2 8 1 8 yes
+b 4 1 7 2 8 7 7 yes
+t 4 1 7 7 8 1 6 yes
+d 4 1 7 7 8 7 5 yes
+k 4 1 2 3 8 1 4 yes
+g 4 1 2 3 8 7 3 yes
+s 6 4 7 8 5 1 - yes
+S 6 4 6 4 5 1 - yes
+r 7 7 1 2 3 8 - yes
+l 7 7 2 4 3 9 - yes
+a 8 8 2 1 1 8 - yes
+i 8 8 8 8 1 8 - yes
+u 8 8 6 2 1 8 - yes
+^ 7 8 5 1 1 8 - yes		apparently not schwa ('u' in 'plus')
+w 7 7 7 2 2 8 - no  
+U 8 8 7 3 1 8 - no		'oo' in 'hook'
+f 6 4 7 3 5 1 - no
+6 7 8 2 2 1 8 - no		'o' in 'hot'
+@ 7 8 4 1 1 8 - no		the real schwa ?? ('a' in 'Tina')
+I 8 8 7 6 1 8 - no		'i' in 'bit'
+A 8 8 2 2 1 8 - no		'a' in 'spa'
+T 6 4 7 4 5 1 - no		'th' in 'thin'
+n 7 6 7 7 4 8 - no		
+m 7 6 7 2 4 8 - no
+D 6 4 7 4 5 8 - no		'th' in 'this'
+e 8 8 7 7 1 8 - no		'é' in french
+z 6 4 7 8 5 8 - no		
+v 6 4 7 3 5 8 - no
+Z 6 4 6 4 5 8 - no		'si' in 'vision'
+j 7 7 8 8 2 8 - no		'y' in 'you'
+E 8 8 4 6 1 8 - no		'e' in 'bed'
+h 6 4 4 1 5 1 - no
+N 7 6 2 3 4 8 - no		'ng' in 'sing'
+O 8 8 4 2 1 8 - no		'o' in american 'dog'

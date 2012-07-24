@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,11 +19,8 @@ import javax.swing.JTextField;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.LegendItemCollection;
-import org.jfree.chart.LegendItemSource;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
@@ -48,9 +46,12 @@ public class TraceSimViewer extends JFrame {
 	private MatrixViewer mv2;
 	private MatrixViewer mv3;
 	private JFreeChart wordChart;
+	private Stroke originalStroke = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
+	private Stroke modifiedStroke = new BasicStroke(2f);
 	//ui - controls
 	private JPanel controls;
 	private JPanel lexiconPanel;
+	
 	
 	
 	public TraceSimViewer(SchwaSim sim_, final String title) {
@@ -177,11 +178,8 @@ public class TraceSimViewer extends JFrame {
 				}
 			}
 		}
-		plot.getRenderer(1).setStroke(new BasicStroke(
-		        1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-		        1.0f, new float[] {6.0f, 6.0f}, 0.0f
-		    ));
-		plot.getRenderer(0).setStroke(new BasicStroke(2f));
+		plot.getRenderer(0).setStroke(originalStroke);
+		plot.getRenderer(1).setStroke(modifiedStroke);
 		//TODO remove duplicates from legend
 		
 		

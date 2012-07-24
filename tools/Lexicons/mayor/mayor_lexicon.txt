@@ -1,0 +1,55 @@
+aeroplane 229 coffee 164 leg 473 shirt 138
+animal 253 comb 70 light 216 shoe 282
+apple 690 cooker 58 lion 515 shop 565
+arm 337 cot 149 living room 1 shorts 59
+baby 3893 cow 1365 lorry 436 sink 55
+ball 638 cup 610 man 2074 sky 237
+balloon 248 daddy 301 meat 180 slide 357
+banana 382 dish 32 medicine 167 snow 139
+bath 594 dog 1011 meow 1 soap 69
+bathroom 1 doll 362 milk 935 sock 190
+bathtub 1 donkey 88 money 596 sofa 63
+beach 134 door 1130 monkey 893 spaghetti 93
+bear 475 drawer 17 moo 17 specs 1
+bed 1021 dress 726 moon 87 spider 400
+bee 101 drink 1203 motorbike 77 spoon 304
+bellybutton 1 duck 465 mouse 250 squirrel 21
+bib 104 ear 209 mouth 662 stairs 125
+bicycle 44 egg 1052 nail 78 star 198
+bike 234 elephant 974 nappy 1 stone 50
+bin 241 eye 310 necklace 37 stove 2
+bird 223 face 638 nose 876 sun 201
+biscuit 388 ﬁnger 328 orange 1387 sweater 16
+block 47 ﬁreengine 1 ouch 197 sweets 54
+boat 793 ﬁsh 946 outside 538 swing 94
+book 1365 ﬂower 146 oven 99 table 628
+boots 113 food 727 owl 40 tea 1377
+bottle 358 foot 545 paper 460 teddybear 1
+bowl 118 fork 117 park 324 telephone 116
+box 1946 fridge 123 party 284 television 1
+boy 1394 frog 189 pasta 46 tiger 1100
+bread 373 garage 432 peas 180 toast 252
+brick 457 garden 306 pen 254 toe 200
+brush 226 giraffe 485 penguin 499 tongue 49
+bubble 15 girl 1333 people 583 tooth 7
+bucket 165 glass 81 picture 600 toothbrush 25
+bunny 65 glasses 115 pig 726 towel 125
+bus 608 grandma 46 pillow 62 toy 225
+butter 70 grandpa 16 pizza 143 train 3442
+butterﬂy 130 hair 1254 plant 30 tree 471
+button 142 hammer 234 plate 254 trousers 576
+byebye 1 hand 898 pool 192 truck 905
+cake 1104 hat 1171 potty 1 tummy 436
+car 5051 head 1200 puppy 66 vacuum 4
+carrot 107 highchair 1 purse 30 vroom 4
+cat 1079 hoover 45 pushchair 1 wall 299
+cereal 4 horse 1495 pyjamas 1 watch 887
+chair 691 house 1939 quack 1 water 1148
+cheek 19 jacket 31 rabbit 515 window 392
+cheese 540 juice 702 radio 39 woof 2
+chicken 664 jumper 135 rain 176 work 905
+chips 676 key 240 refrigerator 1 yum 203
+choo choo 1 kitchen 245 rubbish 101 zip 45
+clock 131 knee 496 scissors 53
+coat 172 lady 756 settee 142
+cockadoodledo 1 lamb 137 sheep 557
