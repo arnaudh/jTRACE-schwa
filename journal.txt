@@ -60,4 +60,8 @@ Hypotheses for the dissertation:
 
 The exact set of words that have weak forms depends on dialect and speaker; the following is a list of the chief words of this type in Received Pronunciation:
 a, am, an, and, are, as, at, be, been, but, can, could, do, does, for, from, had, has, have, he, her, him, his, just, me, must, of, shall, she, should, some, than, that (as conjunction), the, them, there, to, us, was, we, were, who, would, you
-In most of the above words the weak form contains schwa, or a syllabic consonant in the case of those ending /l/, /m/ or /n/. However in be, he, me, she, we, been, him the vowel may be the reduced form of /ɪ/, or else [i]; and in do, who, you it may be the reduced form of /ʊ/, or [u]. (For the and to, see above.) 
+In most of the above words the weak form contains schwa, or a syllabic consonant in the case of those ending /l/, /m/ or /n/. However in be, he, me, she, we, been, him the vowel may be the reduced form of /ɪ/, or else [i]; and in do, who, you it may be the reduced form of /ʊ/, or [u]. (For the and to, see above.)
+
+
+
+ 
