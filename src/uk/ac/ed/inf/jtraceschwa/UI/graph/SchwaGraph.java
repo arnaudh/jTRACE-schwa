@@ -1,5 +1,7 @@
 package uk.ac.ed.inf.jtraceschwa.UI.graph;
 
+import java.awt.MultipleGradientPaint.CycleMethod;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -13,6 +15,7 @@ import uk.ac.ed.inf.jtraceschwa.Model.SchwaNet;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
 import uk.ac.ed.inf.jtraceschwa.Model.schwa.Schwa;
 import uk.ac.ed.inf.jtraceschwa.Model.schwa.SchwaListener;
+import uk.ac.ed.inf.jtraceschwa.UI.TraceSimViewer;
 import edu.uconn.psy.jtrace.UI.GraphParameters;
 
 public class SchwaGraph extends ChartPanel implements SchwaListener {
@@ -34,20 +37,17 @@ public class SchwaGraph extends ChartPanel implements SchwaListener {
 	
 	@Override
 	public void schwaUpdated(Schwa schwa) {
-//		if( getChart().getXYPlot().getDataset().getSeriesCount() == 0){
-//			((XYSeriesCollection) getChart().getXYPlot().getDataset()).addSeries(new XYSeries("schwa"));
-//		}
 		XYSeries series = new XYSeries(""+sim.tn.inputSlice);
 		((XYSeriesCollection) getChart().getXYPlot().getDataset()).addSeries(series);
-//		((XYSeriesCollection)getChart().getXYPlot().getDataset()).getSeries(0).add(sim.tn.inputSlice, schwa.getActivation());
-//		((XYSeriesCollection)getChart().getXYPlot().getDataset()).getSeries(0).clear();
-		for( int i = 0; i < schwa.getActivations().length; i++){
+		int max = Math.min(schwa.getActivations().length, TraceSimViewer.maxCycle/3);
+		for( int i = 0; i < max; i++){
 			double val = schwa.getActivations()[i];
 			series.add(i*3, val);
 		}
 		
 		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(getChart(), new GraphParameters(), sim.getParameters());
-        getChart().getSubtitle(0).setPosition(RectangleEdge.RIGHT);
+		getChart().clearSubtitles();
+//        getChart().getSubtitle(0).setPosition(RectangleEdge.RIGHT);
 		repaint();
 	}
 

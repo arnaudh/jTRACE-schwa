@@ -15,6 +15,11 @@ import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 
 import edu.uconn.psy.jtrace.Model.TraceParam;
 
+/**
+ * Panels with controls to modify the value of the trace's parameters : decay, rest, alpha, gamma
+ * @author arnaudhenry
+ *
+ */
 public class TraceParamPanel extends JPanel {
 	
 	private SchwaParam param;
@@ -22,8 +27,6 @@ public class TraceParamPanel extends JPanel {
 	private LabelledSpinner[] spinners;
 	
 	public TraceParamPanel() {
-		// TODO Auto-generated constructor stub
-
 		//Parameter controls
 		spinners = new LabelledSpinner[14];
 		//decay
@@ -35,7 +38,7 @@ public class TraceParamPanel extends JPanel {
 		spinners[4] = new LabelledSpinner(new SpinnerNumberModel(param.rest.P, -.5, 0.5, 0.005), "P");
 		spinners[5] = new LabelledSpinner(new SpinnerNumberModel(param.rest.W, -.5, 0.5, 0.005), "W");
 		//alpha
-		spinners[6] = new LabelledSpinner(new SpinnerNumberModel(param.alpha.IF, -.1, 1, 0.01), "I->F"); //-.1 for the right width...
+		spinners[6] = new LabelledSpinner(new SpinnerNumberModel(param.alpha.IF, -.1, 1, 0.01), "I->F");
 		spinners[7] = new LabelledSpinner(new SpinnerNumberModel(param.alpha.FP, -.1, 1, 0.01), "F->P");
 		spinners[8] = new LabelledSpinner(new SpinnerNumberModel(param.alpha.PW, -.1, 1, 0.01), "P->W");
 		spinners[9] = new LabelledSpinner(new SpinnerNumberModel(param.alpha.WP, -.1, 1, 0.01), "W->P");

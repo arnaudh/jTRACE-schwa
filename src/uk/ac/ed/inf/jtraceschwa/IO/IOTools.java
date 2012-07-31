@@ -3,8 +3,14 @@ package uk.ac.ed.inf.jtraceschwa.IO;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Utility class with methods to read and write to files
+ * @author arnaudhenry
+ *
+ */
 public class IOTools {
 	
 	
@@ -22,6 +28,16 @@ public class IOTools {
 			e.printStackTrace();
 		}
 		return sb.toString();
+	}
+
+	public static void writeToFile(File file, String str) {
+		try {
+			FileWriter fw = new FileWriter(file);
+			fw.write(str);
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

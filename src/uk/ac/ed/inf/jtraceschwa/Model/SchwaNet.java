@@ -1,11 +1,16 @@
 package uk.ac.ed.inf.jtraceschwa.Model;
 
+import uk.ac.ed.inf.jtraceschwa.Model.schwa.LexicalStressComponent;
 import uk.ac.ed.inf.jtraceschwa.Model.schwa.Schwa;
-import uk.ac.ed.inf.jtraceschwa.Model.schwa.LexiconActivator;
-import uk.ac.ed.inf.jtraceschwa.UI.graph.MatrixViewer;
 import edu.uconn.psy.jtrace.Model.TraceNet;
 import edu.uconn.psy.jtrace.Model.TraceParam;
 
+/**
+ * Modified version of the trace net.
+ * Methods of TraceNet are overriden to take into account the fact that schwa doesn't receive inhibition from other phonemes,
+ * @author arnaudhenry
+ *
+ */
 public class SchwaNet extends TraceNet {
 	
 	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
@@ -13,10 +18,10 @@ public class SchwaNet extends TraceNet {
 
 	public SchwaNet(TraceParam tp) {
 		super(tp);
-		schwa = new Schwa();
-		schwa.addSchwaListener(new LexiconActivator(this));
+		schwa = new Schwa(this);
+		//Components related to schwa
+		schwa.addSchwaListener(new LexicalStressComponent(this));
 		
-		// Removing the schwa phoneme from the net
 		// get the schwa index 
         for(int phon=0;phon<pd.NPHONS;phon++){
         	if( pd.toChar(phon) == '^' ){
