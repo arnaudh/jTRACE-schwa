@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
 import uk.ac.ed.inf.jtraceschwa.UI.graph.GraphTools;
+import uk.ac.ed.inf.jtraceschwa.compare.Evaluation;
 import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
 import edu.uconn.psy.jtrace.UI.GraphParameters;
@@ -39,11 +41,8 @@ import edu.uconn.psy.jtrace.UI.GraphParameters;
  */
 public class TraceSimViewer extends JFrame {
 
-	//trace
-//	private SchwaSim sim;
-//	private SchwaSim simLex;
-//	private TraceSim originalSim;
-	private List<TraceSim> simulations;
+	//Simulations
+	private List<Simulation> simulations;
 	
 	//
 	public static int maxCycle = 100; // number of cycles for each simulation (input dependent)
@@ -58,9 +57,10 @@ public class TraceSimViewer extends JFrame {
 	public static Stroke dashedThick = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
 	public static Stroke thin = new BasicStroke(1f);
 	public static Stroke thick = new BasicStroke(2f);
-	private List<Stroke> strokes;
 	private JPanel controls;
 	private JPanel lexiconPanel;
+	private JTextField inputField;
+	private List<JLabel> recognitionPointLabels;
 
 	// launches a TraceSimViewer
 	public static void main(String[] args) {
@@ -79,18 +79,13 @@ public class TraceSimViewer extends JFrame {
 		SchwaParam param = new SchwaParam();
         param.setModelInput("-pits^-");
 
-        simulations = new ArrayList<TraceSim>();
+        simulations = new ArrayList<Simulation>();
 //        this.sim = new SchwaSim(param, false);
 //        this.simLex = new SchwaSim(param, true);
 //		this.originalSim = new TraceSim(param);
-        simulations.add(new TraceSim(param));
-        simulations.add(new SchwaSim(param, false));
-        simulations.add(new SchwaSim(param, true));
-        
-        strokes = new ArrayList<Stroke>();
-        strokes.add(thin);
-        strokes.add(dashedThick);
-        strokes.add(thick);
+        simulations.add(new Simulation(new TraceSim(param), "Original", thin));
+        simulations.add(new Simulation(new SchwaSim(param, false), "Modified", dashedThick));
+        simulations.add(new Simulation(new SchwaSim(param, true), "Modified+stress", thick));
 		
 		//analysis
 		wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
@@ -102,6 +97,17 @@ public class TraceSimViewer extends JFrame {
 		initControlPanel();
 		// Lexicon panel
 		lexiconPanel = new LexiconEditor(param);
+		// Extra labels
+		JPanel extraLabels = new JPanel(new GridLayout(0, 2));
+		extraLabels.add(new JLabel("Recognition points"));
+		extraLabels.add(new JLabel());
+		recognitionPointLabels = new ArrayList<JLabel>();
+		for(int i = 0; i < simulations.size(); i++){
+			JLabel label = new JLabel("-1");
+			recognitionPointLabels.add(label);
+			extraLabels.add( new JLabel(simulations.get(i).getName()+":") );
+			extraLabels.add(label);
+		}
 		
 		// Layout
 		this.getContentPane().setLayout(new GridBagLayout());
@@ -119,11 +125,15 @@ public class TraceSimViewer extends JFrame {
 		controls.setBackground(Color.red);
 		this.getContentPane().add(controls, gbc);
 		gbc.insets = new Insets(0, 0, 0, 0);
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.weightx = 1;
 		gbc.gridy=0;
 		gbc.gridx++;
 		this.getContentPane().add(new MyChartPanel(wordChart), gbc);
+		gbc.gridwidth = 1;
+		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridy++;
+		this.getContentPane().add(extraLabels, gbc);
 //		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(0)), gbc);
 		this.pack();
 		this.setTitle("TraceSimViewer");
@@ -131,14 +141,14 @@ public class TraceSimViewer extends JFrame {
 	}
 
 	private void initControlPanel() {
-		final JTextField inputField = new JTextField(8);
-		inputField.setText(simulations.get(0).getInputString());
+		inputField = new JTextField(8);
+		inputField.setText(simulations.get(0).getSim().getInputString());
 		ActionListener resetListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( simulations.get(0).getParameters().getPhonology().validTraceWord(inputField.getText())){
+				if( simulations.get(0).getSim().getParameters().getPhonology().validTraceWord(inputField.getText())){
 					inputField.setBackground(Color.WHITE);
-					simulations.get(0).tp.setModelInput(inputField.getText());
+					simulations.get(0).getSim().tp.setModelInput(inputField.getText());
 					resetAndRun();
 				}else{
 					inputField.setBackground(Color.RED);
@@ -157,38 +167,37 @@ public class TraceSimViewer extends JFrame {
 		//Layout
 		controls = new JPanel(new BorderLayout());
 		controls.add(simulationControls, BorderLayout.NORTH);
-		controls.add(((SchwaParam)simulations.get(0).tp).createControlPanel(), BorderLayout.CENTER);
+		controls.add(((SchwaParam)simulations.get(0).getSim().tp).createControlPanel(), BorderLayout.CENTER);
 //		controls.add(new TraceParamPanel(sim.tp), BorderLayout.CENTER);
 	}
 	
 	// Runs the two simulations
 	public void resetAndRun(){
-//		sim.reset();
-//		simLex.reset();
-//		originalSim.reset();
-		
-		maxCycle = simulations.get(0).inputString.length() * 7 + 20; //run the simulation for a "sufficient" amount of time
+		maxCycle = cyclesForInput(inputField.getText()); //run the simulation for a "sufficient" amount of time
 
-		for(TraceSim sim : simulations){
-			sim.reset();
-			sim.cycle(maxCycle);
+		for(Simulation sim : simulations){
+			sim.getSim().reset();
+			sim.getSim().cycle(maxCycle);
 		}
 		
-//		sim.cycle(maxCycle);
-//		simLex.cycle(maxCycle);
-//		originalSim.cycle(maxCycle);
-		
 		updateGraphs();
+	}
+	
+	public static int cyclesForInput( String input ){
+		return input.length() * 7 + 20;
 	}
 	
 	private void updateGraphs(){
 		XYPlot plot = (XYPlot) wordChart.getPlot();
 		
 		for(int i = 0; i<simulations.size(); i++){
-			TraceSim sim = simulations.get(i);
+			TraceSim sim = simulations.get(i).getSim();
 			plot.setDataset(i, wordAnalysis.doAnalysis(sim));
 			plot.setRenderer(i, new XYLineAndShapeRenderer(true, false));
-			plot.getRenderer(i).setStroke(strokes.get(i));
+			plot.getRenderer(i).setStroke(simulations.get(i).getStroke());
+			//recognition point
+			int recogition = Evaluation.timeOfRecognition((XYSeriesCollection) plot.getDataset(i), inputField.getText().substring(1, inputField.getText().length()-1));
+			recognitionPointLabels.get(i).setText(""+recogition);
 		}
 		//make the curves match in color
 		for(int i = 0; i < plot.getDataset(0).getSeriesCount(); i++){
@@ -205,38 +214,8 @@ public class TraceSimViewer extends JFrame {
 			}
 		}
 		
-		
-//		XYSeriesCollection originalDataset = wordAnalysis.doAnalysis(originalSim);
-//		XYSeriesCollection dataset = wordAnalysis.doAnalysis(sim);
-//		XYSeriesCollection datasetLex = wordAnalysis.doAnalysis(simLex);
-//		plot.setDataset(0, originalDataset);
-//		plot.setDataset(1, dataset);
-//		plot.setDataset(2, datasetLex);
-//		plot.setRenderer(0, new XYLineAndShapeRenderer(true, false));
-//		plot.setRenderer(1, new XYLineAndShapeRenderer(true, false));
-//		plot.setRenderer(2, new XYLineAndShapeRenderer(true, false));
-//		
-//		// make colors concur
-//		for(int i = 0; i < originalDataset.getSeriesCount(); i++){
-//			String name = originalDataset.getSeriesName(i);
-//			for(int j = 0; j < plot.getDataset().getSeriesCount(); j++){
-//				if( dataset.getSeriesName(j).equals(name) ){
-//					//copy the color used in the original for that series
-//					plot.getRenderer(1).setSeriesPaint(j, plot.getRenderer(0).getSeriesPaint(i));
-//				}
-//				if( datasetLex.getSeriesName(j).equals(name) ){
-//					//copy the color used in the original for that series
-//					plot.getRenderer(2).setSeriesPaint(j, plot.getRenderer(0).getSeriesPaint(i));
-//				}
-//			}
-//		}
-//		plot.getRenderer(0).setStroke(originalStroke);
-//		plot.getRenderer(1).setStroke(modifiedStroke);
-//		plot.getRenderer(2).setStroke(modifiedLexStroke);
-		//TODO remove duplicates from legend
-		
 		//annotate
-		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(wordChart, new GraphParameters(), simulations.get(0).getParameters());
+		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(wordChart, new GraphParameters(), simulations.get(0).getSim().getParameters());
 	}
 
 

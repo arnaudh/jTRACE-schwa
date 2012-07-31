@@ -58,35 +58,37 @@ public class LexicalStressComponent implements SchwaListener{
             }
             
             
-            int slice = net.inputSlice;
+//            int slice = net.inputSlice;
             double[] activations = schwa.getActivations();
-
-//    		IOTools.printArray(activations, net.inputSlice/3);
             
-            //send activation to a "word" if one of its weak syllables overlaps with the slice
-
+            for(int slice = 0; slice < net.pSlices; slice++){
+	
+	//    		IOTools.printArray(activations, net.inputSlice/3);
+	            
+	            //send activation to a "word" if one of its weak syllables overlaps with the slice
+	
+	            
+	            int currentStress = WEAK;
+	            //for each of its phonemes
+	            for(int p = 0, wslice = slice; p < word.length() && wslice>=0; p++, wslice--){
+	        		double activation = activations[slice];
+	            	if( p < stress.length ){
+	            		if( stress[p] == 'W' ){
+	            			currentStress = WEAK;
+	            		}else if( stress[p] == 'S' ){
+	            			currentStress = STRONG;
+	            		}
+	            	}
+	
+	            	if( currentStress==WEAK ){
+	            		net.wordNet[w][wslice] += activation * ((SchwaParam)net.tp).stressWeight;
+	            	}else{
+//	            		net.wordNet[w][wslice] -= activation * ((SchwaParam)net.tp).stressWeight;
+	            	}
+	                  
+	            }
             
-            int currentStress = WEAK;
-            //for each of its phonemes
-            for(int p = 0, wslice = slice/3; p < word.length() && wslice>=0; p++, wslice--){
-            	if( p < stress.length ){
-            		if( stress[p] == 'W' ){
-            			currentStress = WEAK;
-            		}else if( stress[p] == 'S' ){
-            			currentStress = STRONG;
-            		}
-            	}
-
-        		double activation = activations[net.inputSlice/3];
-            	if( currentStress==WEAK ){
-            		net.wordNet[w][wslice] += activation * ((SchwaParam)net.tp).stressWeight;
-            	}else{
-            		net.wordNet[w][wslice] -= activation * ((SchwaParam)net.tp).stressWeight;
-            	}
-                  
             }
-            
-            
 
         }
 		

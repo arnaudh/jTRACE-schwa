@@ -10,6 +10,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
+import uk.ac.ed.inf.jtraceschwa.UI.TraceSimViewer;
 import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
 
@@ -23,13 +24,13 @@ public class Evaluation {
 	public static void main(String[] args) {
 		
 		// Results output
-		File outputFile = new File("results.txt");
+		File outputFile = new File("results/results.txt");
 		StringBuilder output = new StringBuilder();
 		
 		
 		SchwaParam param = new SchwaParam();
-		SchwaSim sim = new SchwaSim(param, true);
-		TraceSim originalSim = new SchwaSim(param, false);
+		SchwaSim sim = new SchwaSim(param, false);
+		TraceSim originalSim = new TraceSim(param);
 		
 
 		TraceSimAnalysis wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
@@ -48,7 +49,7 @@ public class Evaluation {
 			Chrono.tic();
 			sim.reset();
 			originalSim.reset();
-			int cycle = sim.inputString.length() * 7 + 6;
+			int cycle = TraceSimViewer.cyclesForInput("-"+word+"-");
 			sim.cycle(cycle);
 			originalSim.cycle(cycle);
 			Chrono.toc("cycle");
@@ -61,14 +62,9 @@ public class Evaluation {
 			String originalWinner = originalDataset.getSeriesName(0);
 			String winner = dataset.getSeriesName(0);
 			
-			int recognitionOriginal = -1;
-			int recognition = -1;
-			if( originalWinner.equals(word) ){ //the original guessed it right
-				  recognitionOriginal = timeOfRecognition(originalDataset);
-			}
-			if( winner.equals(word) ){ //the modified guessed it right
-				recognition = timeOfRecognition(dataset);
-			}
+			int recognitionOriginal = timeOfRecognition(originalDataset, word);
+			int	recognition = timeOfRecognition(dataset, word);
+			
 			
 			System.out.println("winner= "+winner+" ("+recognition+") // originalWinner= "+originalWinner+" ("+recognitionOriginal+")");
 			
@@ -104,8 +100,12 @@ public class Evaluation {
 	 * @param dataset : analysis dataset
 	 * @return slice
 	 */
-	public static int timeOfRecognition(XYSeriesCollection dataset){
+	public static int timeOfRecognition(XYSeriesCollection dataset, String inputWord){
 		XYSeries best = dataset.getSeries(0);
+		
+		if( !best.getName().equals(inputWord) ){
+			return -1;
+		}
 		
 		for(int i = best.getItemCount()-1; i > 0; i --){ //start from the end
 			for(int s = 1; s < dataset.getSeriesCount(); s++){

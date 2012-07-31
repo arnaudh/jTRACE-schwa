@@ -72,16 +72,16 @@ i u a ^
 
 *** RESULTS ON RUNNING THE COMPARISON BETWEEN THE 2 MODELS (without Lexical Stress) ***
 SAME   : 322
-WORSE  : 189     e.g. sartr^ (too may "s^..." words get activated at first) 
 BETTER : 259     e.g. r^b^ri
+WORSE  : 189     e.g. sartr^ (too may "s^..." words get activated at first) 
 NOOO   : 149     e.g. rab->r^b (most due to equivalent with schwa)
-YEAAAH : 23  (
 interesting words (modified wins, with change in curves) : lukriS^s, prab^bli
 
+(again with longer simulations)
+SAME   : 
 
-
-E-Z reader (versions)
-O'Reilley hyppocampus (complex architecture)
+*** With lexical stress ***
+works wonders with : sal^dli
 
 
 Hypotheses for the dissertation:
@@ -89,7 +89,6 @@ Hypotheses for the dissertation:
  - 2nd hyp: the architecture provides a principled way of augmenting the model
  - 3rd hyp: the model works best if schwa isn't affected by anything else (interesting because counter-intuitive). e.g activates function words
  
-
 
 
 The exact set of words that have weak forms depends on dialect and speaker; the following is a list of the chief words of this type in Received Pronunciation:
