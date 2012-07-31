@@ -22,11 +22,12 @@ import edu.uconn.psy.jtrace.Model.TraceParam;
  */
 public class TraceParamPanel extends JPanel {
 	
-	private SchwaParam param;
+	private TraceParam param;
 
 	private LabelledSpinner[] spinners;
 	
-	public TraceParamPanel() {
+	public TraceParamPanel(TraceParam tp) {
+		param = tp;
 		//Parameter controls
 		spinners = new LabelledSpinner[14];
 		//decay

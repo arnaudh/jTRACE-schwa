@@ -28,8 +28,8 @@ public class Evaluation {
 		
 		
 		SchwaParam param = new SchwaParam();
-		SchwaSim sim = new SchwaSim(param);
-		TraceSim originalSim = new TraceSim(param);
+		SchwaSim sim = new SchwaSim(param, true);
+		TraceSim originalSim = new SchwaSim(param, false);
 		
 
 		TraceSimAnalysis wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,

@@ -6,19 +6,14 @@ import edu.uconn.psy.jtrace.Model.TraceSim;
 
 public class SchwaSim extends TraceSim {
 
-	public SchwaSim(TraceParam _tp) {
-        // initialize param and net objects
+	public SchwaSim(TraceParam _tp, boolean useLexicalStress) {
         tp = _tp;
-        tn = new SchwaNet(tp);
+        tn = new SchwaNet(tp, useLexicalStress);
         
         paramUpdateCt = tp.getUpdateCt();
         
         reset();
 	}
-	
-	
-	
-	//Override desired methods...
 	
 
 }

@@ -39,5 +39,21 @@ public class IOTools {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	/**
+	 * Some utility methods to print arrays
+	 * @param array
+	 */
+	public static void printArray(double[] array){
+		printArray(array, -1);
+	}
+	public static void printArray(double[] array, int specialIndex){
+    	for(int i = 0; i < array.length; i++){
+    		if(i==specialIndex) System.out.print("***");
+    		System.out.print(array[i]+" ");
+    	}
+    	System.out.println();
+	}
 
 }

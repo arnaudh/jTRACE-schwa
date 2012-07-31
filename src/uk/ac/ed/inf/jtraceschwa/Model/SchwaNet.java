@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.jtraceschwa.Model;
 
+import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
 import uk.ac.ed.inf.jtraceschwa.Model.schwa.LexicalStressComponent;
 import uk.ac.ed.inf.jtraceschwa.Model.schwa.Schwa;
 import edu.uconn.psy.jtrace.Model.TraceNet;
@@ -16,11 +17,13 @@ public class SchwaNet extends TraceNet {
 	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
 	public Schwa schwa;
 
-	public SchwaNet(TraceParam tp) {
+	public SchwaNet(TraceParam tp, boolean useLexicalStress) {
 		super(tp);
 		schwa = new Schwa(this);
 		//Components related to schwa
-		schwa.addSchwaListener(new LexicalStressComponent(this));
+		if( useLexicalStress ){
+			schwa.addSchwaListener(new LexicalStressComponent(this));
+		}
 		
 		// get the schwa index 
         for(int phon=0;phon<pd.NPHONS;phon++){
@@ -60,21 +63,6 @@ public class SchwaNet extends TraceNet {
 	}
 	
 	private void phonToSchwa(){
-		double schwaVal = 0;
-		if( inputSlice%3 == 0){
-			for( int i = 0; i < phonNet[0].length; i++ ){
-//				if( i == inputSlice/3 ) System.out.print("*");
-//				System.out.print( phonNet[schwaIndex][i] + " " );
-			}
-			schwaVal = phonNet[schwaIndex][inputSlice/3];
-		}else{
-			schwaVal = schwa.getActivation();
-		}
-//		for(int slice = 0; slice < pSlices; slice++){
-//			schwaVal = Math.max(schwaVal, phonNet[schwaIndex][slice]);
-//		}
-		
-//		schwa.setActivation(schwaVal);
 		schwa.setActivations(phonNet[schwaIndex]);
 	}
 

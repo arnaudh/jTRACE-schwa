@@ -10,6 +10,8 @@ import java.awt.Insets;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,7 +28,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
 import uk.ac.ed.inf.jtraceschwa.UI.graph.GraphTools;
-import uk.ac.ed.inf.jtraceschwa.UI.graph.SchwaGraph;
 import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
 import edu.uconn.psy.jtrace.UI.GraphParameters;
@@ -39,8 +40,11 @@ import edu.uconn.psy.jtrace.UI.GraphParameters;
 public class TraceSimViewer extends JFrame {
 
 	//trace
-	private SchwaSim sim;
-	private TraceSim originalSim;
+//	private SchwaSim sim;
+//	private SchwaSim simLex;
+//	private TraceSim originalSim;
+	private List<TraceSim> simulations;
+	
 	//
 	public static int maxCycle = 100; // number of cycles for each simulation (input dependent)
 	
@@ -50,20 +54,20 @@ public class TraceSimViewer extends JFrame {
 	
 	//ui
 	private JFreeChart wordChart;
-	public static Stroke originalStroke = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
-	public static Stroke modifiedStroke = new BasicStroke(2f);
+	public static Stroke dashedThin = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
+	public static Stroke dashedThick = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
+	public static Stroke thin = new BasicStroke(1f);
+	public static Stroke thick = new BasicStroke(2f);
+	private List<Stroke> strokes;
 	private JPanel controls;
 	private JPanel lexiconPanel;
 
 	// launches a TraceSimViewer
 	public static void main(String[] args) {
-		SchwaParam param = new SchwaParam();
-        param.setModelInput("-art^st-");
-        final SchwaSim sim2 = new SchwaSim(param);
         SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				TraceSimViewer sv = new TraceSimViewer(sim2, "Schwa");
+				TraceSimViewer sv = new TraceSimViewer();
 				sv.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				sv.setVisible(true);
 				sv.resetAndRun();
@@ -71,9 +75,23 @@ public class TraceSimViewer extends JFrame {
 		});
 	}
 	
-	public TraceSimViewer(SchwaSim sim_, final String title) {
-		this.sim = sim_;
-		this.originalSim = new TraceSim(sim.tp);
+	public TraceSimViewer() {
+		SchwaParam param = new SchwaParam();
+        param.setModelInput("-pits^-");
+
+        simulations = new ArrayList<TraceSim>();
+//        this.sim = new SchwaSim(param, false);
+//        this.simLex = new SchwaSim(param, true);
+//		this.originalSim = new TraceSim(param);
+        simulations.add(new TraceSim(param));
+        simulations.add(new SchwaSim(param, false));
+        simulations.add(new SchwaSim(param, true));
+        
+        strokes = new ArrayList<Stroke>();
+        strokes.add(thin);
+        strokes.add(dashedThick);
+        strokes.add(thick);
+		
 		//analysis
 		wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
 				new java.util.Vector(), topNWords, TraceSimAnalysis.STATIC, 4,
@@ -83,7 +101,7 @@ public class TraceSimViewer extends JFrame {
 		// Simulation controls
 		initControlPanel();
 		// Lexicon panel
-		lexiconPanel = new LexiconEditor(sim.tp);
+		lexiconPanel = new LexiconEditor(param);
 		
 		// Layout
 		this.getContentPane().setLayout(new GridBagLayout());
@@ -106,22 +124,21 @@ public class TraceSimViewer extends JFrame {
 		gbc.gridx++;
 		this.getContentPane().add(new MyChartPanel(wordChart), gbc);
 		gbc.gridy++;
-		this.getContentPane().add(new SchwaGraph(sim), gbc);
+//		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(0)), gbc);
 		this.pack();
-		this.setTitle(title);
+		this.setTitle("TraceSimViewer");
 		this.setLocationRelativeTo(null);
 	}
 
 	private void initControlPanel() {
 		final JTextField inputField = new JTextField(8);
-		inputField.setText(sim.getInputString());
+		inputField.setText(simulations.get(0).getInputString());
 		ActionListener resetListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if( sim.getParameters().getPhonology().validTraceWord(inputField.getText())){
+				if( simulations.get(0).getParameters().getPhonology().validTraceWord(inputField.getText())){
 					inputField.setBackground(Color.WHITE);
-					sim.tp.setModelInput(inputField.getText());
-					originalSim.tp.setModelInput(inputField.getText());
+					simulations.get(0).tp.setModelInput(inputField.getText());
 					resetAndRun();
 				}else{
 					inputField.setBackground(Color.RED);
@@ -139,46 +156,87 @@ public class TraceSimViewer extends JFrame {
 		
 		//Layout
 		controls = new JPanel(new BorderLayout());
-		controls.add(simulationControls, BorderLayout.CENTER);
+		controls.add(simulationControls, BorderLayout.NORTH);
+		controls.add(((SchwaParam)simulations.get(0).tp).createControlPanel(), BorderLayout.CENTER);
 //		controls.add(new TraceParamPanel(sim.tp), BorderLayout.CENTER);
 	}
 	
 	// Runs the two simulations
 	public void resetAndRun(){
-		sim.reset();
-		originalSim.reset();
-		maxCycle = sim.inputString.length() * 7 + 6; //run the simulation for a "sufficient" amount of time
-		sim.cycle(maxCycle);
-		originalSim.cycle(maxCycle);
+//		sim.reset();
+//		simLex.reset();
+//		originalSim.reset();
+		
+		maxCycle = simulations.get(0).inputString.length() * 7 + 20; //run the simulation for a "sufficient" amount of time
+
+		for(TraceSim sim : simulations){
+			sim.reset();
+			sim.cycle(maxCycle);
+		}
+		
+//		sim.cycle(maxCycle);
+//		simLex.cycle(maxCycle);
+//		originalSim.cycle(maxCycle);
+		
 		updateGraphs();
 	}
 	
 	private void updateGraphs(){
 		XYPlot plot = (XYPlot) wordChart.getPlot();
-		XYSeriesCollection originalDataset = wordAnalysis.doAnalysis(originalSim);
-		XYSeriesCollection dataset = wordAnalysis.doAnalysis(sim);
-		plot.setDataset(0, originalDataset);
-		plot.setDataset(1, dataset);
-		plot.setRenderer(0, new XYLineAndShapeRenderer(true, false));
-		plot.setRenderer(1, new XYLineAndShapeRenderer(true, false));
 		
-		// make colors concur
-		for(int i = 0; i < originalDataset.getSeriesCount(); i++){
-			String name = originalDataset.getSeriesName(i);
-			for(int j = 0; j < plot.getDataset().getSeriesCount(); j++){
-				if( dataset.getSeriesName(j).equals(name) ){
-					//copy the color used in the original for that series
-					plot.getRenderer(1).setSeriesPaint(j, plot.getRenderer(0).getSeriesPaint(i));
-					break;
+		for(int i = 0; i<simulations.size(); i++){
+			TraceSim sim = simulations.get(i);
+			plot.setDataset(i, wordAnalysis.doAnalysis(sim));
+			plot.setRenderer(i, new XYLineAndShapeRenderer(true, false));
+			plot.getRenderer(i).setStroke(strokes.get(i));
+		}
+		//make the curves match in color
+		for(int i = 0; i < plot.getDataset(0).getSeriesCount(); i++){
+			String name = plot.getDataset(0).getSeriesName(i);
+			for(int sim = 1; sim < simulations.size(); sim++){
+
+				for(int j = 0; j < plot.getDataset(sim).getSeriesCount(); j++){
+
+					if( plot.getDataset(sim).getSeriesName(j).equals(name) ){
+						//copy the color used in the original for that series
+						plot.getRenderer(sim).setSeriesPaint(j, plot.getRenderer(0).getSeriesPaint(i));
+					}
 				}
 			}
 		}
-		plot.getRenderer(0).setStroke(originalStroke);
-		plot.getRenderer(1).setStroke(modifiedStroke);
+		
+		
+//		XYSeriesCollection originalDataset = wordAnalysis.doAnalysis(originalSim);
+//		XYSeriesCollection dataset = wordAnalysis.doAnalysis(sim);
+//		XYSeriesCollection datasetLex = wordAnalysis.doAnalysis(simLex);
+//		plot.setDataset(0, originalDataset);
+//		plot.setDataset(1, dataset);
+//		plot.setDataset(2, datasetLex);
+//		plot.setRenderer(0, new XYLineAndShapeRenderer(true, false));
+//		plot.setRenderer(1, new XYLineAndShapeRenderer(true, false));
+//		plot.setRenderer(2, new XYLineAndShapeRenderer(true, false));
+//		
+//		// make colors concur
+//		for(int i = 0; i < originalDataset.getSeriesCount(); i++){
+//			String name = originalDataset.getSeriesName(i);
+//			for(int j = 0; j < plot.getDataset().getSeriesCount(); j++){
+//				if( dataset.getSeriesName(j).equals(name) ){
+//					//copy the color used in the original for that series
+//					plot.getRenderer(1).setSeriesPaint(j, plot.getRenderer(0).getSeriesPaint(i));
+//				}
+//				if( datasetLex.getSeriesName(j).equals(name) ){
+//					//copy the color used in the original for that series
+//					plot.getRenderer(2).setSeriesPaint(j, plot.getRenderer(0).getSeriesPaint(i));
+//				}
+//			}
+//		}
+//		plot.getRenderer(0).setStroke(originalStroke);
+//		plot.getRenderer(1).setStroke(modifiedStroke);
+//		plot.getRenderer(2).setStroke(modifiedLexStroke);
 		//TODO remove duplicates from legend
 		
 		//annotate
-		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(wordChart, new GraphParameters(), originalSim.getParameters());
+		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(wordChart, new GraphParameters(), simulations.get(0).getParameters());
 	}
 
 

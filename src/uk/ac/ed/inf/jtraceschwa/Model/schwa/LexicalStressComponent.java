@@ -9,6 +9,7 @@ import edu.uconn.psy.jtrace.Model.TraceWord;
 
 import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaNet;
+import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 
 public class LexicalStressComponent implements SchwaListener{
 	
@@ -42,27 +43,32 @@ public class LexicalStressComponent implements SchwaListener{
 		//send activation to strong syllables too ? (inversionnally proportional to the schwa activation)
 
 		int w = 573; //pr^dusr
-//        for(int w=0; w<net.tp.getLexicon().size(); w++){     
+        for(w=0; w<net.tp.getLexicon().size(); w++){     
 		
             String word = net.tp.getLexicon().get(w).getPhon();
-            System.out.println("word="+word);
+//            System.out.println("word="+word+" (net.inputSlice="+net.inputSlice+")");
             
-            char[] stress = stressPatterns.get(word).toCharArray();
-            if( stress==null ){ //grammatical word
+            char[] stress;
+            if( stressPatterns.get(word) == null  ){
+            	if( word.equals("-") ) continue;
+            	//grammatical word
             	stress = new char[]{'W'};
+            }else{
+            	stress = stressPatterns.get(word).toCharArray();
             }
             
             
             int slice = net.inputSlice;
-            double activation = schwa.getActivation();
-            
+            double[] activations = schwa.getActivations();
+
+//    		IOTools.printArray(activations, net.inputSlice/3);
             
             //send activation to a "word" if one of its weak syllables overlaps with the slice
-            
+
             
             int currentStress = WEAK;
             //for each of its phonemes
-            for(int p = 0; p < word.length(); p++){
+            for(int p = 0, wslice = slice/3; p < word.length() && wslice>=0; p++, wslice--){
             	if( p < stress.length ){
             		if( stress[p] == 'W' ){
             			currentStress = WEAK;
@@ -70,16 +76,19 @@ public class LexicalStressComponent implements SchwaListener{
             			currentStress = STRONG;
             		}
             	}
-            	System.out.println("Stress for "+p+" : "+currentStress);
-            	
-//            	for( int wslice = 0; wslice< )
 
-//                  net.wordNet[w][wslice]
+        		double activation = activations[net.inputSlice/3];
+            	if( currentStress==WEAK ){
+            		net.wordNet[w][wslice] += activation * ((SchwaParam)net.tp).stressWeight;
+            	}else{
+            		net.wordNet[w][wslice] -= activation * ((SchwaParam)net.tp).stressWeight;
+            	}
+                  
             }
             
             
 
-//        }
+        }
 		
 		
 	}

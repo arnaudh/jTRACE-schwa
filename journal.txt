@@ -70,6 +70,16 @@ NOTES
 Phonemes which are closest to schwa (in that order) :
 i u a ^
 
+*** RESULTS ON RUNNING THE COMPARISON BETWEEN THE 2 MODELS (without Lexical Stress) ***
+SAME   : 322
+WORSE  : 189     e.g. sartr^ (too may "s^..." words get activated at first) 
+BETTER : 259     e.g. r^b^ri
+NOOO   : 149     e.g. rab->r^b (most due to equivalent with schwa)
+YEAAAH : 23  (
+interesting words (modified wins, with change in curves) : lukriS^s, prab^bli
+
+
+
 E-Z reader (versions)
 O'Reilley hyppocampus (complex architecture)
 

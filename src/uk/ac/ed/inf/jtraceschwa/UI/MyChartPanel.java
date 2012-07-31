@@ -24,11 +24,11 @@ public class MyChartPanel extends ChartPanel {
 		
 		int x = 90;
 		int y = 100;
-		g2.setStroke(TraceSimViewer.originalStroke);
+		g2.setStroke(TraceSimViewer.dashedThin);
 		g2.drawLine(x, y, x+30, y);
 		g2.drawString("Original", x+35, y+5);
 		y += 20;
-		g2.setStroke(TraceSimViewer.modifiedStroke);
+		g2.setStroke(TraceSimViewer.dashedThick);
 		g2.drawLine(x, y, x+30, y);
 		g2.drawString("Modified", x+35, y+5);
 	}
