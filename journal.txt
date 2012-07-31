@@ -37,16 +37,40 @@ Reading on Lexical Stress an full/reduced vowels stuff
 Removed schwa phoneme from the net. 
 Trying to get a smooth Schwa curve (pb in my code), brings up the question : should the Schwa component be spread over time ? 
 
+*** Wednesday 13th of July
+The schwa component is spread over time (as original phoneme was)
+
+*** Tuesday 24th of July
+Function words added (some already existed -> lexicon loading makes sure they are unique)
+
+*** Friday 25th of July
+Evaluation.java
+cleaning the code
+
+
+
+
 
 TODO
-Expand lexicon with FUNCTION WORDS (see below)
+Code the LexicalStress component, which should send back information to the schwa component as to which words need extra/fewer activation
+Check how long it takes to run that test on the full lexicon -> about an hour ====> RUN THE TESTS ON A DICE MACHINE!
+Add comments to the code + README
+
+
 read Ziegler: nested... (augmenting the model)
 read Ahissar & Hochstein: magnocellular pathways (some fast pathways draw a sketch of the input and comes back down to meet the rest of the information going up)
 no more simulations after the 7th
 
 
 
-NOTES E-Z reader (versions)
+
+
+
+NOTES 
+Phonemes which are closest to schwa (in that order) :
+i u a ^
+
+E-Z reader (versions)
 O'Reilley hyppocampus (complex architecture)
 
 
