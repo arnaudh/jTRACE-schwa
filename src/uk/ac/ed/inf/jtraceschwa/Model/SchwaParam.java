@@ -42,20 +42,4 @@ public class SchwaParam extends TraceParam {
 		}
 	}
 	
-	public JPanel createControlPanel(){
-		JPanel panel = new JPanel();
-		
-		final LabelledSpinner spin = new LabelledSpinner(new SpinnerNumberModel(stressWeight, 0, 0.9, 0.05), "Stress");
-		spin.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				stressWeight = spin.getValue();
-			}
-		});
-		
-		//Layout
-		panel.add(spin);
-		
-		return panel;
-	}
 }

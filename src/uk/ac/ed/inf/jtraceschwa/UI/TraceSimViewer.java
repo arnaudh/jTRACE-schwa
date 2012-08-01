@@ -4,6 +4,8 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -21,14 +23,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import uk.ac.ed.inf.jtraceschwa.Model.SchwaNet;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
 import uk.ac.ed.inf.jtraceschwa.UI.graph.GraphTools;
+import uk.ac.ed.inf.jtraceschwa.UI.graph.SchwaGraph;
 import uk.ac.ed.inf.jtraceschwa.compare.Evaluation;
 import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
@@ -80,9 +85,6 @@ public class TraceSimViewer extends JFrame {
         param.setModelInput("-pits^-");
 
         simulations = new ArrayList<Simulation>();
-//        this.sim = new SchwaSim(param, false);
-//        this.simLex = new SchwaSim(param, true);
-//		this.originalSim = new TraceSim(param);
         simulations.add(new Simulation(new TraceSim(param), "Original", thin));
         simulations.add(new Simulation(new SchwaSim(param, false), "Modified", dashedThick));
         simulations.add(new Simulation(new SchwaSim(param, true), "Modified+stress", thick));
@@ -93,10 +95,27 @@ public class TraceSimViewer extends JFrame {
 				TraceSimAnalysis.FORCED, 4);
 		wordChart = GraphTools.createCycleActivationChart("Words", null);
 		
+		/////////////////////////// UI
 		// Simulation controls
 		initControlPanel();
 		// Lexicon panel
 		lexiconPanel = new LexiconEditor(param);
+		// Graph
+		ChartPanel chartPanel = new ChartPanel(wordChart){
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g;
+				int x = 90;
+				int y = 100;
+				for(Simulation sim : simulations){
+					g2.setStroke(sim.getStroke());
+					g2.drawLine(x, y, x+30, y);
+					g2.drawString(sim.getName(), x+35, y+5);
+					y += 20;
+				}
+			}
+		};
 		// Extra labels
 		JPanel extraLabels = new JPanel(new GridLayout(0, 2));
 		extraLabels.add(new JLabel("Recognition points"));
@@ -109,7 +128,7 @@ public class TraceSimViewer extends JFrame {
 			extraLabels.add(label);
 		}
 		
-		// Layout
+		//////////////////////////// Layout
 		this.getContentPane().setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx=0;
@@ -129,12 +148,14 @@ public class TraceSimViewer extends JFrame {
 		gbc.weightx = 1;
 		gbc.gridy=0;
 		gbc.gridx++;
-		this.getContentPane().add(new MyChartPanel(wordChart), gbc);
+		this.getContentPane().add(chartPanel, gbc);
 		gbc.gridwidth = 1;
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridy++;
 		this.getContentPane().add(extraLabels, gbc);
-//		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(0)), gbc);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridy++;
+		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(2).getSim()), gbc);
 		this.pack();
 		this.setTitle("TraceSimViewer");
 		this.setLocationRelativeTo(null);
@@ -167,16 +188,21 @@ public class TraceSimViewer extends JFrame {
 		//Layout
 		controls = new JPanel(new BorderLayout());
 		controls.add(simulationControls, BorderLayout.NORTH);
-		controls.add(((SchwaParam)simulations.get(0).getSim().tp).createControlPanel(), BorderLayout.CENTER);
+		controls.add(((SchwaSim)simulations.get(2).getSim()).createControlPanel(), BorderLayout.CENTER);
 //		controls.add(new TraceParamPanel(sim.tp), BorderLayout.CENTER);
 	}
 	
-	// Runs the two simulations
+	// Runs the simulations
 	public void resetAndRun(){
 		maxCycle = cyclesForInput(inputField.getText()); //run the simulation for a "sufficient" amount of time
 
 		for(Simulation sim : simulations){
 			sim.getSim().reset();
+			// reload stress patterns
+			if(sim.getSim() instanceof SchwaSim && ((SchwaNet)sim.getSim().tn).lexicalStressComponent!=null ){
+				((SchwaNet)sim.getSim().tn).lexicalStressComponent.loadStressPatterns();
+			}
+			// run the simulation
 			sim.getSim().cycle(maxCycle);
 		}
 		

@@ -10,6 +10,7 @@ import edu.uconn.psy.jtrace.Model.TraceWord;
 import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaNet;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
+import uk.ac.ed.inf.jtraceschwa.compare.Chrono;
 
 public class LexicalStressComponent implements SchwaListener{
 	
@@ -24,12 +25,19 @@ public class LexicalStressComponent implements SchwaListener{
 		net = schwaNet;
 		
 		//Load stress patterns
+		loadStressPatterns();
+	}
+
+	public void loadStressPatterns() {
+		Chrono.tic();
+		System.out.println("LexicalStressComponent.loadStressPatterns()");
 		stressPatterns = new HashMap<String, String>();
 		Pattern p = Pattern.compile("("+net.tp.getPhonology().getInputPattern()+")\\n([SW ]+)");
 		Matcher matcher = p.matcher(IOTools.readFile(new File("tools/Lexicons/biglex901STRESS.txt")));
 		while( matcher.find() ){
 			stressPatterns.put(matcher.group(1), matcher.group(2));
 		}
+		Chrono.toc("StressPqttenrs");
 	}
 
 	@Override
@@ -80,7 +88,7 @@ public class LexicalStressComponent implements SchwaListener{
 	            		}
 	            	}
 	
-	            	if( currentStress==WEAK ){
+	            	if( currentStress==WEAK && activation>0.07){
 	            		net.wordNet[w][wslice] += activation * ((SchwaParam)net.tp).stressWeight;
 	            	}else{
 //	            		net.wordNet[w][wslice] -= activation * ((SchwaParam)net.tp).stressWeight;

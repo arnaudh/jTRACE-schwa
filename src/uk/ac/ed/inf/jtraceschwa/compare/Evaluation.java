@@ -1,8 +1,6 @@
 package uk.ac.ed.inf.jtraceschwa.compare;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -24,20 +22,18 @@ public class Evaluation {
 	public static void main(String[] args) {
 		
 		// Results output
-		File outputFile = new File("results/results.txt");
+		File outputFile = new File("results/modifiedStress1.txt");
 		StringBuilder output = new StringBuilder();
 		
 		
 		SchwaParam param = new SchwaParam();
-		SchwaSim sim = new SchwaSim(param, false);
-		TraceSim originalSim = new TraceSim(param);
+		TraceSim sim = new SchwaSim(param, true);
+//		TraceSim sim = new TraceSim(param);
 		
 
 		TraceSimAnalysis wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
-				new java.util.Vector(), 5, TraceSimAnalysis.STATIC, 4,
+				new java.util.Vector(), 10, TraceSimAnalysis.STATIC, 4,
 				TraceSimAnalysis.FORCED, 4);
-		
-		Chrono.tic();
 		
 		// For each word in the lexicon
 		for(int w = 0; w < param.getLexicon().size(); w++){
@@ -46,48 +42,19 @@ public class Evaluation {
 			System.out.println("*** "+word+" ("+w+"/"+param.getLexicon().size()+") ");
 			param.setModelInput("-"+word+"-");
 
-			Chrono.tic();
 			sim.reset();
-			originalSim.reset();
 			int cycle = TraceSimViewer.cyclesForInput("-"+word+"-");
 			sim.cycle(cycle);
-			originalSim.cycle(cycle);
-			Chrono.toc("cycle");
 			
 			// Analyse the results
-			XYSeriesCollection originalDataset = wordAnalysis.doAnalysis(originalSim);
 			XYSeriesCollection dataset = wordAnalysis.doAnalysis(sim);
-			Chrono.toc("analysis");
 			
-			String originalWinner = originalDataset.getSeriesName(0);
-			String winner = dataset.getSeriesName(0);
-			
-			int recognitionOriginal = timeOfRecognition(originalDataset, word);
 			int	recognition = timeOfRecognition(dataset, word);
-			
-			
-			System.out.println("winner= "+winner+" ("+recognition+") // originalWinner= "+originalWinner+" ("+recognitionOriginal+")");
+			System.out.println("recognition of "+word+" : "+recognition);
 			
 			output.append(word);
-			for(int i=word.length(); i<10; i++) output.append(' ');
-			for(int i=String.valueOf(recognitionOriginal).length(); i<4; i++) output.append(' ');
-			output.append(recognitionOriginal);
-			for(int i=String.valueOf(recognition).length(); i<4; i++) output.append(' ');
+			for(int i=word.length()+String.valueOf(recognition).length(); i<14; i++) output.append(' ');
 			output.append(recognition);
-			String result = "";
-			if( recognitionOriginal == recognition ){
-				result = "SAME";
-			}else if( recognitionOriginal==-1 ){ 
-				result = "YEAAAH";
-			}else if( recognition == -1 ){
-				result = "NOOOOO";
-			}else if( recognitionOriginal > recognition ){
-				result = "BETTER";
-			}else{
-				result = "WORSE";
-			}
-			for(int i=String.valueOf(result).length(); i<10; i++) output.append(' ');
-			output.append(result);
 			output.append('\n');
 			IOTools.writeToFile(outputFile, output.toString());
 
@@ -109,11 +76,19 @@ public class Evaluation {
 		
 		for(int i = best.getItemCount()-1; i > 0; i --){ //start from the end
 			for(int s = 1; s < dataset.getSeriesCount(); s++){
-				if( best.getY(i).floatValue() < dataset.getSeries(s).getY(i).floatValue() ){ //see where the best is less activated than the others
+				float val1 = best.getY(i).floatValue();
+				float val2 = dataset.getSeries(s).getY(i).floatValue();
+
+//				System.out.println("diff="+(val1-val2)+" ("+best.getName()+"="+val1+", "+dataset.getSeries(s).getName()+"="+val2+")");
+				if( lessOrEqual(val1, val2) ){ //see where the best is less activated than the others
 					return best.getX(i++).intValue();
 				}
 			}
 		}
 		return 0;
+	}
+	
+	public static boolean lessOrEqual(float val1, float val2){
+		return val1<val2 || (val1-val2)<0.0001;
 	}
 }

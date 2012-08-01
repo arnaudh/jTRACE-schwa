@@ -53,7 +53,6 @@ cleaning the code
 
 TODO
 Code the LexicalStress component, which should send back information to the schwa component as to which words need extra/fewer activation
-Check how long it takes to run that test on the full lexicon -> about an hour ====> RUN THE TESTS ON A DICE MACHINE!
 Add comments to the code + README
 
 
@@ -77,8 +76,6 @@ WORSE  : 189     e.g. sartr^ (too may "s^..." words get activated at first)
 NOOO   : 149     e.g. rab->r^b (most due to equivalent with schwa)
 interesting words (modified wins, with change in curves) : lukriS^s, prab^bli
 
-(again with longer simulations)
-SAME   : 
 
 *** With lexical stress ***
 works wonders with : sal^dli

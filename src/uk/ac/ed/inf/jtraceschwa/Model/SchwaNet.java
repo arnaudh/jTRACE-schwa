@@ -16,13 +16,16 @@ public class SchwaNet extends TraceNet {
 	
 	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
 	public Schwa schwa;
+	
+	public LexicalStressComponent lexicalStressComponent;
 
 	public SchwaNet(TraceParam tp, boolean useLexicalStress) {
 		super(tp);
 		schwa = new Schwa(this);
 		//Components related to schwa
 		if( useLexicalStress ){
-			schwa.addSchwaListener(new LexicalStressComponent(this));
+			lexicalStressComponent = new LexicalStressComponent(this);
+			schwa.addSchwaListener(lexicalStressComponent);
 		}
 		
 		// get the schwa index 

@@ -65,7 +65,7 @@ S W
 S^dr
 S W
 S^t
-S
+W
 S^tl
 S W
 S^tr
