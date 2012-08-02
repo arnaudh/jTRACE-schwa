@@ -22,12 +22,12 @@ public class Evaluation {
 	public static void main(String[] args) {
 		
 		// Results output
-		File outputFile = new File("results/modifiedStress1.txt");
+		File outputFile = new File("results/modified-Word2SchwaActivated.txt");
 		StringBuilder output = new StringBuilder();
 		
 		
 		SchwaParam param = new SchwaParam();
-		TraceSim sim = new SchwaSim(param, true);
+		TraceSim sim = new SchwaSim(param, false);
 //		TraceSim sim = new TraceSim(param);
 		
 

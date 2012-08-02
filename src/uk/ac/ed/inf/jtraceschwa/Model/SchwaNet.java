@@ -16,6 +16,9 @@ public class SchwaNet extends TraceNet {
 	
 	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
 	public Schwa schwa;
+
+	//parameters
+	public boolean wordToSchwa = false;
 	
 	public LexicalStressComponent lexicalStressComponent;
 
@@ -48,7 +51,7 @@ public class SchwaNet extends TraceNet {
         
         featToPhon();
         phonToPhon(); //excludes schwa
-        phonToWord(); //excludes schwa
+        phonToWord(); //excludes schwa (the schwa component does it)
         
         phonToSchwa(); //update Schwa component
         
@@ -240,7 +243,7 @@ public class SchwaNet extends TraceNet {
                 for(int wstart=0; wstart < str.length(); wstart++){
                     t_c_p = str.charAt(wstart);
                     currChar = pd.mapPhon(t_c_p);
-                    if( currChar==schwaIndex ) continue; //Exclude schwa
+                    if( !wordToSchwa && currChar==schwaIndex ) continue; //Exclude schwa
                     wslot = wslice + (wstart*2);
                     pmin = wslot - 1; //??
                     if(pmin >= pSlices) break;
