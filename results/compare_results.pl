@@ -77,7 +77,7 @@ sub print_diff {
 	my @sortedDiff = @diff[@permutation];
 	
 	print "          greatest differences :\n";
-	for(my $i=0; $i<10; $i++){
+	for(my $i=0; $i<50; $i++){
 		print "          $best[$i] ($sortedDiff[$i])\n";
 	}
 }

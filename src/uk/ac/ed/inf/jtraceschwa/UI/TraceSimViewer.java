@@ -87,7 +87,7 @@ public class TraceSimViewer extends JFrame {
         simulations = new ArrayList<Simulation>();
         simulations.add(new Simulation(new TraceSim(param), "Original", thin));
         simulations.add(new Simulation(new SchwaSim(param, false), "Modified", dashedThick));
-        simulations.add(new Simulation(new SchwaSim(param, true), "Modified+stress", thick));
+//        simulations.add(new Simulation(new SchwaSim(param, true), "Modified+stress", thick));
 		
 		//analysis
 		wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
@@ -141,7 +141,6 @@ public class TraceSimViewer extends JFrame {
 		this.getContentPane().add(lexiconPanel, gbc);
 		gbc.gridy+=1;
 		gbc.gridheight = 1;
-		controls.setBackground(Color.red);
 		this.getContentPane().add(controls, gbc);
 		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -155,7 +154,7 @@ public class TraceSimViewer extends JFrame {
 		this.getContentPane().add(extraLabels, gbc);
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridy++;
-		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(2).getSim()), gbc);
+//		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(2).getSim()), gbc);
 		this.pack();
 		this.setTitle("TraceSimViewer");
 		this.setLocationRelativeTo(null);
@@ -188,7 +187,7 @@ public class TraceSimViewer extends JFrame {
 		//Layout
 		controls = new JPanel(new BorderLayout());
 		controls.add(simulationControls, BorderLayout.NORTH);
-		controls.add(((SchwaSim)simulations.get(2).getSim()).createControlPanel(), BorderLayout.CENTER);
+//		controls.add(((SchwaSim)simulations.get(2).getSim()).createControlPanel(), BorderLayout.CENTER);
 //		controls.add(new TraceParamPanel(sim.tp), BorderLayout.CENTER);
 	}
 	

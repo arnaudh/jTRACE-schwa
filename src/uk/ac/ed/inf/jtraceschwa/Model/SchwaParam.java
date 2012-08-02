@@ -38,6 +38,7 @@ public class SchwaParam extends TraceParam {
 		Pattern pattern = Pattern.compile(getPhonology().getInputPattern());
 		Matcher matcher = pattern.matcher(IOTools.readFile(file));
 		while( matcher.find() ){
+//			System.out.println("load lex : "+matcher.group());
 			lexiconWords.add(matcher.group());
 		}
 	}
