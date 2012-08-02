@@ -1,0 +1,46 @@
+
+\chapter{Methodology}
+
+
+
+\section{Philosophical critique}
+
+
+%% Philosophical critique
+% Abstract and Concrete universals (cite Shillcock)
+% Simplicity vs Completeness
+% Ziegler: nested... (augmenting the model)
+% A model should escape from the full complexity of the world, but also be able to relate, "come back" to it.
+% Ahissar & Hochstein: magnocellular pathways (some fast pathways draw a sketch of the input and comes back down to meet the 
+
+\section{}
+%% Changes brought to the model
+
+% Extended phoneme set
+% Extended lexicon
+
+% talk about the interface built to help evaluate the performance of the model comparatively to the original (+screenshot, in appendix maybe)
+% The parameters [decay, rest, weights] are unmodified
+
+
+Check out figure \ref{modified}
+
+
+\begin{figure}[!h]
+\begin{tikzpicture}[scale=1]
+
+% node definitions
+ \foreach \place/\name in {{(0,0)/features}, {(0,2)/phonemes}, {(0,4)/words}}
+    \node[layer] (\name) at \place {\name};
+\node[component] (schwa) at (6,2){schwa};
+\node[component] (lex) at (8,4){lexical\\stress};
+
+% arrows
+  \foreach \source/\dest in {features/phonemes, phonemes/words, words/phonemes, features/schwa, schwa/phonemes, schwa/words, schwa/lex, lex/schwa}
+    \path[-stealth, thick] (\source) edge (\dest);
+
+\end{tikzpicture}
+\caption{Architecture of the modified model}
+\label{modified}
+\end{figure}
+

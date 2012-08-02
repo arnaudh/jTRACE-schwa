@@ -1,0 +1,37 @@
+\begin{thebibliography}{}
+
+\bibitem[Chawla and Shillcock, 2011]{chawlaShillcock}
+Chawla, M. and Shillcock, R. (2011).
+\newblock The development of a successful cognitive model; a case-history of
+  the trace model of speech perception.
+\newblock {\em in Press}.
+
+\bibitem[Elman and McClelland, 1986]{elman1986exploiting}
+Elman, J. and McClelland, J. (1986).
+\newblock Exploiting lawful variability in the speech wave.
+\newblock {\em Invariance and variability in speech processes}, pages 360--385.
+
+\bibitem[Klatt, 1979]{klatt1979speech}
+Klatt, D. (1979).
+\newblock Speech perception: A model of acoustic-phonetic analysis and lexical
+  access.
+\newblock {\em Journal of Phonetics}, 7(312):1--26.
+
+\bibitem[McClelland and Elman, 1986]{mcclelland1986trace}
+McClelland, J. and Elman, J. (1986).
+\newblock The trace model of speech perception.
+\newblock {\em Cognitive psychology}, 18(1):1--86.
+
+\bibitem[Salasoo and Pisoni, 1985]{salasoo1985interaction}
+Salasoo, A. and Pisoni, D. (1985).
+\newblock Interaction of knowledge sources in spoken word identification.
+\newblock {\em Journal of Memory and Language}, 24(2):210--231.
+
+\bibitem[Thompson, 1984]{thompson1984word}
+Thompson, H. (1984).
+\newblock Word recognition: A paradigm case in computational
+  (psycho-)linguistics.
+\newblock In {\em Proceedings of the Sixth Annual Meeting of the Cognitive
+  Science Society, Boulder, CO}.
+
+\end{thebibliography}

@@ -1,0 +1,80 @@
+
+\chapter{Background}
+
+% If you want to mention the Cohort model: biggest pb is that it doesn't allow noise
+
+\section{The TRACE model}
+
+James McClelland and Jeffery Elman first developed a model of phoneme identification from real speech called TRACE I \citep{elman1986exploiting}. The model had adjustable feature to phoneme connection strengths in order to deal with variability due to local phonetic context. It could extract features from real speech and correctly identify 90\% of stop consonants from monosyllable inputs.
+Because dealing with real speech involved getting concerned with exact duration of different features and phonemes in different contexts, it was harder to focus on the psychological aspect of the model and thus was not extendible in that form. This is why the authors developed another model, TRACE II, in which input to the model was mock speech, but where a lexical layer of processing could be added, enabling to account for a large amount of available psychological data. This is the model we are interested in and which is simply referred to TRACE in the literature.
+
+
+\subsection{Motivations}
+
+The interactive activation architecture of the TRACE model, which we will describe in detail in the next section, is motivated by several aspects of speech that have been discussed by Klatt \citep{klatt1979speech} and which McClelland and Elman refer to in their seminal paper:
+
+\begin{itemize}
+\item Speech is spread across time. This fact implies that a model of speech recognition has to keep a record of previous utterances in order to process incoming input. Not only previous context, but it has been shown that also subsequent context has an influence on perception at a specific time \citep{salasoo1985interaction} \citep{thompson1984word}. This means that a successful model cannot have static phoneme or word recognition, in the sense that it must be possible to alter the perception of previously recognised entities.
+
+\item Speech units overlap. Whether at the word or phoneme level, there are no reliable cues as to where units are separated. Indeed, words in fast speech - that is, conversational speech - tend to run into one other, sometimes sharing a phonetic sound in order to make the pronunciation easier for the speaker. In a similar way, phonemes overlap in such a way that it is impossible to tell at which point in time each phoneme starts and ends. In contrast to these two observations, written text has an advantage as letters are clearly distinguishable and words are separated by white spaces. The fact that speech units overlap means that phoneme and word recognition doesn't rely on precise segmentation of the input.
+
+\item Speech units are context-sensitive. The way phonemes are pronounced depends greatly on surrounding phonemes. For example, %TODO coarticulation example
+
+This effect known as coarticulation has caused many problems to cognitive modellers. McClelland and Elman take it into account by allowing connections to alter depending on the context.
+
+\item Speech is perceived in noise. We often converse rather efficiently in noisy environments, 
+and this fact alone implies that a model of speech recognition must not rely on the accurate recognition of any part of the speech.
+
+\end{itemize}
+
+Most of these facts are peculiar to speech and make the general task of speech recognition more difficult than written text recognition. 
+
+
+
+\subsection{Architecture}
+%% presentation of the TRACE model
+
+The TRACE model is composed of three layers of processing: features, phonemes and words, in which every unit is replicated across time.
+ 
+At the feature level, a set of seven dimensions is used to represent mock speech: Consonantal, Vocalic, Diffuseness, Acuteness, Voicing, Power and Burst. The first five were taken from the famous work of \citep{jakobson1961preliminaries}, Power was included to differentiate further vowels from consonants, and Burst was introduced to help discriminate among the different stop consonants. 
+%These features could be extracted from real speech with relative success as the authors had done in TRACE I, however, as been mentioned before, the purpose of the TRACE II model is to provide greater insight into the cognitive processes involved in speech recognition, and dealing with low-level details is an obstacle to that goal.
+Each of the seven dimensions is divided into nine value ranges, eight of which correspond to a grade from low to high. The ninth value is reserved to represent silence, and thus is used only by the silence phoneme "-". The 63 (7*9) units are replicated for each of the 25ms time slices of the model, and are filled in progressively by values corresponding to the input of the model. Figure \ref{TRACEarch} shows an example of a complete filling for three of the seven features for the input \textit{tea cup}.
+
+%TODO diagram of the model
+\begin{figure}
+\includegraphics[height=13cm]{images/TRACE_architecture.png}
+\caption{A subset of the units in TRACE. Each rectangle represents a different unit at each level. The input feature specifications for the phrase ”tea cup” are indicated for the three following dimensions: Acuteness, Diffuseness and Vocalic. \citep{mcclelland1986trace}}
+\label{TRACEarch}
+\end{figure}
+
+At the phoneme level, 15 phonemes are represented by units spanning 6 time slices and replicated every 3 time slices, as can be seen in figure \ref{TRACEarch} for a few phonemes. Note that this means adjacent phoneme units overlap, just as it is observed in real speech. Each phoneme unit receives activation from the feature units that make up that phoneme. McClelland and Elman came up with feature specifications for the following 14 phonemes: /b/, /p/, /d/, /t/, /g/, /k/ (stop consonants), /s/, /S/ (fricatives), /l/, /r/ (liquids), /a/, /i/, /u/ and /\^/ (vowels), and also added a silence phoneme /-/. There are inhibitory connections between units representing different phonemes which overlap in time, such that if a certain phoneme at a certain time slice receives activation from the feature level, it will inhibit other phonemes units at that time slices and three time slices apart (since a phoneme unit spans 6 time slices).
+
+At the word level, each word is represented by units replicated every 3 time slices (as for the phonemes). The time span of these units depend on the length of the word, 6 time slices being allocated to each phoneme which compose that word (referring to the example in figure \ref{TRACEarch}, /k\^p/ spans 18 time slices and /ti/ spans 12 time slices). Word units receive activation from the phoneme units that match and are aligned with the particular phonemes that make up the word. For example, the phoneme /t/ at time slice 6 will activate all word units starting at that time with /t/ being their first phoneme, and also all words units starting at time slice 0 which have /t/ in second position. As for the phoneme level, word units inhibit one another if they represent a different word and are overlapping in time. This is the basis of the interactive activation mechanism present in TRACE.
+
+In addition to the excitatory bottom-up connections between layers and intra-layer inhibitory connections, TRACE provides top-down excitatory connections from words to phonemes. Each phoneme unit can therefore receive activation from words which contain that phoneme at that particular time slice.
+
+
+
+
+% words
+
+
+
+
+% how a typical run goes?
+
+
+\subsection{Advantages}
+% what phenomena it accounts for
+
+\subsection{Limitations}
+% limitations:
+% - not physiologically plausible
+% - hardwired; cannot learn
+% - not expandable to the full english phoneme set and bigger lexicon (=> other languages as well)
+
+
+
+\section{Evolution of cognitive modelling}
+% Evolution of the model (not much evolution...)
+\citep{chawlaShillcock}
