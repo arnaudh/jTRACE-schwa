@@ -854,7 +854,6 @@ t^kr        40
 t^pik^      45
 t^ris^      42
 t^sk        38
-^           17
 ^Sr         29
 ^blikli     34
 ^br^pt      36

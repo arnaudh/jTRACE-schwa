@@ -47,11 +47,19 @@ Function words added (some already existed -> lexicon loading makes sure they ar
 Evaluation.java
 cleaning the code
 
+*** Tuesday 29th of July
+running Evaluations + perl scripts to extract data
 
+*** Friday 3rd of August
+removed the new schwa "@" from the phonemes (what a troublemaker)
 
 
 
 TODO
+****** okay, we're modifying the model deeply now ******
+Re-run the evaluation for the original (try to find out why is it different now ?)
+
+
 Code the LexicalStress component, which should send back information to the schwa component as to which words need extra/fewer activation
 Add comments to the code + README
 

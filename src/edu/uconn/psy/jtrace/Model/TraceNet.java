@@ -249,7 +249,7 @@ public class TraceNet {
             System.out.println("input= "+phons);
         if(phons==null||phons.length()==0) phons="";
         phons=phons.trim();
-        System.out.println(phons);
+//        System.out.println(phons);
         
         //store the target:
         if(phons.equals("-")) inputstring=phons;

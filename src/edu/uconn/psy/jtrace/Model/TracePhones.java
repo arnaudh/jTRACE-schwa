@@ -799,7 +799,7 @@ public class TracePhones {
         return res;
     }
     public String defaultLabels[] = {"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "^", "-"
-    		, "w", "U", "f", "6", "@", "I", "A", "T", "n", "m", "D", "e", "z", "v", "Z", "j", "E", "h", "N", "O"};     
+    		, "w", "U", "f", "6", "I", "A", "T", "n", "m", "D", "e", "z", "v", "Z", "j", "E", "h", "N", "O"};     
     
     public final double DefaultInidividualDurationScalar[] = {1, 1, 1, 1, 1, 1, 1};
 
@@ -812,7 +812,7 @@ public class TracePhones {
 	0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* VOI */
 	0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 }; /* BUR */
 
-    double DefaultDurationScalar[][] = {
+    public double DefaultDurationScalar[][] = {
        {1, 1, 1, 1, 1, 1, 1}, /*p*/
        {1, 1, 1, 1, 1, 1, 1}, /*b*/
        {1, 1, 1, 1, 1, 1, 1}, /*t*/
@@ -833,7 +833,6 @@ public class TracePhones {
        {1, 1, 1, 1, 1, 1, 1}, /*U*/
        {1, 1, 1, 1, 1, 1, 1}, /*f*/
        {1, 1, 1, 1, 1, 1, 1}, /*6*/
-       {1, 1, 1, 1, 1, 1, 1}, /*@*/
        {1, 1, 1, 1, 1, 1, 1}, /*I*/
        {1, 1, 1, 1, 1, 1, 1}, /*A*/
        {1, 1, 1, 1, 1, 1, 1}, /*T*/
@@ -853,7 +852,7 @@ public class TracePhones {
     };
     
     // define peak values of each feature/continuum.
-    double DefaultPhonDefs[][] = {         
+    public double DefaultPhonDefs[][] = {         
 /*p*/  {0  ,  0  ,  0  ,  0  ,  1. ,  0  ,  0  ,  0   , 0 , /* POW */
 	0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  1.  , 0 , /* VOC */
 	0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* DIF */
@@ -1007,14 +1006,6 @@ public class TracePhones {
 	   1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  /* VOC */ 
 	   0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  1. ,  0  ,  0  ,  /* DIF */ 
 	   0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  1. ,  0  ,  0  ,  /* ACU */ 
-	   1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  /* GRD */ 
-	   1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  /* VOI */ 
-	   0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  }, /* BUR */ 
-
-	 /*@*/ {   0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  /* POW */ 
-	   1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  /* VOC */ 
-	   0  ,  0  ,  0  ,  0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  /* DIF */ 
-	   0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  1. ,  0  ,  /* ACU */ 
 	   1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  /* GRD */ 
 	   1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  /* VOI */ 
 	   0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  }, /* BUR */ 

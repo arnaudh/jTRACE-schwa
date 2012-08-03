@@ -8,6 +8,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
+import uk.ac.ed.inf.jtraceschwa.Model2.SchwaParam2;
+import uk.ac.ed.inf.jtraceschwa.Model2.SchwaSim2;
 import uk.ac.ed.inf.jtraceschwa.UI.TraceSimViewer;
 import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
@@ -22,12 +24,13 @@ public class Evaluation {
 	public static void main(String[] args) {
 		
 		// Results output
-		File outputFile = new File("results/modified-Word2SchwaActivated.txt");
+		File outputFile = new File("results/schwaAsAFeature.txt");
 		StringBuilder output = new StringBuilder();
 		
 		
-		SchwaParam param = new SchwaParam();
-		TraceSim sim = new SchwaSim(param, false);
+		SchwaParam2 param = new SchwaParam2();
+		TraceSim sim = new SchwaSim2(param);
+//		TraceSim sim = new SchwaSim(param, false);
 //		TraceSim sim = new TraceSim(param);
 		
 

@@ -24,23 +24,21 @@ public class SchwaParam extends TraceParam {
 	
 	@Override
 	public void loadDefaultlexicon() {
+		lexicon.reset();
 		lexiconWords = new LinkedHashSet<String>();
 		loadFile(new File("tools/Lexicons/biglex901.txt"));
 		loadFile(new File("tools/Lexicons/grammatical.txt"));
 		
-		lexicon.reset();
-		for(String word : lexiconWords){
-			lexicon.add(new TraceWord(word));
-		}
 	}
 	
 	private void loadFile(File file){
 		Pattern pattern = Pattern.compile(getPhonology().getInputPattern());
 		Matcher matcher = pattern.matcher(IOTools.readFile(file));
 		while( matcher.find() ){
-//			System.out.println("load lex : "+matcher.group());
 			if( matcher.group().equals("^")) continue; //no word "a"
-			lexiconWords.add(matcher.group());
+			if( lexiconWords.add(matcher.group()) ){ // if it indeed was added (no duplicate)
+				lexicon.add(new TraceWord(matcher.group())); //add it to the lexicon
+			}
 		}
 	}
 	

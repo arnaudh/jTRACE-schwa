@@ -32,6 +32,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaNet;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
+import uk.ac.ed.inf.jtraceschwa.Model2.SchwaParam2;
+import uk.ac.ed.inf.jtraceschwa.Model2.SchwaSim2;
 import uk.ac.ed.inf.jtraceschwa.UI.graph.GraphTools;
 import uk.ac.ed.inf.jtraceschwa.UI.graph.SchwaGraph;
 import uk.ac.ed.inf.jtraceschwa.compare.Evaluation;
@@ -61,7 +63,7 @@ public class TraceSimViewer extends JFrame {
 	private JFreeChart wordChart;
 	private JFreeChart phonemeChart;
 	public static Stroke dashedThin = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
-	public static Stroke dashedThick = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
+	public static Stroke dashedThick = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 10.0f}, 0.0f);
 	public static Stroke thin = new BasicStroke(1f);
 	public static Stroke thick = new BasicStroke(2f);
 	private JPanel controls;
@@ -84,11 +86,12 @@ public class TraceSimViewer extends JFrame {
 	
 	public TraceSimViewer() {
 		SchwaParam param = new SchwaParam();
-        param.setModelInput("-pits^-");
-
         simulations = new ArrayList<Simulation>();
         simulations.add(new Simulation(new TraceSim(param), "Original", thin));
-        simulations.add(new Simulation(new SchwaSim(param, false), "Modified", thick));
+//        simulations.add(new Simulation(new SchwaSim(param, false), "Modified", thick));
+        simulations.add(new Simulation(new SchwaSim2(new SchwaParam2()), "SchwaSim2", dashedThick));
+        
+        setModelInput("-^d^lt-");
 //        SchwaSim ssim = new SchwaSim(param, false);
 //        ((SchwaNet)ssim.tn).schwa.prioritizeSchwa = true;
 //        simulations.add(new Simulation(ssim, "Modified + prioritize schwa", dashedThick));
@@ -150,24 +153,35 @@ public class TraceSimViewer extends JFrame {
 		this.getContentPane().add(lexiconPanel, gbc);
 		gbc.gridy+=1;
 		gbc.gridheight = 1;
+		gbc.weighty = 0;
 		this.getContentPane().add(controls, gbc);
 		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.weightx = 1;
+		gbc.weighty = 1;
 		gbc.gridy=0;
 		gbc.gridx++;
 		this.getContentPane().add(chartPanel, gbc);
 		gbc.gridwidth = 1;
+		gbc.weighty = 0;
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridy++;
 		this.getContentPane().add(extraLabels, gbc);
+		gbc.weighty = 1;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridy++;
-		this.getContentPane().add(new ChartPanel(phonemeChart), gbc);
-//		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(2).getSim()), gbc);
+//		this.getContentPane().add(new ChartPanel(phonemeChart), gbc);
+//		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(0).getSim()), gbc);
 		this.pack();
 		this.setTitle("TraceSimViewer");
 		this.setLocationRelativeTo(null);
+	}
+	
+	private void setModelInput(String input){
+		for( Simulation sim : simulations ){
+			sim.getSim().tp.setModelInput(input);
+			sim.getSim().reset();
+		}
 	}
 
 	private void initControlPanel() {
@@ -178,7 +192,7 @@ public class TraceSimViewer extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if( simulations.get(0).getSim().getParameters().getPhonology().validTraceWord(inputField.getText())){
 					inputField.setBackground(Color.WHITE);
-					simulations.get(0).getSim().tp.setModelInput(inputField.getText());
+					setModelInput(inputField.getText());
 					resetAndRun();
 				}else{
 					inputField.setBackground(Color.RED);
