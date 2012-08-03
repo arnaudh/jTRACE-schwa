@@ -46,15 +46,14 @@ public class SchwaNet extends TraceNet {
 	
 	@Override
 	public double[][][] cycle() {
-
+		
         act_features();
-        
+
         featToPhon();
+        featToSchwa(); //update Schwa component
+        
         phonToPhon(); //excludes schwa
         phonToWord(); //excludes schwa (the schwa component does it)
-        
-        phonToSchwa(); //update Schwa component
-        
         wordToPhon(); //excludes schwa
         wordToWord();
         featUpdate();
@@ -68,7 +67,7 @@ public class SchwaNet extends TraceNet {
 		return null; //return value never used...
 	}
 	
-	private void phonToSchwa(){
+	private void featToSchwa(){
 		schwa.setActivations(phonNet[schwaIndex]);
 	}
 

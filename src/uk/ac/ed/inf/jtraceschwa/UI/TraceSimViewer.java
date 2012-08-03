@@ -55,9 +55,11 @@ public class TraceSimViewer extends JFrame {
 	//analysis
 	private int topNWords = 10;
 	private TraceSimAnalysis wordAnalysis;
+	private TraceSimAnalysis phonemeAnalysis;
 	
 	//ui
 	private JFreeChart wordChart;
+	private JFreeChart phonemeChart;
 	public static Stroke dashedThin = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
 	public static Stroke dashedThick = new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f, new float[] {6.0f, 6.0f}, 0.0f);
 	public static Stroke thin = new BasicStroke(1f);
@@ -86,14 +88,21 @@ public class TraceSimViewer extends JFrame {
 
         simulations = new ArrayList<Simulation>();
         simulations.add(new Simulation(new TraceSim(param), "Original", thin));
-        simulations.add(new Simulation(new SchwaSim(param, false), "Modified", dashedThick));
+        simulations.add(new Simulation(new SchwaSim(param, false), "Modified", thick));
+//        SchwaSim ssim = new SchwaSim(param, false);
+//        ((SchwaNet)ssim.tn).schwa.prioritizeSchwa = true;
+//        simulations.add(new Simulation(ssim, "Modified + prioritize schwa", dashedThick));
 //        simulations.add(new Simulation(new SchwaSim(param, true), "Modified+stress", thick));
 		
 		//analysis
 		wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
 				new java.util.Vector(), topNWords, TraceSimAnalysis.STATIC, 4,
 				TraceSimAnalysis.FORCED, 4);
+		phonemeAnalysis = new TraceSimAnalysis(TraceSimAnalysis.PHONEMES, TraceSimAnalysis.WATCHTOPN,
+				new java.util.Vector(), topNWords, TraceSimAnalysis.STATIC, 4,
+				TraceSimAnalysis.FORCED, 4);
 		wordChart = GraphTools.createCycleActivationChart("Words", null);
+		phonemeChart = GraphTools.createCycleActivationChart("Phonemes", null);
 		
 		/////////////////////////// UI
 		// Simulation controls
@@ -154,6 +163,7 @@ public class TraceSimViewer extends JFrame {
 		this.getContentPane().add(extraLabels, gbc);
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridy++;
+		this.getContentPane().add(new ChartPanel(phonemeChart), gbc);
 //		this.getContentPane().add(new SchwaGraph((SchwaSim) simulations.get(2).getSim()), gbc);
 		this.pack();
 		this.setTitle("TraceSimViewer");
@@ -214,23 +224,35 @@ public class TraceSimViewer extends JFrame {
 	
 	private void updateGraphs(){
 		XYPlot plot = (XYPlot) wordChart.getPlot();
+		XYPlot plotPhoneme = (XYPlot) phonemeChart.getPlot();
 		
 		for(int i = 0; i<simulations.size(); i++){
 			TraceSim sim = simulations.get(i).getSim();
 			plot.setDataset(i, wordAnalysis.doAnalysis(sim));
 			plot.setRenderer(i, new XYLineAndShapeRenderer(true, false));
 			plot.getRenderer(i).setStroke(simulations.get(i).getStroke());
+			//phonemes
+			plotPhoneme.setDataset(i, phonemeAnalysis.doAnalysis(sim));
+			plotPhoneme.setRenderer(i, new XYLineAndShapeRenderer(true, false));
+			plotPhoneme.getRenderer(i).setStroke(simulations.get(i).getStroke());
 			//recognition point
 			int recogition = Evaluation.timeOfRecognition((XYSeriesCollection) plot.getDataset(i), inputField.getText().substring(1, inputField.getText().length()-1));
 			recognitionPointLabels.get(i).setText(""+recogition);
 		}
 		//make the curves match in color
+		makeColorsMatch(plot);
+		makeColorsMatch(plotPhoneme);
+		
+		//annotate
+		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(wordChart, new GraphParameters(), simulations.get(0).getSim().getParameters());
+		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(phonemeChart, new GraphParameters(), simulations.get(0).getSim().getParameters());
+	}
+
+	private void makeColorsMatch(XYPlot plot) {
 		for(int i = 0; i < plot.getDataset(0).getSeriesCount(); i++){
 			String name = plot.getDataset(0).getSeriesName(i);
 			for(int sim = 1; sim < simulations.size(); sim++){
-
 				for(int j = 0; j < plot.getDataset(sim).getSeriesCount(); j++){
-
 					if( plot.getDataset(sim).getSeriesName(j).equals(name) ){
 						//copy the color used in the original for that series
 						plot.getRenderer(sim).setSeriesPaint(j, plot.getRenderer(0).getSeriesPaint(i));
@@ -238,9 +260,6 @@ public class TraceSimViewer extends JFrame {
 				}
 			}
 		}
-		
-		//annotate
-		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(wordChart, new GraphParameters(), simulations.get(0).getSim().getParameters());
 	}
 
 

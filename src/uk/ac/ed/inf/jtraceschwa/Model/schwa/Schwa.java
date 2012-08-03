@@ -15,6 +15,7 @@ public class Schwa {
 	private SchwaNet net;
 	
 	private double[] activations; //activations across time
+	public boolean prioritizeSchwa = false;
 	
 	private List<SchwaListener> listeners;
 	

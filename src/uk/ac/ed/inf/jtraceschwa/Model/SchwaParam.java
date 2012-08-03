@@ -39,6 +39,7 @@ public class SchwaParam extends TraceParam {
 		Matcher matcher = pattern.matcher(IOTools.readFile(file));
 		while( matcher.find() ){
 //			System.out.println("load lex : "+matcher.group());
+			if( matcher.group().equals("^")) continue; //no word "a"
 			lexiconWords.add(matcher.group());
 		}
 	}
