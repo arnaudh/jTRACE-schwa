@@ -53,6 +53,9 @@ running Evaluations + perl scripts to extract data
 *** Friday 3rd of August
 removed the new schwa "@" from the phonemes (what a troublemaker)
 
+*** Sunday 5th of August
+upgraded to JFreeChart 1.0.12 (to remove legend...)
+
 
 
 TODO

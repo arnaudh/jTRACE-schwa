@@ -36,7 +36,7 @@
 	<classpathentry kind="lib" path="package/libs/xml-apis.jar"/>
 	<classpathentry kind="lib" path="package/libs/xsdlib.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="package/libs/jcommon-1.0.0-pre2.jar"/>
-	<classpathentry kind="lib" path="package/libs/jfreechart-1.0.0-pre2.jar"/>
+	<classpathentry kind="lib" path="/afs/inf.ed.ac.uk/user/s11/s1149815/Desktop/dissertation/code/jTRACE-schwa/package/libs/jcommon-1.0.0.jar"/>
+	<classpathentry kind="lib" path="/afs/inf.ed.ac.uk/user/s11/s1149815/Desktop/dissertation/code/jTRACE-schwa/package/libs/jfreechart-1.0.0-pre2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

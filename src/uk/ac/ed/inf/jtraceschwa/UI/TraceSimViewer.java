@@ -101,6 +101,11 @@ public class TraceSimViewer extends JFrame {
 		wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
 				new java.util.Vector(), topNWords, TraceSimAnalysis.STATIC, 4,
 				TraceSimAnalysis.FORCED, 4);
+//		wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHSPECIFIED,
+//				new java.util.Vector(), 0, TraceSimAnalysis.STATIC, 4,
+//				TraceSimAnalysis.FORCED, 4);
+//		wordAnalysis.setItemsToWatch(simulations.get(0).getSim().tp.getLexicon());
+		
 		phonemeAnalysis = new TraceSimAnalysis(TraceSimAnalysis.PHONEMES, TraceSimAnalysis.WATCHTOPN,
 				new java.util.Vector(), topNWords, TraceSimAnalysis.STATIC, 4,
 				TraceSimAnalysis.FORCED, 4);

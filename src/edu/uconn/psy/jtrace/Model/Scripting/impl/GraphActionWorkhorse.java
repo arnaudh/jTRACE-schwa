@@ -10,7 +10,6 @@ import org.jfree.chart.*;
 import org.jfree.data.*;
 import org.jfree.data.xy.*;
 import org.jfree.chart.plot.*;
-import org.jfree.chart.StandardLegend;
 import org.jfree.chart.title.*;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.renderer.xy.*;

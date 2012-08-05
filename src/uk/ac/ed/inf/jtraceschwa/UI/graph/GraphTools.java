@@ -31,7 +31,11 @@ public class GraphTools {
                 true,       // legend
                 true,       // tooltips
                 false);     // URLs
-        graph.setBackgroundPaint(null);
+        graph.setBackgroundPaint(Color.WHITE);
+        graph.getPlot().setBackgroundPaint(Color.WHITE);
+        graph.getPlot().setBackgroundAlpha(0.25f);
+        ((XYPlot) graph.getPlot()).setDomainGridlinePaint(Color.GRAY);
+        ((XYPlot) graph.getPlot()).setRangeGridlinePaint(Color.GRAY);
         // set axis settings
         NumberAxis domain = (NumberAxis)((XYPlot) graph.getPlot()).getDomainAxis();
         domain.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -40,6 +44,7 @@ public class GraphTools {
         for(int i = 0; i < graph.getSubtitleCount(); i++){
         	graph.getSubtitle(i).setPosition(RectangleEdge.RIGHT);
         }
+//        graph.removeLegend();
         return graph;
 	}
 

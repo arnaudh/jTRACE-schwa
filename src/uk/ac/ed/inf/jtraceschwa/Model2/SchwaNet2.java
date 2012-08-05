@@ -24,47 +24,26 @@ public class SchwaNet2 extends TraceNet {
 
 	@Override
 	public double[][][] cycle() {
-		System.out.println("SchwaNet2.cycle()");
+//		System.out.println("SchwaNet2.cycle()");
         act_features();
 
-        for(int wslice = 0; wslice<wSlices; wslice++){
-        	if( wordNet[15][wslice] != wordNet[16][wslice]){
-            	System.out.println(tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordNet[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordNet[16][wslice]);	
-        	}
-        }
-
-        schwaToWord();
-        for(int wslice = 0; wslice<wSlices; wslice++){
-        	if( wordNet[15][wslice] != wordNet[16][wslice]){
-            	System.out.println(tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordNet[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordNet[16][wslice]);	
-        	}
-        }
-
+//        schwaToWord();
         
         featToPhon();
         phonToPhon(); //excludes schwa
         phonToWord(); //excludes schwa
         wordToPhon(); //excludes schwa
-        
-        System.out.println("WordToWord inhibition**************");
         wordToWord();
-
-        for(int wslice = 0; wslice<wSlices; wslice++){
-        	if( wordNet[15][wslice] != wordNet[16][wslice]){
-            	System.out.println(tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordNet[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordNet[16][wslice]);	
-        	}
-        }
-
-        
         featUpdate();
         phonUpdate();
         wordUpdate();   
 
-        for(int wslice = 0; wslice<wSlices; wslice++){
-        	if( wordLayer[15][wslice] != wordLayer[16][wslice]){
-            	System.out.println("LAYER*** "+tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordLayer[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordLayer[16][wslice]);	
-        	}
-        }
+//        for(int wslice = 0; wslice<wSlices; wslice++){
+//        	if( wordLayer[15][wslice] != wordLayer[16][wslice]){
+////        		wordLayer[16][wslice] -= 0.1;
+//            	System.out.println("LAYER*** "+tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordLayer[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordLayer[16][wslice]);	
+//        	}
+//        }
 
 
         inputSlice += __nreps; //nrep steps in a cycle
@@ -73,7 +52,7 @@ public class SchwaNet2 extends TraceNet {
             inputSlice = fSlices-1;
 		return null; //return value never used...
 	}
-
+	
 	public void schwaToWord() {
 		System.out.println("SchwaNet2.schwaToWord()*********************");
 		double [] sums = new double [ pSlices ];
@@ -92,7 +71,6 @@ public class SchwaNet2 extends TraceNet {
         for(int pslice = 0; pslice<pSlices; pslice++){
 //        	System.out.println("["+pslice+"] sum="+sums[pslice]); //sum goes from 0 to 10 (rough idea)
         }
-        
     	
         double[] data = new double[tp.getLexicon().size()];
         double[] dataSum = new double[tp.getLexicon().size()];
@@ -107,11 +85,12 @@ public class SchwaNet2 extends TraceNet {
                  if(str.charAt(offset)=='^'){
                 	 data[word]++;
                 	 for( int wslice = 0; wslice < wSlices-offset; wslice++){
-                		 if(sums[wslice+offset]>0 && word==16){
-                        	 System.out.println("HEEEERE : "+str+" ; wslice="+wslice+" ; wordNet="+wordNet[word][wslice]+" (+="+0.1*sums[wslice+offset]+")");
-                		 }
-                		 wordNet[word][wslice] += 0.003*sums[wslice+offset];
-                		 dataSum[word]+=0.01*sums[wslice+offset];
+	                		 wordNet[word][wslice] += 0.001*sums[wslice+offset];
+	                		 
+	                		 if(sums[wslice+offset]>0 && word==16){
+	                        	 System.out.println("HEEEERE : "+str+" ; wslice="+wslice+" ; wordlayer="+wordLayer[word][wslice]+" (net+="+wordNet[word][wslice]+")");
+	                		 }
+	                		 dataSum[word]+=wordNet[word][wslice];
                 	 }
                 	 
                  }

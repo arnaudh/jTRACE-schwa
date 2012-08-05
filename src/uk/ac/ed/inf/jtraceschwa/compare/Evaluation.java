@@ -24,14 +24,14 @@ public class Evaluation {
 	public static void main(String[] args) {
 		
 		// Results output
-		File outputFile = new File("results/schwaAsAFeature.txt");
+		File outputFile = new File("results/reference.txt");
 		StringBuilder output = new StringBuilder();
 		
 		
 		SchwaParam2 param = new SchwaParam2();
-		TraceSim sim = new SchwaSim2(param);
+//		TraceSim sim = new SchwaSim2(param);
 //		TraceSim sim = new SchwaSim(param, false);
-//		TraceSim sim = new TraceSim(param);
+		TraceSim sim = new TraceSim(param);
 		
 
 		TraceSimAnalysis wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
@@ -55,7 +55,7 @@ public class Evaluation {
 			int	recognition = timeOfRecognition(dataset, word);
 			System.out.println("recognition of "+word+" : "+recognition);
 			
-			output.append(IOTools.lengthenWithBlanks(word, 14));
+			output.append(IOTools.lengthenWithBlanks(word, 12));
 			output.append(recognition);
 			output.append('\n');
 			IOTools.writeToFile(outputFile, output.toString());

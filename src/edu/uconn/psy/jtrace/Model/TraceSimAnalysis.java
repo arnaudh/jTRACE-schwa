@@ -645,14 +645,14 @@ public class TraceSimAnalysis {
                         oneSeries = new XYSeries(param.getLexicon().get(itemIndices[iII]).getPhon(), true, true); // allow auto-sort and duplicate Xs
                     
                     if(calculationType == MAX_POSTHOC)
-                        oneSeries.setDescription(oneSeries.getName().concat(" "+alignmentPostHoc[itemIndices[iII]]));                
+                        oneSeries.setDescription((oneSeries.getName()).concat(" "+alignmentPostHoc[itemIndices[iII]]));                
                     else
                         oneSeries.setDescription(oneSeries.getName());                
                 }
                 else{ //if(domain == PHONEMES)
                     oneSeries = new XYSeries(param.getPhonemeLabels()[itemIndices[iII]], true, true); // allow auto-sort and duplicate Xs
                     if(calculationType == MAX_POSTHOC)
-                        oneSeries.setDescription(oneSeries.getName().concat(" "+alignmentPostHoc[itemIndices[iII]]));
+                        oneSeries.setDescription((oneSeries.getName()).concat(" "+alignmentPostHoc[itemIndices[iII]]));
                     else
                         oneSeries.setDescription(oneSeries.getName());                
                 }
