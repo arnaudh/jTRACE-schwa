@@ -91,7 +91,7 @@ public class TraceSimViewer extends JFrame {
 //        simulations.add(new Simulation(new SchwaSim(param, false), "Modified", thick));
         simulations.add(new Simulation(new SchwaSim2(new SchwaParam2()), "SchwaSim2", dashedThick));
         
-        setModelInput("-^d^lt-");
+        setModelInput("-Sil^-");
 //        SchwaSim ssim = new SchwaSim(param, false);
 //        ((SchwaNet)ssim.tn).schwa.prioritizeSchwa = true;
 //        simulations.add(new Simulation(ssim, "Modified + prioritize schwa", dashedThick));

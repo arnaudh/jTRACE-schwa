@@ -55,8 +55,7 @@ public class Evaluation {
 			int	recognition = timeOfRecognition(dataset, word);
 			System.out.println("recognition of "+word+" : "+recognition);
 			
-			output.append(word);
-			for(int i=word.length()+String.valueOf(recognition).length(); i<14; i++) output.append(' ');
+			output.append(IOTools.lengthenWithBlanks(word, 14));
 			output.append(recognition);
 			output.append('\n');
 			IOTools.writeToFile(outputFile, output.toString());

@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.jtraceschwa.Model2;
 
+import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
 import edu.uconn.psy.jtrace.Model.TraceLexicon;
 import edu.uconn.psy.jtrace.Model.TraceNet;
 import edu.uconn.psy.jtrace.Model.TraceParam;
@@ -23,19 +24,48 @@ public class SchwaNet2 extends TraceNet {
 
 	@Override
 	public double[][][] cycle() {
-		
+		System.out.println("SchwaNet2.cycle()");
         act_features();
 
+        for(int wslice = 0; wslice<wSlices; wslice++){
+        	if( wordNet[15][wslice] != wordNet[16][wslice]){
+            	System.out.println(tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordNet[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordNet[16][wslice]);	
+        	}
+        }
+
         schwaToWord();
+        for(int wslice = 0; wslice<wSlices; wslice++){
+        	if( wordNet[15][wslice] != wordNet[16][wslice]){
+            	System.out.println(tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordNet[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordNet[16][wslice]);	
+        	}
+        }
+
         
         featToPhon();
         phonToPhon(); //excludes schwa
         phonToWord(); //excludes schwa
         wordToPhon(); //excludes schwa
+        
+        System.out.println("WordToWord inhibition**************");
         wordToWord();
+
+        for(int wslice = 0; wslice<wSlices; wslice++){
+        	if( wordNet[15][wslice] != wordNet[16][wslice]){
+            	System.out.println(tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordNet[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordNet[16][wslice]);	
+        	}
+        }
+
+        
         featUpdate();
         phonUpdate();
-        wordUpdate();                   
+        wordUpdate();   
+
+        for(int wslice = 0; wslice<wSlices; wslice++){
+        	if( wordLayer[15][wslice] != wordLayer[16][wslice]){
+            	System.out.println("LAYER*** "+tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordLayer[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordLayer[16][wslice]);	
+        	}
+        }
+
 
         inputSlice += __nreps; //nrep steps in a cycle
         //array boundary check
@@ -60,9 +90,13 @@ public class SchwaNet2 extends TraceNet {
         }
         
         for(int pslice = 0; pslice<pSlices; pslice++){
-        	System.out.println("["+pslice+"] sum="+sums[pslice]); //sum goes from 0 to 8 (rough idea)
+//        	System.out.println("["+pslice+"] sum="+sums[pslice]); //sum goes from 0 to 10 (rough idea)
         }
+        
     	
+        double[] data = new double[tp.getLexicon().size()];
+        double[] dataSum = new double[tp.getLexicon().size()];
+        
     	// iterate over the lexicon 
         for(int word=0;word<tp.getLexicon().size();word++){         
             String str = tp.getLexicon().get(word).getPhon();
@@ -71,13 +105,34 @@ public class SchwaNet2 extends TraceNet {
             for(int offset=0;offset<strlen;offset++){
                 //if that letter corresponds to the schwa
                  if(str.charAt(offset)=='^'){
-                	 
-                	 //TODO HEEEEERE
+                	 data[word]++;
+                	 for( int wslice = 0; wslice < wSlices-offset; wslice++){
+                		 if(sums[wslice+offset]>0 && word==16){
+                        	 System.out.println("HEEEERE : "+str+" ; wslice="+wslice+" ; wordNet="+wordNet[word][wslice]+" (+="+0.1*sums[wslice+offset]+")");
+                		 }
+                		 wordNet[word][wslice] += 0.003*sums[wslice+offset];
+                		 dataSum[word]+=0.01*sums[wslice+offset];
+                	 }
                 	 
                  }
                  
             }
         }
+
+        
+//        int wordsWithSchwa = 0;
+//        int numberOfSchwas = 0;
+//        for(int word=0;word<tp.getLexicon().size();word++){    
+//        	if( data[word]>0 ){
+//        		wordsWithSchwa++;
+//        		numberOfSchwas += data[word];
+//        		String str = IOTools.lengthenWithBlanks(tp.getLexicon().get(word).getPhon(), 10);
+//        		System.out.println("total activation for "+str+"= "+dataSum[word]);
+//        	}
+//        }
+//        System.out.println("wordsWithSchwa = "+wordsWithSchwa+", numOfSchwa="+numberOfSchwas);
+        
+        
     }
 	
 	@Override

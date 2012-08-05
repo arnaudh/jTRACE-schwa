@@ -20,9 +20,13 @@ public class SchwaParam2 extends SchwaParam {
 				_f[i][f] = phonology.DefaultPhonDefs[i][f];
 			}
 			//add the schwa feature
-			if( schwaWeights[i] > 0 ){
-				int index = 63 + 8 - schwaWeights[i];
-				_f[i][index] = 1;
+//			if( schwaWeights[i] > 0 ){
+//				int index = 63 + 8 - schwaWeights[i];
+//				_f[i][index] = 1;
+//			}
+			// just for schwa
+			if( defaultLabels[i].equals("^")){
+				_f[i][63] = 1;
 			}
 		}
 		phonology = new TracePhones("Schwa language", phonology.defaultLabels , _f , phonology.DefaultDurationScalar );

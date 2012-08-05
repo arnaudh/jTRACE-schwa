@@ -55,5 +55,20 @@ public class IOTools {
     	}
     	System.out.println();
 	}
+	
+
+	/**
+	 * adds blank to the String so that its length becomes finalSize
+	 * @param str
+	 * @param finalSize
+	 * @return
+	 */
+	public static String lengthenWithBlanks(String str, int finalSize){
+		StringBuilder sb = new StringBuilder(str);
+		while(sb.length()<finalSize){
+			sb.append(' ');
+		}
+		return sb.toString();
+	}
 
 }
