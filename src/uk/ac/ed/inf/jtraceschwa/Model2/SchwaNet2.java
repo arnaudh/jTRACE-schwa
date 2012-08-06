@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.jtraceschwa.Model2;
 
+import sun.rmi.server.WeakClassHashMap;
 import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
 import edu.uconn.psy.jtrace.Model.TraceLexicon;
 import edu.uconn.psy.jtrace.Model.TraceNet;
@@ -8,6 +9,7 @@ import edu.uconn.psy.jtrace.Model.TraceParam;
 public class SchwaNet2 extends TraceNet {
 
 	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
+	public double[] schwaActivations;
 	
 	public SchwaNet2(TraceParam tp) {
 		super(tp);
@@ -27,7 +29,23 @@ public class SchwaNet2 extends TraceNet {
 //		System.out.println("SchwaNet2.cycle()");
         act_features();
 
-//        schwaToWord();
+
+		schwaActivations = new double [ pSlices ];
+        for(int fslice=0;fslice<fSlices;fslice++){
+        	int pslice = fslice/3;
+        	//do a weighted sum of the 8 dimensions of the schwa features
+        	for(int i=1; i<=8; i++){
+        		if( featLayer[63+8-i][fslice]> 0 ){
+        			schwaActivations[pslice] += i * featLayer[63+8-i][fslice];
+        		}
+        	}
+        }
+        for(int pslice = 0; pslice<pSlices; pslice++){
+//        	System.out.println("["+pslice+"] sum="+sums[pslice]); //sum goes from 0 to 10 (rough idea)
+        }
+        
+        schwaToPhon();
+        schwaToWord();
         
         featToPhon();
         phonToPhon(); //excludes schwa
@@ -53,27 +71,27 @@ public class SchwaNet2 extends TraceNet {
 		return null; //return value never used...
 	}
 	
+	
+	public void schwaToPhon(){
+		//let's attack phonemes
+		
+        for(int phon=0;phon<pd.NPHONS;phon++){
+          	if( phon==schwaIndex ) continue; //Exclude schwa
+          	
+          	int schwaWeight = ((SchwaParam2)tp).getSchwaWeightOf(pd.getLabels()[phon]);
+//          	System.out.println("SchwaWeight for "+pd.getLabels()[phon]+" = "+schwaWeight);
+          	
+          	for(int pslice = 0; pslice < pSlices; pslice++){
+          		double weight = 0.001 * (8-schwaWeight);
+          		phonNet[phon][pslice] -= weight * schwaActivations[pslice];
+          	}
+          	
+        }
+		
+	}
+	
 	public void schwaToWord() {
-		System.out.println("SchwaNet2.schwaToWord()*********************");
-		double [] sums = new double [ pSlices ];
-        for(int fslice=0;fslice<fSlices;fslice++){
-        	
-        	int pslice = fslice/3;
-        	
-        	//do a weighted sum of the 8 dimensions of the schwa features?
-        	for(int i=1; i<=8; i++){
-        		if( featLayer[63+8-i][fslice]> 0 ){
-        			sums[pslice] += i * featLayer[63+8-i][fslice];
-        		}
-        	}
-        }
-        
-        for(int pslice = 0; pslice<pSlices; pslice++){
-//        	System.out.println("["+pslice+"] sum="+sums[pslice]); //sum goes from 0 to 10 (rough idea)
-        }
-    	
-        double[] data = new double[tp.getLexicon().size()];
-        double[] dataSum = new double[tp.getLexicon().size()];
+//		System.out.println("SchwaNet2.schwaToWord()*********************");
         
     	// iterate over the lexicon 
         for(int word=0;word<tp.getLexicon().size();word++){         
@@ -83,14 +101,11 @@ public class SchwaNet2 extends TraceNet {
             for(int offset=0;offset<strlen;offset++){
                 //if that letter corresponds to the schwa
                  if(str.charAt(offset)=='^'){
-                	 data[word]++;
                 	 for( int wslice = 0; wslice < wSlices-offset; wslice++){
-	                		 wordNet[word][wslice] += 0.001*sums[wslice+offset];
-	                		 
-	                		 if(sums[wslice+offset]>0 && word==16){
-	                        	 System.out.println("HEEEERE : "+str+" ; wslice="+wslice+" ; wordlayer="+wordLayer[word][wslice]+" (net+="+wordNet[word][wslice]+")");
-	                		 }
-	                		 dataSum[word]+=wordNet[word][wslice];
+//                		 if( word==151){
+	                		 wordNet[word][wslice] += 0.001*schwaActivations[wslice+offset];
+//	                		 System.out.println("HEEERE ["+str+" at "+wslice+"] : "+wordNet[word][wslice]);
+//                		 }
                 	 }
                 	 
                  }
@@ -98,20 +113,6 @@ public class SchwaNet2 extends TraceNet {
             }
         }
 
-        
-//        int wordsWithSchwa = 0;
-//        int numberOfSchwas = 0;
-//        for(int word=0;word<tp.getLexicon().size();word++){    
-//        	if( data[word]>0 ){
-//        		wordsWithSchwa++;
-//        		numberOfSchwas += data[word];
-//        		String str = IOTools.lengthenWithBlanks(tp.getLexicon().get(word).getPhon(), 10);
-//        		System.out.println("total activation for "+str+"= "+dataSum[word]);
-//        	}
-//        }
-//        System.out.println("wordsWithSchwa = "+wordsWithSchwa+", numOfSchwa="+numberOfSchwas);
-        
-        
     }
 	
 	@Override

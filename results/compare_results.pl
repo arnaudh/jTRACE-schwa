@@ -15,16 +15,22 @@ my $slurp;
 ### words and recognition points of the reference and the challenger
 my @tREF;
 my @tCHALL;
+my @wordsREF;
 my @words;
-while( $reference =~ m/([^\n ]+) +([-0-9]+)/g ) {
-	push(@words, $1);
-	push(@tREF, $2);
-}
-my $w = 0;
+## start with challenger (can have fewer words)
 while( $challenger =~ m/([^\n ]+) +([-0-9]+)/g ) {
-	if( $words[$w++] ne $1 ){ die "Words are different : $words[$w] != $1"; }
+	push(@words, $1);
 	push(@tCHALL, $2);
 }
+## take only the words in reference that are in challenger
+while( $reference =~ m/([^\n ]+) +([-0-9]+)/g ) {
+	if( grep $_ eq $1, @words){ ## word found in challenger list
+		push(@tREF, $2);
+	}
+}
+my $w = 0;
+
+
 
 
 ### number of words
@@ -70,14 +76,14 @@ sub print_diff {
 	foreach(@_){
 		push(@diff, $tCHALL[$_] - $tREF[$_]);
 	}
-	print "       mean : ".mean(@diff).", variance : ".variance(@diff)."\n";
+	print "       mean : ".mean(@diff).", std dev : ".sqrt(variance(@diff))."\n";
 	
 	my @permutation = reverse( sort { abs($diff[$a]) <=> abs($diff[$b]) } (0..$#diff) );
 	my @best = @words[@_[@permutation]];
 	my @sortedDiff = @diff[@permutation];
 	
 	print "          greatest differences :\n";
-	for(my $i=0; $i<50; $i++){
+	for(my $i=0; $i<20; $i++){
 		print "          $best[$i] ($sortedDiff[$i])\n";
 	}
 }

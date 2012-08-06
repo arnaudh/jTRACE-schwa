@@ -86,11 +86,16 @@ BETTER : 259     e.g. r^b^ri
 WORSE  : 189     e.g. sartr^ (too may "s^..." words get activated at first) 
 NOOO   : 149     e.g. rab->r^b (most due to equivalent with schwa)
 interesting words (modified wins, with change in curves) : lukriS^s, prab^bli
-
-
 *** With lexical stress ***
 works wonders with : sal^dli
 
+
+
+******* RESULTS ***********
+reference1 : original TRACE 
+reference2 : original TRACE but with extra schwa feature (for each phoneme in the input)
+modified1  : first modified model (schwa removed from phoneme set)
+modified-Word2SchwaActivated.txt : first modified model with words to schwa connexions
 
 Hypotheses for the dissertation:
  - 1st hyp: the heterachical architecture around the concrete universal is viable (doesn't blow up)

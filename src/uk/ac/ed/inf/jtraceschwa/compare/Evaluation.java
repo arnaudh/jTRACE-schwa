@@ -1,13 +1,15 @@
 package uk.ac.ed.inf.jtraceschwa.compare;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
-import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
-import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
 import uk.ac.ed.inf.jtraceschwa.Model2.SchwaParam2;
 import uk.ac.ed.inf.jtraceschwa.Model2.SchwaSim2;
 import uk.ac.ed.inf.jtraceschwa.UI.TraceSimViewer;
@@ -24,14 +26,12 @@ public class Evaluation {
 	public static void main(String[] args) {
 		
 		// Results output
-		File outputFile = new File("results/reference.txt");
-		StringBuilder output = new StringBuilder();
-		
+		String outputFile = "results/fullModified.txt";
 		
 		SchwaParam2 param = new SchwaParam2();
-//		TraceSim sim = new SchwaSim2(param);
+		TraceSim sim = new SchwaSim2(param);
 //		TraceSim sim = new SchwaSim(param, false);
-		TraceSim sim = new TraceSim(param);
+//		TraceSim sim = new TraceSim(param);
 		
 
 		TraceSimAnalysis wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
@@ -40,8 +40,11 @@ public class Evaluation {
 		
 		// For each word in the lexicon
 		for(int w = 0; w < param.getLexicon().size(); w++){
-			// Run the 2 models for that input
+			// Run the model for that input
 			String word = param.getLexicon().get(w).getPhon();
+			
+			if(!word.contains("^")) continue;
+			
 			System.out.println("*** "+word+" ("+w+"/"+param.getLexicon().size()+") ");
 			param.setModelInput("-"+word+"-");
 
@@ -55,12 +58,16 @@ public class Evaluation {
 			int	recognition = timeOfRecognition(dataset, word);
 			System.out.println("recognition of "+word+" : "+recognition);
 			
-			output.append(IOTools.lengthenWithBlanks(word, 12));
-			output.append(recognition);
-			output.append('\n');
-			IOTools.writeToFile(outputFile, output.toString());
+			try {
+				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)));
+				out.println(IOTools.lengthenWithBlanks(word, 12)+""+recognition);
+			    out.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 
 		}
+
 		
 	}
 	
