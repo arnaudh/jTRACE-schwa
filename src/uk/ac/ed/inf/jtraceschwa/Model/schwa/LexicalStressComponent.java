@@ -29,15 +29,12 @@ public class LexicalStressComponent implements SchwaListener{
 	}
 
 	public void loadStressPatterns() {
-		Chrono.tic();
-		System.out.println("LexicalStressComponent.loadStressPatterns()");
 		stressPatterns = new HashMap<String, String>();
 		Pattern p = Pattern.compile("("+net.tp.getPhonology().getInputPattern()+")\\n([SW ]+)");
 		Matcher matcher = p.matcher(IOTools.readFile(new File("tools/Lexicons/biglex901STRESS.txt")));
 		while( matcher.find() ){
 			stressPatterns.put(matcher.group(1), matcher.group(2));
 		}
-		Chrono.toc("StressPqttenrs");
 	}
 
 	@Override

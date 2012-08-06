@@ -9,10 +9,14 @@ import edu.uconn.psy.jtrace.Model.TraceParam;
 public class SchwaNet2 extends TraceNet {
 
 	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
-	public double[] schwaActivations;
+	private SchwaComponent2 schwa;
 	
-	public SchwaNet2(TraceParam tp) {
+	public SchwaNet2(SchwaParam2 tp) {
 		super(tp);
+		
+		
+		schwa = new SchwaComponent2(this);
+		if(tp.isLexicalStressActivated()) schwa.setLexicalStressComponent(new LexicalStressComponent2(this));
 
 		// get the schwa index 
         for(int phon=0;phon<pd.NPHONS;phon++){
@@ -29,23 +33,8 @@ public class SchwaNet2 extends TraceNet {
 //		System.out.println("SchwaNet2.cycle()");
         act_features();
 
+        schwa.cycle();
 
-		schwaActivations = new double [ pSlices ];
-        for(int fslice=0;fslice<fSlices;fslice++){
-        	int pslice = fslice/3;
-        	//do a weighted sum of the 8 dimensions of the schwa features
-        	for(int i=1; i<=8; i++){
-        		if( featLayer[63+8-i][fslice]> 0 ){
-        			schwaActivations[pslice] += i * featLayer[63+8-i][fslice];
-        		}
-        	}
-        }
-        for(int pslice = 0; pslice<pSlices; pslice++){
-//        	System.out.println("["+pslice+"] sum="+sums[pslice]); //sum goes from 0 to 10 (rough idea)
-        }
-        
-        schwaToPhon();
-        schwaToWord();
         
         featToPhon();
         phonToPhon(); //excludes schwa
@@ -72,48 +61,6 @@ public class SchwaNet2 extends TraceNet {
 	}
 	
 	
-	public void schwaToPhon(){
-		//let's attack phonemes
-		
-        for(int phon=0;phon<pd.NPHONS;phon++){
-          	if( phon==schwaIndex ) continue; //Exclude schwa
-          	
-          	int schwaWeight = ((SchwaParam2)tp).getSchwaWeightOf(pd.getLabels()[phon]);
-//          	System.out.println("SchwaWeight for "+pd.getLabels()[phon]+" = "+schwaWeight);
-          	
-          	for(int pslice = 0; pslice < pSlices; pslice++){
-          		double weight = 0.001 * (8-schwaWeight);
-          		phonNet[phon][pslice] -= weight * schwaActivations[pslice];
-          	}
-          	
-        }
-		
-	}
-	
-	public void schwaToWord() {
-//		System.out.println("SchwaNet2.schwaToWord()*********************");
-        
-    	// iterate over the lexicon 
-        for(int word=0;word<tp.getLexicon().size();word++){         
-            String str = tp.getLexicon().get(word).getPhon();
-            int strlen = str.length();
-            //for each letter in the current word
-            for(int offset=0;offset<strlen;offset++){
-                //if that letter corresponds to the schwa
-                 if(str.charAt(offset)=='^'){
-                	 for( int wslice = 0; wslice < wSlices-offset; wslice++){
-//                		 if( word==151){
-	                		 wordNet[word][wslice] += 0.001*schwaActivations[wslice+offset];
-//	                		 System.out.println("HEEERE ["+str+" at "+wslice+"] : "+wordNet[word][wslice]);
-//                		 }
-                	 }
-                	 
-                 }
-                 
-            }
-        }
-
-    }
 	
 	@Override
 	public void phonToPhon() {

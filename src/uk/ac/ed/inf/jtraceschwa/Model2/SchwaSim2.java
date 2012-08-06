@@ -8,7 +8,7 @@ public class SchwaSim2 extends TraceSim {
 
 	public SchwaSim2(SchwaParam2 _tp) {
         tp = _tp;
-        tn = new SchwaNet2(tp);
+        tn = new SchwaNet2(_tp);
         
         paramUpdateCt = tp.getUpdateCt();
         reset();

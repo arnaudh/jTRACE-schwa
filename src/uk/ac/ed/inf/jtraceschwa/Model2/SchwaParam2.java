@@ -5,11 +5,13 @@ import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 
 public class SchwaParam2 extends SchwaParam {
 
-	private String defaultLabels[] = {"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "^", "-"
-    		, "w", "U", "f", "6", "I", "A", "T", "n", "m", "D", "e", "z", "v", "Z", "j", "E", "h", "N", "O"};     
+//	private String defaultLabels[] = {"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "^", "-"
+//   		, "w", "U", "f", "6", "I", "A", "T", "n", "m", "D", "e", "z", "v", "Z", "j", "E", "h", "N", "O"};     
 	public int[] schwaWeights      = { 0,   0,   0,   0,   0,   0,   0,   0,   3,   3,   6,   4,   5,   8,   0, 
 			   5,   3,   0,   5,   3,   3,   0,   3,   3,   1,   3,   1,   2,   1,   4,   3,   1,   3,   3, };
 
+	private boolean lexicalStressActivated = false;
+	
 	public SchwaParam2() {
 		super();
 
@@ -26,7 +28,7 @@ public class SchwaParam2 extends SchwaParam {
 //				_f[i][index] = 1;
 //			}
 			// just for schwa
-			if( defaultLabels[i].equals("^")){
+			if( phonology.defaultLabels[i].equals("^")){
 				_f[i][63] = 1;
 			}
 		}
@@ -38,12 +40,21 @@ public class SchwaParam2 extends SchwaParam {
 	}
 
 	public int getSchwaWeightOf(String phoneme){
-		for(int i = 0; i < defaultLabels.length; i++){
-			if( defaultLabels[i].equals(phoneme) ){
+		for(int i = 0; i < phonology.defaultLabels.length; i++){
+			if( phonology.defaultLabels[i].equals(phoneme) ){
 				return schwaWeights[i];
 			}
 		}
 		return 0;
+	}
+	
+
+	public boolean isLexicalStressActivated() {
+		return lexicalStressActivated;
+	}
+
+	public void setLexicalStressActivated(boolean lexicalStressActivated) {
+		this.lexicalStressActivated = lexicalStressActivated;
 	}
 
 	

@@ -26,9 +26,10 @@ public class Evaluation {
 	public static void main(String[] args) {
 		
 		// Results output
-		String outputFile = "results/fullModified.txt";
+		String outputFile = "results/test.txt";
 		
 		SchwaParam2 param = new SchwaParam2();
+		param.setLexicalStressActivated(false);
 		TraceSim sim = new SchwaSim2(param);
 //		TraceSim sim = new SchwaSim(param, false);
 //		TraceSim sim = new TraceSim(param);

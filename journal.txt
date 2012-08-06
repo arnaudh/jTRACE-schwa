@@ -54,16 +54,18 @@ running Evaluations + perl scripts to extract data
 removed the new schwa "@" from the phonemes (what a troublemaker)
 
 *** Sunday 5th of August
-upgraded to JFreeChart 1.0.12 (to remove legend...)
+upgraded to JFreeChart 1.0.12 (to remove legend...)...... downgraded back to 1.0.0 (too many things to change + different behavior)
 
+*** Monday 6th of August
+Now schwa is activated by the feature level directly, schwa inhibits other phonemes and activates words which contain it.
+Lexical Stress component (re)implemented. Results show that it performs better for bisyllables but worse for mono- and tri-.
 
 
 TODO
-****** okay, we're modifying the model deeply now ******
-Re-run the evaluation for the original (try to find out why is it different now ?)
-
-
+	# Classify words to better understand lexicon + results
 Code the LexicalStress component, which should send back information to the schwa component as to which words need extra/fewer activation
+Make sure most of the words in the lexicon have a weak syllable on the schwa
+Word segmentation: try pairs of words and see what happens...
 Add comments to the code + README
 
 
@@ -99,7 +101,7 @@ modified-Word2SchwaActivated.txt : first modified model with words to schwa conn
 
 Hypotheses for the dissertation:
  - 1st hyp: the heterachical architecture around the concrete universal is viable (doesn't blow up)
- - 2nd hyp: the architecture provides a principled way of augmenting the model
+ - 2nd hyp: the architecture provides a principled way of augmenting the model, e.g. Lexical Stress
  - 3rd hyp: the model works best if schwa isn't affected by anything else (interesting because counter-intuitive). e.g activates function words
  
 
