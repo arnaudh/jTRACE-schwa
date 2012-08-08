@@ -10,7 +10,9 @@ public class SchwaParam2 extends SchwaParam {
 	public int[] schwaWeights      = { 0,   0,   0,   0,   0,   0,   0,   0,   3,   3,   6,   4,   5,   8,   0, 
 			   5,   3,   0,   5,   3,   3,   0,   3,   3,   1,   3,   1,   2,   1,   4,   3,   1,   3,   3, };
 
-	private boolean lexicalStressActivated = false;
+	public boolean lexicalStressActivated = false;
+	public double phonemeInhibition = 0.005;
+	public double wordActivation    = 0.001;
 	
 	public SchwaParam2() {
 		super();
@@ -47,15 +49,5 @@ public class SchwaParam2 extends SchwaParam {
 		}
 		return 0;
 	}
-	
-
-	public boolean isLexicalStressActivated() {
-		return lexicalStressActivated;
-	}
-
-	public void setLexicalStressActivated(boolean lexicalStressActivated) {
-		this.lexicalStressActivated = lexicalStressActivated;
-	}
-
 	
 }

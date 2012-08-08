@@ -94,10 +94,10 @@ works wonders with : sal^dli
 
 
 ******* RESULTS ***********
-reference1 : original TRACE 
-reference2 : original TRACE but with extra schwa feature (for each phoneme in the input)
-modified1  : first modified model (schwa removed from phoneme set)
-modified-Word2SchwaActivated.txt : first modified model with words to schwa connexions
+reference1 : original TRACE // NOOOO I don't know what that is
+oldmodified1  : first modified model (schwa removed from phoneme set)
+oldmodified-Word2SchwaActivated.txt : first modified model with words to schwa connexions
+reference.txt = REAL reference (only for words containing schwa, though)
 
 Hypotheses for the dissertation:
  - 1st hyp: the heterachical architecture around the concrete universal is viable (doesn't blow up)

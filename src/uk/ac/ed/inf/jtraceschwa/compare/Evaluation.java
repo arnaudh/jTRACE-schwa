@@ -25,14 +25,23 @@ public class Evaluation {
 
 	public static void main(String[] args) {
 		
-		// Results output
-		String outputFile = "results/test.txt";
-		
 		SchwaParam2 param = new SchwaParam2();
-		param.setLexicalStressActivated(false);
-//		TraceSim sim = new SchwaSim2(param);
-//		TraceSim sim = new SchwaSim(param, false);
-		TraceSim sim = new TraceSim(param);
+		param.lexicalStressActivated = false;
+		TraceSim sim = new SchwaSim2(param);
+//		TraceSim sim = new TraceSim(param);
+		
+		// Results output
+		String outputFile = "results/";
+		if( sim instanceof SchwaSim2 ){
+			outputFile += "modified";
+			if( param.lexicalStressActivated ) outputFile += "+stress";
+			outputFile += "+phoneme="+param.phonemeInhibition;
+			outputFile += "+word="+param.wordActivation;
+		}else{
+			outputFile += "reference";
+		}
+		outputFile+=".txt";
+		System.out.println("Output file: "+outputFile);
 		
 
 		TraceSimAnalysis wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
@@ -44,8 +53,8 @@ public class Evaluation {
 			// Run the model for that input
 			String word = param.getLexicon().get(w).getPhon();
 
-			if(!word.contains("^")) continue;
-			if(!word.equals("k^n")) continue;
+//			if(!word.contains("^")) continue;
+//			if(!word.equals("k^n")) continue;
 			
 			System.out.println("*** "+word+" ("+w+"/"+param.getLexicon().size()+") ");
 			param.setModelInput("-"+word+"-");

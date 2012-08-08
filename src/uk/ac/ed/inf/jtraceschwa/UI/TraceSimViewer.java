@@ -91,7 +91,7 @@ public class TraceSimViewer extends JFrame {
 //        simulations.add(new Simulation(new SchwaSim(param, false), "Modified", thick));
 //        simulations.add(new Simulation(new SchwaSim2(new SchwaParam2()), "SchwaSim2", thick));
         SchwaParam2 param2 = new SchwaParam2();
-        param2.setLexicalStressActivated(true);
+        param2.lexicalStressActivated = true;
         simulations.add(new Simulation(new SchwaSim2(param2), "SchwaSim2+lexical stress", dashedThick));
         
         setModelInput("-Sil^-");

@@ -16,7 +16,7 @@ public class SchwaNet2 extends TraceNet {
 		
 		
 		schwa = new SchwaComponent2(this);
-		if(tp.isLexicalStressActivated()) schwa.setLexicalStressComponent(new LexicalStressComponent2(this));
+		if(tp.lexicalStressActivated) schwa.setLexicalStressComponent(new LexicalStressComponent2(this));
 
 		// get the schwa index 
         for(int phon=0;phon<pd.NPHONS;phon++){
