@@ -2,6 +2,8 @@ package uk.ac.ed.inf.jtraceschwa.UI;
 
 import java.awt.Stroke;
 
+import uk.ac.ed.inf.jtraceschwa.compare.Evaluation;
+
 import edu.uconn.psy.jtrace.Model.TraceSim;
 
 /**
@@ -18,7 +20,7 @@ public class Simulation {
 	public Simulation(TraceSim sim, String name, Stroke stroke) {
 		super();
 		this.sim = sim;
-		this.name = name;
+		setName( name );
 		this.stroke = stroke;
 	}
 	public TraceSim getSim() {
@@ -31,6 +33,9 @@ public class Simulation {
 		return name;
 	}
 	public void setName(String name) {
+		if(name == null ){
+			name = Evaluation.getNameFor(sim);
+		}
 		this.name = name;
 	}
 	public Stroke getStroke() {

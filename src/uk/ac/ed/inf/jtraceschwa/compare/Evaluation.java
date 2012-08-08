@@ -1,7 +1,6 @@
 package uk.ac.ed.inf.jtraceschwa.compare;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +12,7 @@ import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
 import uk.ac.ed.inf.jtraceschwa.Model2.SchwaParam2;
 import uk.ac.ed.inf.jtraceschwa.Model2.SchwaSim2;
 import uk.ac.ed.inf.jtraceschwa.UI.TraceSimViewer;
+import edu.uconn.psy.jtrace.Model.TraceParam;
 import edu.uconn.psy.jtrace.Model.TraceSim;
 import edu.uconn.psy.jtrace.Model.TraceSimAnalysis;
 
@@ -25,22 +25,34 @@ public class Evaluation {
 
 	public static void main(String[] args) {
 		
-		SchwaParam2 param = new SchwaParam2();
-		param.lexicalStressActivated = false;
-		TraceSim sim = new SchwaSim2(param);
-//		TraceSim sim = new TraceSim(param);
-		
-		// Results output
-		String outputFile = "results/";
-		if( sim instanceof SchwaSim2 ){
-			outputFile += "modified";
-			if( param.lexicalStressActivated ) outputFile += "+stress";
-			outputFile += "+phoneme="+param.phonemeInhibition;
-			outputFile += "+word="+param.wordActivation;
-		}else{
-			outputFile += "reference";
+		for(double wA = 0.0004; wA <= 0.0009; wA+=0.0002){
+			for(double pI = 0.0018; pI <= 0.0023; pI+=0.0002){
+				if (equal(wA, 0.0008) && equal(pI, 0.0018)) {
+					//just skip this one we've already done
+					continue;
+				}
+				SchwaParam2 param = new SchwaParam2();
+				param.lexicalStressActivated = false;
+				param.wordActivation = wA;
+				param.phonemeInhibition = pI;
+				final TraceSim sim = new SchwaSim2(param);
+				
+				Thread th = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						evaluate(sim);
+					}
+				});
+				th.start();
+			}
 		}
-		outputFile+=".txt";
+
+		
+	}
+	
+	public static void evaluate(TraceSim sim){
+
+		String outputFile = getNameFor(sim)+".txt";
 		System.out.println("Output file: "+outputFile);
 		
 
@@ -49,15 +61,14 @@ public class Evaluation {
 				TraceSimAnalysis.FORCED, 4);
 		
 		// For each word in the lexicon
-		for(int w = 0; w < param.getLexicon().size(); w++){
+		for(int w = 0; w < sim.tp.getLexicon().size(); w++){
 			// Run the model for that input
-			String word = param.getLexicon().get(w).getPhon();
+			String word = sim.tp.getLexicon().get(w).getPhon();
 
-//			if(!word.contains("^")) continue;
+			if(!word.contains("^")) continue;
 //			if(!word.equals("k^n")) continue;
 			
-			System.out.println("*** "+word+" ("+w+"/"+param.getLexicon().size()+") ");
-			param.setModelInput("-"+word+"-");
+			sim.tp.setModelInput("-"+word+"-");
 
 			sim.reset();
 			int cycle = TraceSimViewer.cyclesForInput("-"+word+"-");
@@ -67,7 +78,7 @@ public class Evaluation {
 			XYSeriesCollection dataset = wordAnalysis.doAnalysis(sim);
 			
 			int	recognition = timeOfRecognition(dataset, word);
-			System.out.println("recognition of "+word+" : "+recognition);
+			System.out.println("["+outputFile+"] recognition of "+word+" ("+w+"/"+sim.tp.getLexicon().size()+") : "+recognition);
 			
 			try {
 				PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)));
@@ -78,8 +89,20 @@ public class Evaluation {
 			}
 
 		}
-
-		
+	}
+	
+	public static String getNameFor(TraceSim sim){
+		// Results output
+		String name = "results/";
+		if( sim instanceof SchwaSim2 ){
+			name += "modified";
+			if( ((SchwaParam2)sim.tp).lexicalStressActivated ) name += "+stress";
+			name += "+phoneme="+String.format("%.4f", ((SchwaParam2)sim.tp).phonemeInhibition);
+			name += "+word="   +String.format("%.4f", ((SchwaParam2)sim.tp).wordActivation);
+		}else{
+			name += "reference";
+		}
+		return name;
 	}
 	
 	/**
@@ -110,5 +133,9 @@ public class Evaluation {
 	
 	public static boolean lessOrEqual(float val1, float val2){
 		return val1<val2 || (val1-val2)<0.0001;
+	}
+	
+	public static boolean equal(double val, double val2 ){
+		return Math.abs(val-val2) < 0.000001;
 	}
 }

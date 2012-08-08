@@ -77,8 +77,9 @@ print_diff( @iBETTER );
 print "WORSE  : ".@iWORSE."  (".sprintf("%.0f", @iWORSE/$total*100)."\%)\n";
 #print_diff( @iWORSE );
 print "YEAH   : ".@iYEAH."  (".sprintf("%.0f", @iYEAH/$total*100)."\%)\n";
-#print_diff( @iYEAH );
+print_diff( @iYEAH );
 print "NO     : ".@iNO."  (".sprintf("%.0f", @iNO/$total*100)."\%)\n";
+print_diff( @iNO );
 
 print "  BETTER or YES:\n";
 classify(@words[(@iBETTER, @iYEAH)]);
@@ -101,7 +102,6 @@ sub print_diff {
 	my @best = @words[@_[@permutation]];
 	my @sortedDiff = @diff[@permutation];
 	
-	print "          greatest differences :\n";
 	for(my $i=0; $i<20 && $i<@best; $i++){
 		print "          $best[$i] ($sortedDiff[$i])\n";
 	}
@@ -119,6 +119,7 @@ if( @_ == 0 ){ return 0;}
 }
 
 sub variance {
+if( @_ == 1 ){ return 0;}
   my $mean = mean (@_) ;
   my $sum_squares = 0 ;
   foreach (@_) {
