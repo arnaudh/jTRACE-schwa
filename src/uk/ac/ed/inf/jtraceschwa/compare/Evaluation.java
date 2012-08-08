@@ -30,9 +30,9 @@ public class Evaluation {
 		
 		SchwaParam2 param = new SchwaParam2();
 		param.setLexicalStressActivated(false);
-		TraceSim sim = new SchwaSim2(param);
+//		TraceSim sim = new SchwaSim2(param);
 //		TraceSim sim = new SchwaSim(param, false);
-//		TraceSim sim = new TraceSim(param);
+		TraceSim sim = new TraceSim(param);
 		
 
 		TraceSimAnalysis wordAnalysis = new TraceSimAnalysis(TraceSimAnalysis.WORDS, TraceSimAnalysis.WATCHTOPN,
@@ -43,8 +43,9 @@ public class Evaluation {
 		for(int w = 0; w < param.getLexicon().size(); w++){
 			// Run the model for that input
 			String word = param.getLexicon().get(w).getPhon();
-			
+
 			if(!word.contains("^")) continue;
+			if(!word.equals("k^n")) continue;
 			
 			System.out.println("*** "+word+" ("+w+"/"+param.getLexicon().size()+") ");
 			param.setModelInput("-"+word+"-");

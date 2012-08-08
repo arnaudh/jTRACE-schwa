@@ -73,7 +73,7 @@ for(my $i = 0; $i < $N; $i++){
 my $total = @iSAME + @iBETTER + @iWORSE + @iYEAH + @iNO;
 print "SAME   : ".@iSAME."  (".sprintf("%.0f", @iSAME/$total*100)."\%)\n";
 print "BETTER : ".@iBETTER."  (".sprintf("%.0f", @iBETTER/$total*100)."\%)\n";
-#print_diff( @iBETTER );
+print_diff( @iBETTER );
 print "WORSE  : ".@iWORSE."  (".sprintf("%.0f", @iWORSE/$total*100)."\%)\n";
 #print_diff( @iWORSE );
 print "YEAH   : ".@iYEAH."  (".sprintf("%.0f", @iYEAH/$total*100)."\%)\n";

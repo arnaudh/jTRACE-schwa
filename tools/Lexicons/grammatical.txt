@@ -9,7 +9,6 @@ bI
 bin
 b^t
 k^n
-k^d
 dU
 d^s
 f^r

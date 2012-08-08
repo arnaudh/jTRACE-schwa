@@ -905,7 +905,7 @@ t^sk        37
 ^t          23
 bI          19
 bin         41
-k^d          23
+k^n         24
 dU          19
 d^s         16
 f^r         13
