@@ -11,8 +11,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
-
 import edu.uconn.psy.jtrace.Model.TraceParam;
 
 /**

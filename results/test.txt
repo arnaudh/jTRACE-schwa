@@ -1,1 +1,16 @@
-k^n         25
+Output file: results/ORIGINAL+ORIGINAL_SET+SMALL_LEX+MULTIWORD_STRINGS.txt
+pair=^pik, first=^, second=pik
+    recognition  first=61, second=50
+pair=^br^ptsit, first=^br^pt, second=sit
+    recognition  first=28, second=67
+pair=^dapttriti, first=^dapt, second=triti
+    recognition  first=27, second=72
+pair=^d^ltpl^g, first=^d^lt, second=pl^g
+    recognition  first=27, second=60
+pair=^gridal, first=^gri, second=dal
+    recognition  first=24, second=52
+pair=^latklu, first=^lat, second=klu
+    recognition  first=25, second=55
+pair=^parttrup, first=^part, second=trup
+    recognition  first=30, second=68
+pair=^pillus, first=^pil, second=lus

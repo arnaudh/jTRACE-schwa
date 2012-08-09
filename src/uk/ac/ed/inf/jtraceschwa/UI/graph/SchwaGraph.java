@@ -1,27 +1,21 @@
 package uk.ac.ed.inf.jtraceschwa.UI.graph;
 
-import java.awt.MultipleGradientPaint.CycleMethod;
-
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RectangleEdge;
 
-import uk.ac.ed.inf.jtraceschwa.Model.SchwaNet;
-import uk.ac.ed.inf.jtraceschwa.Model.SchwaSim;
-import uk.ac.ed.inf.jtraceschwa.Model.schwa.Schwa;
-import uk.ac.ed.inf.jtraceschwa.Model.schwa.SchwaListener;
+import uk.ac.ed.inf.jtraceschwa.Model.ConcreteTraceNet;
+import uk.ac.ed.inf.jtraceschwa.Model.ConcreteTraceSim;
+import uk.ac.ed.inf.jtraceschwa.Model.SchwaComponent;
 import uk.ac.ed.inf.jtraceschwa.UI.TraceSimViewer;
 import edu.uconn.psy.jtrace.UI.GraphParameters;
 
-public class SchwaGraph extends ChartPanel implements SchwaListener {
+public class SchwaGraph extends ChartPanel {
 
-	private SchwaSim sim;
+	private ConcreteTraceSim sim;
 	
-	public SchwaGraph(SchwaSim sim_) {
+	public SchwaGraph(ConcreteTraceSim sim_) {
 		super(null);
 		this.sim = sim_;
 		
@@ -30,12 +24,9 @@ public class SchwaGraph extends ChartPanel implements SchwaListener {
         
         
         setChart(chart);
-        
-        ((SchwaNet)sim.tn).schwa.addSchwaListener(this);
 	}
 	
-	@Override
-	public void schwaUpdated(Schwa schwa) {
+	public void schwaUpdated(SchwaComponent schwa) {
 		XYSeries series = new XYSeries(""+sim.tn.inputSlice);
 		((XYSeriesCollection) getChart().getXYPlot().getDataset()).addSeries(series);
 		int max = Math.min(schwa.getActivations().length, TraceSimViewer.maxCycle/3);
@@ -50,8 +41,7 @@ public class SchwaGraph extends ChartPanel implements SchwaListener {
 		repaint();
 	}
 
-	@Override
-	public void reset(Schwa schwa) {
+	public void reset() {
 		((XYSeriesCollection)getChart().getXYPlot().getDataset()).removeAllSeries();
 	}
 

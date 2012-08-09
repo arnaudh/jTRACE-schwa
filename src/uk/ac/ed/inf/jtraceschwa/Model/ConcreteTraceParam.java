@@ -1,9 +1,17 @@
-package uk.ac.ed.inf.jtraceschwa.Model2;
+package uk.ac.ed.inf.jtraceschwa.Model;
 
+import java.io.File;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
+import edu.uconn.psy.jtrace.Model.TraceParam;
 import edu.uconn.psy.jtrace.Model.TracePhones;
-import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
+import edu.uconn.psy.jtrace.Model.TraceWord;
 
-public class SchwaParam2 extends SchwaParam {
+public class ConcreteTraceParam extends TraceParam {
 
 //	private String defaultLabels[] = {"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "^", "-"
 //   		, "w", "U", "f", "6", "I", "A", "T", "n", "m", "D", "e", "z", "v", "Z", "j", "E", "h", "N", "O"};     
@@ -11,12 +19,21 @@ public class SchwaParam2 extends SchwaParam {
 			   5,   3,   0,   5,   3,   3,   0,   3,   3,   1,   3,   1,   2,   1,   4,   3,   1,   3,   3, };
 
 	public boolean lexicalStressActivated = false;
-	public double phonemeInhibition = 0.005;
+	public double phonemeInhibition = 0.001;
 	public double wordActivation    = 0.001;
 	
-	public SchwaParam2() {
+	public ConcreteTraceParam() {
 		super();
-
+		updatePhonology();
+	}
+	
+	@Override
+	public void setPhonology(TracePhones _phonology) {
+		super.setPhonology(_phonology);
+		updatePhonology();
+	}
+	
+	private void updatePhonology(){
 		//modify phonology: add schwa feature
 		double[][] _f = new double[phonology.DefaultPhonDefs.length][8*9];
 		for( int i = 0; i < phonology.DefaultPhonDefs.length; i++){
@@ -49,5 +66,34 @@ public class SchwaParam2 extends SchwaParam {
 		}
 		return 0;
 	}
+	
+	
+	
+	
+
+	public double stressWeight = 0.3;
+
+	private Set<String> lexiconWords; //just to make sure we don't have duplicates in the lexicon
+	
+	@Override
+	public void loadDefaultlexicon() {
+		lexicon.reset();
+		lexiconWords = new LinkedHashSet<String>();
+		loadFile(new File("tools/Lexicons/biglex901.txt"));
+		loadFile(new File("tools/Lexicons/grammatical.txt"));
+		
+	}
+	
+	private void loadFile(File file){
+		Pattern pattern = Pattern.compile(getPhonology().getInputPattern());
+		Matcher matcher = pattern.matcher(IOTools.readFile(file));
+		while( matcher.find() ){
+			if( matcher.group().equals("^")) continue; //no word "a"
+			if( lexiconWords.add(matcher.group()) ){ // if it indeed was added (no duplicate)
+				lexicon.add(new TraceWord(matcher.group())); //add it to the lexicon
+			}
+		}
+	}
+	
 	
 }

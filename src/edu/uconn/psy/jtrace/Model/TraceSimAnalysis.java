@@ -640,7 +640,7 @@ public class TraceSimAnalysis {
                 if(domain == WORDS){
                     
                     if(calculationType == MAX_POSTHOC)
-                        oneSeries = new XYSeries(param.getLexicon().get(itemIndices[iII]).getPhon().concat(" ["+alignmentPostHoc[itemIndices[iII]]+"]"), true, true); // allow auto-sort and duplicate Xs
+                        oneSeries = new XYSeries(param.getLexicon().get(itemIndices[iII]).getPhon(), true, true); // allow auto-sort and duplicate Xs
                     else
                         oneSeries = new XYSeries(param.getLexicon().get(itemIndices[iII]).getPhon(), true, true); // allow auto-sort and duplicate Xs
                     

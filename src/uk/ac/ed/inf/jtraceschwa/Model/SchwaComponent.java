@@ -1,15 +1,15 @@
-package uk.ac.ed.inf.jtraceschwa.Model2;
+package uk.ac.ed.inf.jtraceschwa.Model;
 
-public class SchwaComponent2 {
+public class SchwaComponent {
 
 	
-	private SchwaNet2 net;
-	private LexicalStressComponent2 lexicalStressComponent;
+	private ConcreteTraceNet net;
+	private LexicalStressComponent lexicalStressComponent;
 	
 	// activation values for the schwa component
-	private double[] schwaActivations;
+	private double[] activations;
 	
-	public SchwaComponent2(SchwaNet2 net) {
+	public SchwaComponent(ConcreteTraceNet net) {
 		super();
 		this.net = net;
 	}
@@ -28,13 +28,13 @@ public class SchwaComponent2 {
 	 * updates the schwa activation from the feature layer
 	 */
 	private void featToSchwa() {
-		schwaActivations = new double [ net.pSlices ];
+		activations = new double [ net.pSlices ];
         for(int fslice=0;fslice<net.fSlices;fslice++){
         	int pslice = fslice/3;
         	//do a weighted sum of the 8 dimensions of the schwa features
         	for(int i=1; i<=8; i++){
         		if( net.featLayer[63+8-i][fslice]> 0 ){
-        			schwaActivations[pslice] += i * net.featLayer[63+8-i][fslice];
+        			activations[pslice] += i * net.featLayer[63+8-i][fslice];
         		}
         	}
         }
@@ -47,13 +47,13 @@ public class SchwaComponent2 {
 	 * Inhibition from schwa to the phonemes
 	 */
 	private void schwaToPhon(){
-		double inhibition = ((SchwaParam2)net.tp).phonemeInhibition;
+		double inhibition = ((ConcreteTraceParam)net.tp).phonemeInhibition;
         for(int phon=0;phon<net.pd.NPHONS;phon++){
           	if( phon==net.schwaIndex ) continue; //Exclude old schwa phoneme
-          	int schwaWeight = ((SchwaParam2)net.tp).getSchwaWeightOf(net.pd.getLabels()[phon]);
+          	int schwaWeight = ((ConcreteTraceParam)net.tp).getSchwaWeightOf(net.pd.getLabels()[phon]);
           	for(int pslice = 0; pslice < net.pSlices; pslice++){
           		double weight = inhibition * (8-schwaWeight);
-          		net.phonNet[phon][pslice] -= weight * schwaActivations[pslice];
+          		net.phonNet[phon][pslice] -= weight * activations[pslice];
           	}
         }
 	}
@@ -62,7 +62,7 @@ public class SchwaComponent2 {
 	 * Sends activation to words containing schwa
 	 */
 	private void schwaToWord() {
-		double activation = ((SchwaParam2)net.tp).wordActivation;
+		double activation = ((ConcreteTraceParam)net.tp).wordActivation;
     	// iterate over the lexicon 
         for(int word=0;word<net.tp.getLexicon().size();word++){         
             String str = net.tp.getLexicon().get(word).getPhon();
@@ -72,7 +72,7 @@ public class SchwaComponent2 {
                 //if that letter corresponds to the schwa
                  if(str.charAt(offset)=='^'){
                 	 for( int wslice = 0; wslice < net.wSlices-offset; wslice++){
-                		 	net.wordNet[word][wslice] += activation *schwaActivations[wslice+offset];
+                		 	net.wordNet[word][wslice] += activation *activations[wslice+offset];
                 	 }
                  }
             }
@@ -83,11 +83,11 @@ public class SchwaComponent2 {
 	
 	// Getters and Setters
 	
-	public double[] getSchwaActivations() {
-		return schwaActivations;
+	public double[] getActivations() {
+		return activations;
 	}
 
-	public void setLexicalStressComponent(LexicalStressComponent2 lexicalStressComponent) {
+	public void setLexicalStressComponent(LexicalStressComponent lexicalStressComponent) {
 		this.lexicalStressComponent = lexicalStressComponent;
 	}
 

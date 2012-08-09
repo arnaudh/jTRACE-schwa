@@ -1,36 +1,23 @@
 package uk.ac.ed.inf.jtraceschwa.Model;
 
+import sun.rmi.server.WeakClassHashMap;
 import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
-import uk.ac.ed.inf.jtraceschwa.Model.schwa.LexicalStressComponent;
-import uk.ac.ed.inf.jtraceschwa.Model.schwa.Schwa;
+import edu.uconn.psy.jtrace.Model.TraceLexicon;
 import edu.uconn.psy.jtrace.Model.TraceNet;
 import edu.uconn.psy.jtrace.Model.TraceParam;
 
-/**
- * Modified version of the trace net.
- * Methods of TraceNet are overriden to take into account the fact that schwa doesn't receive inhibition from other phonemes,
- * @author arnaudhenry
- *
- */
-public class SchwaNet extends TraceNet {
-	
+public class ConcreteTraceNet extends TraceNet {
+
 	public int schwaIndex = 1; //index of the phoneme schwa in the phonLayer
-	public Schwa schwa;
-
-	//parameters
-	public boolean wordToSchwa = false;
+	private SchwaComponent schwa;
 	
-	public LexicalStressComponent lexicalStressComponent;
-
-	public SchwaNet(TraceParam tp, boolean useLexicalStress) {
+	public ConcreteTraceNet(ConcreteTraceParam tp) {
 		super(tp);
-		schwa = new Schwa(this);
-		//Components related to schwa
-		if( useLexicalStress ){
-			lexicalStressComponent = new LexicalStressComponent(this);
-			schwa.addSchwaListener(lexicalStressComponent);
-		}
 		
+		
+		schwa = new SchwaComponent(this);
+		if(tp.lexicalStressActivated) schwa.setLexicalStressComponent(new LexicalStressComponent(this));
+
 		// get the schwa index 
         for(int phon=0;phon<pd.NPHONS;phon++){
         	if( pd.toChar(phon) == '^' ){
@@ -40,25 +27,31 @@ public class SchwaNet extends TraceNet {
         }
 		
 	}
-	
-	//Override desired methods...
 
-	
 	@Override
 	public double[][][] cycle() {
-		
+//		System.out.println("SchwaNet2.cycle()");
         act_features();
 
-        featToPhon();
-        featToSchwa(); //update Schwa component
+        schwa.cycle();
+
         
+        featToPhon();
         phonToPhon(); //excludes schwa
-        phonToWord(); //excludes schwa (the schwa component does it)
+        phonToWord(); //excludes schwa
         wordToPhon(); //excludes schwa
         wordToWord();
         featUpdate();
         phonUpdate();
-        wordUpdate();                   
+        wordUpdate();   
+
+//        for(int wslice = 0; wslice<wSlices; wslice++){
+//        	if( wordLayer[15][wslice] != wordLayer[16][wslice]){
+////        		wordLayer[16][wslice] -= 0.1;
+//            	System.out.println("LAYER*** "+tp.getLexicon().get(15).getPhon()+"["+wslice+"] = "+wordLayer[15][wslice]+"    "+tp.getLexicon().get(16).getPhon()+"["+wslice+"] = "+wordLayer[16][wslice]);	
+//        	}
+//        }
+
 
         inputSlice += __nreps; //nrep steps in a cycle
         //array boundary check
@@ -67,11 +60,8 @@ public class SchwaNet extends TraceNet {
 		return null; //return value never used...
 	}
 	
-	private void featToSchwa(){
-		schwa.setActivations(phonNet[schwaIndex]);
-	}
-
-    
+	
+	
 	@Override
 	public void phonToPhon() {
         int pmax, pmin, halfdur;
@@ -100,7 +90,7 @@ public class SchwaNet extends TraceNet {
                 }
             }
         //now, determine again the extent of each phoneme unit,
-        //then apply inhibition equally to phons lying on the same phon slice.!wordToSchwa && 
+        //then apply inhibition equally to phons lying on the same phon slice.
         globalPhonemeCompetitionIndex=0;
         phonLoop:for(int phon = 0; phon < pd.NPHONS; phon++){ //loop over phonemes   
         	if( phon==schwaIndex ) continue; //Exclude schwa
@@ -242,7 +232,7 @@ public class SchwaNet extends TraceNet {
                 for(int wstart=0; wstart < str.length(); wstart++){
                     t_c_p = str.charAt(wstart);
                     currChar = pd.mapPhon(t_c_p);
-                    if( !wordToSchwa && currChar==schwaIndex ) continue; //Exclude schwa
+                    if( currChar==schwaIndex ) continue; //Exclude schwa
                     wslot = wslice + (wstart*2);
                     pmin = wslot - 1; //??
                     if(pmin >= pSlices) break;
@@ -329,11 +319,5 @@ public class SchwaNet extends TraceNet {
             //diagnosticFileWriter.write(contents);                        
         }    */    
     }
-	
-	@Override
-	public void reset() {
-		super.reset();
-		if( schwa!=null) schwa.reset();
-	}
 	
 }

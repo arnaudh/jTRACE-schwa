@@ -62,9 +62,18 @@ Lexical Stress component (re)implemented. Results show that it performs better f
 
 
 TODO
-	# Classify words to better understand lexicon + results
-Code the LexicalStress component, which should send back information to the schwa component as to which words need extra/fewer activation
+Make an evaluation class manipulable at a high-level. (original/concrete, phoneme extended or not, lexicon extended or not, inhibition/excitation parameters, single/multiwords)
+Make separate phoneme sets (original / expanded)
+Make sure evaluation is correct (specially if it disadvantages Concrete-TRACE)
+Construct multiword strings
+Build evaluation of multiword strings
+
+
 Make sure most of the words in the lexicon have a weak syllable on the schwa
+
+
+
+
 Word segmentation: try pairs of words and see what happens...
 Add comments to the code + README
 

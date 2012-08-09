@@ -3,6 +3,7 @@ package uk.ac.ed.inf.jtraceschwa.UI.graph;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.FocusEvent;
@@ -38,11 +39,10 @@ public class MatrixViewer extends JPanel {
 	private TraceSim sim;
 	
 	// ui
-	private int squareSize = 7;
+	private int squareSize = 4;
 	private int betweenSquares = 1;
-	private int leftSpace = 32; //space for labelling the rows
-	private String[] dimensions = {"POW", "VOC", "DIF", "ACU", "GRD", "VOI", "BUR"}; 
-	private String[] phonemes = {"-", "^", "a", "b", "d", "g", "i", "k", "l", "p", "r", "s", "S", "t", "u" }; 
+	private int leftSpace = 70; //space for labelling the rows
+	private String[] dimensions = {"POW", "VOC", "DIF", "ACU", "GRD", "VOI", "BUR", "SCHWA"}; 
 	private int hoveredI = -1; // vertical index under the cursor
 	private int hoveredJ = -1; // horizontal index under the cursor
 	
@@ -86,10 +86,11 @@ public class MatrixViewer extends JPanel {
 			} 
 			if( matrix.length==sim.tn.pd.NPHONS ){ //phoneme matrix
 				g2.setColor(Color.BLACK);
-				g2.drawString(phonemes[i], 20, (int)((i+0.7) * (squareSize+betweenSquares) ) );
+				g2.drawString(sim.tn.pd.defaultLabels[i], 20, (int)((i+0.7) * (squareSize+betweenSquares) ) );
 			}
 			if( matrix.length==sim.tn.nwords ){ //lexicon matrix
 				g2.setColor(Color.BLACK);
+				g2.setFont(new Font(g2.getFont().getName(), g2.getFont().getStyle(), 7));
 				g2.drawString(sim.tp.lexicon.get(i).getPhon(), 2, (int)((i+0.7) * (squareSize+betweenSquares) ) );
 			}
 			for (int j = 0; j < matrix[i].length; j++) { //actual drawing of the matrix
@@ -104,7 +105,13 @@ public class MatrixViewer extends JPanel {
 			y+= squareSize + betweenSquares;
 		}
 		if( hoveredI>-1 && hoveredJ>-1 ){ //draw info of the hovered element
-			String infoTxt = "valuet at ["+hoveredI+"]["+hoveredJ+"] = "+String.format("%.2f", matrix[hoveredI][hoveredJ]);
+			String info = "";
+			if(  matrix.length==sim.tn.nwords ){ // lexicon
+				info = sim.tp.getLexicon().get(hoveredI).getPhon();
+			}else{
+				info = ""+hoveredI;
+			}
+			String infoTxt = info+"   ["+hoveredJ+"] = "+String.format("%.2f", matrix[hoveredI][hoveredJ]);
 			this.setToolTipText(infoTxt);
 		}
 		
@@ -136,11 +143,11 @@ public class MatrixViewer extends JPanel {
 	public void setMatrix(double[][] matrix) {
 		this.matrix = matrix;
 		updateMinMax();
-		if( matrix.length==sim.tn.pd.NPHONS || matrix.length==sim.tn.nwords ){ //phoneme or lexicon matrix
-			squareSize = 16;
-			betweenSquares = 3;
-			leftSpace = 50;
-		}
+//		if( matrix.length==sim.tn.pd.NPHONS || matrix.length==sim.tn.nwords ){ //phoneme or lexicon matrix
+//			squareSize = 16;
+//			betweenSquares = 3;
+//			leftSpace = 50;
+//		}
 		setPreferredSize(new Dimension(matrix[0].length*(squareSize+betweenSquares)+betweenSquares+leftSpace, 
 				matrix.length*(squareSize+betweenSquares)+betweenSquares));
 		repaint();

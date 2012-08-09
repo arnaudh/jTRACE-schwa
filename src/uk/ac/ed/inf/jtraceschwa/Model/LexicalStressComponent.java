@@ -1,4 +1,4 @@
-package uk.ac.ed.inf.jtraceschwa.Model2;
+package uk.ac.ed.inf.jtraceschwa.Model;
 
 import java.io.File;
 import java.util.HashMap;
@@ -6,12 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import uk.ac.ed.inf.jtraceschwa.IO.IOTools;
-import uk.ac.ed.inf.jtraceschwa.Model.SchwaParam;
 import uk.ac.ed.inf.jtraceschwa.compare.Chrono;
 
-public class LexicalStressComponent2 {
+public class LexicalStressComponent {
 
-	private SchwaNet2 net;
+	private ConcreteTraceNet net;
 	private HashMap<String, String> stressPatterns;
 	private byte[][] stressPatterns2; //stress patterns converted to 0s and 1s
 	
@@ -22,7 +21,7 @@ public class LexicalStressComponent2 {
 	// parameters
 	double wordActivation    = 0.001;
 	
-	public LexicalStressComponent2(SchwaNet2 net) {
+	public LexicalStressComponent(ConcreteTraceNet net) {
 		super();
 		this.net = net;
 		loadStressPatterns();
@@ -72,13 +71,13 @@ public class LexicalStressComponent2 {
 	/**
 	 * 
 	 */
-	public void schwaUpdated( SchwaComponent2 schwa ){
+	public void schwaUpdated( SchwaComponent schwa ){
 		Chrono.tic();
         for(int w=0; w<net.tp.getLexicon().size(); w++){     
 		
             String word = net.tp.getLexicon().get(w).getPhon();
             
-            double[] activations = schwa.getSchwaActivations();
+            double[] activations = schwa.getActivations();
             
 //            for(int pslice = 0; pslice < net.pSlices; pslice++){
             int pslice = net.inputSlice/3;
@@ -87,7 +86,7 @@ public class LexicalStressComponent2 {
 	            for(int p = 0, wslice = pslice; p < word.length() && wslice>=0; p++, wslice--){
 	            	if( stressPatterns2[w][p]==WEAK && activation>0 ){
 //	            		System.out.println("boosting '"+word+"'["+wslice+"] for activation["+pslice+"]="+activation);
-	            		net.wordNet[w][wslice] += 0.002 * activation * ((SchwaParam)net.tp).stressWeight;
+	            		net.wordNet[w][wslice] += 0.002 * activation * ((ConcreteTraceParam)net.tp).stressWeight;
 	            	}else{
 //	            		net.wordNet[w][wslice] -= activation * ((SchwaParam)net.tp).stressWeight;
 	            	}
