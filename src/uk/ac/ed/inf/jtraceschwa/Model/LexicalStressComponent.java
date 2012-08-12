@@ -32,7 +32,7 @@ public class LexicalStressComponent {
 		stressPatterns = new HashMap<String, String>();
 		// Load lexicon
 		Pattern pattern = Pattern.compile("("+net.tp.getPhonology().getInputPattern()+")\\n([SW ]+)");
-		Matcher matcher = pattern.matcher(IOTools.readFile(new File("tools/Lexicons/biglex901STRESS.txt")));
+		Matcher matcher = pattern.matcher(IOTools.readFile(new File("tools/Lexicons/BIGLEX_STRESS.txt")));
 		while( matcher.find() ){
 			stressPatterns.put(matcher.group(1), matcher.group(2));
 		}

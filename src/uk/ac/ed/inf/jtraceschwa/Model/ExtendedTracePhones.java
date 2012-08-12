@@ -4,12 +4,16 @@ import edu.uconn.psy.jtrace.Model.TracePhones;
 
 public class ExtendedTracePhones extends TracePhones {
 
+	
+	public ExtendedTracePhones() {
+		super("Expanded English",labels, phonDefs, durationScalar);
+	}
 
-    public String defaultLabels[] = {"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "^", "-"
+    public static String labels[] = {"p", "b", "t", "d", "k", "g", "s", "S", "r", "l", "a", "i", "u", "^", "-"
     		, "w", "U", "f", "6", "I", "A", "T", "n", "m", "D", "e", "z", "v", "Z", "j", "E", "h", "N", "O"};     
     
 
-    public double DefaultDurationScalar[][] = {
+    public static double durationScalar[][] = {
        {1, 1, 1, 1, 1, 1, 1}, /*p*/
        {1, 1, 1, 1, 1, 1, 1}, /*b*/
        {1, 1, 1, 1, 1, 1, 1}, /*t*/
@@ -52,7 +56,7 @@ public class ExtendedTracePhones extends TracePhones {
     
 
     // define peak values of each feature/continuum.
-    public double DefaultPhonDefs[][] = {         
+    public static double phonDefs[][] = {         
 /*p*/  {0  ,  0  ,  0  ,  0  ,  1. ,  0  ,  0  ,  0   , 0 , /* POW */
 	0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  0  ,  1.  , 0 , /* VOC */
 	0  ,  1. ,  0  ,  0  ,  0  ,  0  ,  0  ,  0   , 0 , /* DIF */

@@ -20,7 +20,7 @@ while( $slurp =~ m/([^\n ]+) +([-0-9]+) + ([^\n ]+) +([-0-9]+)/g ) {
 }
 
 
-print "Fails (".@fails.") :\n";
+#print "Fails (".@fails.") :\n";
 foreach (@fails){
 	print "$_\n";
 }

@@ -45,7 +45,7 @@ while( $reference =~ m/([^\n ]+) +([-0-9]+) + ([^\n ]+) +([-0-9]+)/g ) {
 foreach(keys %failsREF){
 	# if the challenger doesn't fail on that one, it's an improvement!
 	if( !exists($failsCHALL{$_} ) ){
-		print "Challenger doesn't fail on : $_ (".$chall[$_].")\n";
+		print "Challenger doesn't fail for : ".$chall[$_]."\n";
 	}	
 }
 	

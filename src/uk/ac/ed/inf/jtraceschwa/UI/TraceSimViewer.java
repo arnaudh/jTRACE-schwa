@@ -90,22 +90,30 @@ public class TraceSimViewer extends JFrame {
 				TraceSimViewer sv = new TraceSimViewer();
 				sv.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				sv.setVisible(true);
-				sv.resetAndRun(false);
+//				sv.resetAndRun(false);
 			}
 		});
 	}
 	
 	public TraceSimViewer() {
         simulations = new ArrayList<Simulation>();
-        simulations.add(new Simulation(Evaluation.createSim(Model.MODIFIED, Phonemes.ORIGINAL_PHON, Lexicon.BIG_LEX), "Modified", dashedThick));
-        simulations.add(new Simulation(Evaluation.createSim(Model.ORIGINAL, Phonemes.ORIGINAL_PHON, Lexicon.BIG_LEX), "Original", thin));
+        simulations.add(new Simulation(Evaluation.createSim(Model.ORIGINAL, Phonemes.EXTENDED_PHON, Lexicon.BIG_LEX), "", thin));
+//        TraceSim sim = Evaluation.createSim(Model.MODIFIED, Phonemes.EXTENDED_PHON, Lexicon.BIG_LEX);
+//        ((ConcreteTraceParam)sim.tp).phonemeInhibition = 0.0025;
+//        ((ConcreteTraceParam)sim.tp).wordActivation= 0.0001;
+//        simulations.add(new Simulation(sim, null, thin));
+        TraceSim sim2 = Evaluation.createSim(Model.MODIFIED, Phonemes.EXTENDED_PHON, Lexicon.BIG_LEX);
+        ((ConcreteTraceParam)sim2.tp).phonemeInhibition = 0.0025;
+        ((ConcreteTraceParam)sim2.tp).wordActivation= 0.001;
+        simulations.add(new Simulation(sim2, "", thin));
+//        simulations.add(new Simulation(Evaluation.createSim(Model.ORIGINAL, Phonemes.EXTENDED_PHON, Lexicon.BIG_LEX), "Original, extended phoneme set", dashedThick));
 //        simulations.add(new Simulation(Evaluation.createSim(Model.MODIFIED, Phonemes.EXTENDED_SET, Lexicon.BIG_LEX), null, dashedThick));
 //        ConcreteTraceParam param3 = new ConcreteTraceParam();
 //        param3.phonemeInhibition = 0.0022;
 //        param3.wordActivation = 0.0008;
 //        simulations.add(new Simulation(new ConcreteTraceSim(param3), null, thick));
         
-        setModelInput("-Sil^-");
+        setModelInput("-kl^str-");
 //        SchwaSim ssim = new SchwaSim(param, false);
 //        ((SchwaNet)ssim.tn).schwa.prioritizeSchwa = true;
 //        simulations.add(new Simulation(ssim, "Modified + prioritize schwa", dashedThick));
@@ -120,8 +128,8 @@ public class TraceSimViewer extends JFrame {
 		phonemeAnalysis = new TraceSimAnalysis(TraceSimAnalysis.PHONEMES, TraceSimAnalysis.WATCHTOPN,
 				new java.util.Vector(), topNWords, TraceSimAnalysis.STATIC, 4,
 				TraceSimAnalysis.FORCED, 4);
-		wordChart = GraphTools.createCycleActivationChart("Words", null);
-		bestWordsChart = GraphTools.createCycleActivationChart("Best Words", null);
+		wordChart = GraphTools.createCycleActivationChart("", null);
+		bestWordsChart = GraphTools.createCycleActivationChart("", null);
 		phonemeChart = GraphTools.createCycleActivationChart("Phonemes", null);
 		
 		/////////////////////////// UI
@@ -138,10 +146,12 @@ public class TraceSimViewer extends JFrame {
 				int x = 90;
 				int y = 100;
 				for(Simulation sim : simulations){
-					g2.setStroke(sim.getStroke());
-					g2.drawLine(x, y, x+30, y);
-					g2.drawString(sim.getName(), x+35, y+5);
-					y += 20;
+					if( !sim.getName().isEmpty() ){
+						g2.setStroke(sim.getStroke());
+						g2.drawLine(x, y, x+30, y);
+						g2.drawString(sim.getName(), x+35, y+5);
+						y += 20;
+					}
 				}
 			}
 		};
@@ -200,6 +210,16 @@ public class TraceSimViewer extends JFrame {
 		this.pack();
 		this.setTitle("TraceSimViewer");
 		this.setLocationRelativeTo(null);
+		
+		
+		//new window to show two graphs of the same size
+		JFrame frame = new JFrame();
+		frame.getContentPane().setLayout(new GridLayout(1, 2));
+		frame.getContentPane().add(new ChartPanel(wordChart));
+		frame.getContentPane().add(new ChartPanel(bestWordsChart));
+		frame.setVisible(true);
+		frame.pack();
+				
 		
 	}
 	
@@ -269,10 +289,7 @@ public class TraceSimViewer extends JFrame {
 					for(int cycle = 0; cycle < maxCycle; cycle++){
 						sim.getSim().cycle(1);
 						int[] topN = WordSimGraph.topN(sim.getSim().tn.wordLayer, topNWords);
-//						String [] labels = new String[topN.length];
-//						for(int i =0; i<topN.length; i++) labels[i] = sim.getSim().getParameters().getLexicon().get(topN[i]).getPhon();
-//						System.out.print("["+cycle+"]  ");
-//						IOTools.printArray(labels);
+						Evaluation.printTopN(sim.getSim(), cycle, topN);
 
 						if(slowly && cycle%5==0){
 							updateGraphs();
@@ -289,6 +306,7 @@ public class TraceSimViewer extends JFrame {
 
 				updateGraphs();
 			}
+
 		});
 		thread.start();
 	}
@@ -309,9 +327,13 @@ public class TraceSimViewer extends JFrame {
 		XYPlot plotPhoneme = (XYPlot) phonemeChart.getPlot();
 		XYPlot plotBest = (XYPlot) bestWordsChart.getPlot();
 
-		showAnalysis(wordAnalysis, plot);
-		showAnalysis(phonemeAnalysis, plotPhoneme);
-		showAnalysis(bestWordsAnalysis, plotBest);
+//		showAnalysis(wordAnalysis, plot);
+//		showAnalysis(phonemeAnalysis, plotPhoneme);
+//		showAnalysis(bestWordsAnalysis, plotBest);
+		
+		List<XYPlot> plots = new ArrayList<XYPlot>();
+		plots.add(plot); plots.add(plotBest);
+		showAnalysisOnDifferentGraphs(wordAnalysis, plots);
 		
 		//annotate
 		edu.uconn.psy.jtrace.UI.GraphPanel.annotateJTRACEChart(wordChart, new GraphParameters(), simulations.get(0).getSim().getParameters());
@@ -342,6 +364,28 @@ public class TraceSimViewer extends JFrame {
 					if( plot.getDataset(sim).getSeriesName(j).equals(name) ){
 						//copy the color used in the original for that series
 						plot.getRenderer(sim).setSeriesPaint(j, plot.getRenderer(0).getSeriesPaint(i));
+					}
+				}
+			}
+		}
+	}
+	
+	private void showAnalysisOnDifferentGraphs( TraceSimAnalysis analysis, List<XYPlot> plots){
+
+		for(int s = 0; s<simulations.size(); s++){
+			TraceSim sim = simulations.get(s).getSim();
+			plots.get(s).setDataset(0, analysis.doAnalysis(sim));
+			plots.get(s).setRenderer(0, new XYLineAndShapeRenderer(true, false));
+			plots.get(s).getRenderer(0).setStroke(simulations.get(s).getStroke());
+		}
+		//Make colors match between the different simulations
+		for(int i = 0; i < plots.get(0).getDataset(0).getSeriesCount(); i++){
+			String name = plots.get(0).getDataset(0).getSeriesName(i);
+			for(int sim = 1; sim < simulations.size(); sim++){
+				for(int j = 0; j < plots.get(sim).getDataset(0).getSeriesCount(); j++){
+					if( plots.get(sim).getDataset(0).getSeriesName(j).equals(name) ){
+						//copy the color used in the original for that series
+						plots.get(sim).getRenderer(0).setSeriesPaint(j, plots.get(0).getRenderer(0).getSeriesPaint(i));
 					}
 				}
 			}

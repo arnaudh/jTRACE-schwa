@@ -35,11 +35,11 @@ public class ConcreteTraceParam extends TraceParam {
 	
 	private void updatePhonology(){
 		//modify phonology: add schwa feature
-		double[][] _f = new double[phonology.DefaultPhonDefs.length][8*9];
-		for( int i = 0; i < phonology.DefaultPhonDefs.length; i++){
+		double[][] _f = new double[phonology.getPhonDefs().length][8*9];
+		for( int i = 0; i < phonology.getPhonDefs().length; i++){
 			//copy the original 7 features
 			for(int f = 0; f < 63; f++){
-				_f[i][f] = phonology.DefaultPhonDefs[i][f];
+				_f[i][f] = phonology.getPhonDefs()[i][f];
 			}
 //			//add the schwa feature
 //			if( schwaWeights[i] > 0 ){
@@ -47,11 +47,11 @@ public class ConcreteTraceParam extends TraceParam {
 //				_f[i][index] = 1;
 //			}
 			// just for schwa
-			if( phonology.defaultLabels[i].equals("^")){
+			if( phonology.getLabels()[i].equals("^")){
 				_f[i][63] = 1;
 			}
 		}
-		phonology = new TracePhones("Schwa language", phonology.defaultLabels , _f , phonology.DefaultDurationScalar );
+		phonology = new TracePhones("Schwa language", phonology.getLabels() , _f , phonology.getDurationScalar() );
 		phonology.NCONTS = 8; // instead of 7
 		// just adding one value for the schwa feature
 		spread = new int[]{6, 6, 6, 6, 6, 6, 6, 6};
