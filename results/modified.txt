@@ -1,0 +1,212 @@
+^           -1        pik         41  %  pik ^p
+^br^pt      45        sit         74
+^dapt       29        triti       73
+^d^lt       38        pl^g        -1  %  ^d^lt prag
+^gri        23        dal         -1  %  ^gri grid
+^lat        28        klu         -1  %  ^lat lat
+^part       32        trup        73
+^pil        29        lus         76
+ark         28        lak         -1  %  klak ark
+ar          -1        dr^g        -1  %  ardr r^g
+art         28        blak        58
+art^st      53        sari        92
+^slip       30        art         -1  %  ^slip part
+bar         26        ^br^pt      76
+bark        41        st^di       75
+bi          -1        dark        62  %  bid dark
+bit         27        Sit         61
+bist        30        lig^l       -1  %  bist tri
+blak        34        l^ki        -1  %  blak klak
+bl^d        34        pas^b^l     66
+blu         32        pas^b^l     64
+bab         -1        ist         -1  %  babi bist
+babi        40        ist         55
+badi        34        tub         64
+bust        32        bar         68
+but         29        gard        60
+bat^l       44        sari        70
+baks        31        ^gli        69
+brid        35        lat         66
+brud        47        kard        74
+br^S        95        stup^d      86
+b^b^l       30        slip        69
+b^k         -1        s^ksid      66  %  s^ksid baks
+b^s         24        pap         -1  %  b^s spa
+b^t         24        drap        56
+kar         24        slit        57
+kard        31        tar         63
+karp^t      56        gru         78
+sis         25        g^tar       69
+klak        35        but         59
+kl^b        70        si          62
+klu         -1        rak^t       81  %  kru rak^t
+kalig       42        truli       72
+kul         28        kap         60
+kap         26        pragr^s     72
+kapi        34        pap^        -1  %  kapi pap
+k^p^l       31        park        83
+krip        44        sut^b^l     66
+kru         27        pul         -1  %  krupir kru
+krap        38        ist         71
+kruS^l      -1        rupi        81  %  kruSlli rupi
+kru^l       -1        r^s^l       -1  %  krulli sal
+kr^S        35        Si          74
+k^p         -1        tr^b^l      87  %  tr^b^l kap
+k^t         24        bit         49
+dark        32        tri         56
+dart        32        bark        68
+dil         26        krap        64
+did         26        prab^bli    -1  %  prab^bl did
+dip         27        part        57
+du          19        bust        61
+dal         26        sut         57
+dat         27        s^t^l       53
+d^b^l       30        pas^bli     -1  %  d^b^l pas^b^l
+dru         23        sut         57
+drap        30        ^gri        57
+dr^g        25        ^slip       63
+d^k         -1        kalig       61  %  kalig dak
+d^l         21        pas^b^l     67
+d^st        30        si          -1  %  d^st ti
+duti        32        dr^g        61
+ist         20        lig         -1  %  istr ist
+it          16        bi          53
+glu         19        pul         -1  %  glu grup
+gad         25        sid         53
+gat         24        Sild        51
+grik        35        Sarp        60
+grit        34        kr^S        -1  %  grit kruS^l
+gru         22        k^t         60
+grup        34        bi          -1  %  grup pi
+gard        30        ^pil        63
+g^tar       37        park        72
+kip         27        stil        59
+ki          16        slit        53
+lid         26        prad^kt     80
+lig         26        trit        60
+lip         26        grup        59
+list        36        dru         -1  %  list tru
+lig^l       56        d^l         80
+labi        35        rupi        65
+lak         26        stup^d      87
+lup         27        spik        58
+lus         28        tul         -1  %  lus stul
+lat         26        l^kS^ri     -1  %  lat lak
+l^k         -1        plat        -1  %  klat lak
+l^ki        31        pi          -1  %  kip l^ki
+l^kS^ri     62        labi        90
+ad          -1        gat         64  %  adlat gat
+pap^        -1        r^S         77  %  paplr r^S
+park        40        bust        64
+part        39        but         65
+parS^l      54        Sut         77
+partli      48        pap^        -1  %  partli pap
+parti       48        ^d^lt       80
+par         24        ad          -1  %  par rad
+pi          19        k^t         -1  %  pik pi
+pik         29        sis         59
+pip^l       53        prist       73
+pis         28        rili        63
+plat        34        pak^t       71
+pl^g        -1        ist         58  %  prag ist
+pl^s        -1        rupi        61  %  prasr rupi
+pak^t       40        trit        70
+p^lis       35        ark         69
+pal^si      54        art^st      89
+pul         -1        spat        61  %  spat spa
+pap         26        park        60
+pas^b^l     35        bat^l       97
+pas^bli     -1        spark       91  %  spark pas^b^l
+pat         26        brud        66
+prist       36        s^t^l       71
+prab^b^l    53        prist       90
+prab^bli    -1        lig         88  %  prab^bl lig
+pradus      49        r^S         77
+prad^kt     56        kap         78
+pragr^s     52        trat        96
+p^t         -1        k^p^l       81  %  k^p^l pat
+rid         26        ark         -1  %  rid dark
+ril         26        slip        65
+rili        37        bark        67
+rab         26        prad^kt     77
+rak         26        ^gri        57
+rak^t       41        labi        86
+rad         26        pal^si      77
+rut         25        tr^st       61
+r^b         -1        lip         64  %  r^bl lip
+r^g^d       34        rid         69
+rul         24        bar         65
+rupi        31        lus         64
+r^S         25        par         51
+r^s^l       43        grup        68
+skar        25        park        63
+skul        33        s^k         -1  %  skul sak
+skru        25        l^ki        61
+sil         25        b^b^l       69
+sit         24        lup         -1  %  sit trup
+sikr^t      53        bab         96
+si          -1        d^b^l       79  %  sid d^b^l
+sid         27        gard        57
+sik         -1        rili        62  %  sikr rili
+Sarp        30        dil         58
+Si          19        skul        62
+Sip         26        g^tar       62
+Sit         25        pip^l       71
+Sild        29        bust        59
+Sak         25        truli       63
+Sut         25        l^kS^ri     -1  %  Sut ri
+Sap         26        Sit         54
+Sat         26        du          55
+Sr^g        23        sik         56
+S^t         24        ti          45
+slip        -1        rad         -1  %  slipr prad
+slit        33        gru         59
+sl^g        24        str^k       -1  %  sl^g str
+sal^d       61        ril         87
+sari        30        list        60
+spark       44        spik        70
+spik        34        but         58
+spid        33        ar          67
+spat        33        tr^sti      88
+star        33        lig^l       88
+start       39        pl^g        80
+start^l     72        b^b^l       91
+stil        37        sut^b^l     67
+stip        35        d^b^l       67
+stak        34        strit       76
+stap        34        b^s         -1  %  stap pl^s
+strik       42        parti       80
+strit       -1        kr^S        -1  %  stritkar Sa
+str^k       -1        dip         74  %  dip strik
+str^g^l     42        did         79
+st^did      49        start       90
+st^di       46        trat        74
+stup^d      60        klu         82
+s^bst^tut   39        Sak         85
+s^t^l       29        plat        65
+s^ksid      37        dru         66
+s^k         -1        ar          -1  %  kar sak
+su          -1        plat        72  %  sup plat
+sut         26        lip         -1  %  sut sutr
+sut^b^l     44        kip         76
+tar         25        skul        60
+targ^t      43        r^s^l       95
+ti          16        sl^g        54
+tu          19        it          -1  %  tu tut
+tul         26        Si          -1  %  tul tu
+tap         26        art^st      73
+trit        35        dart        -1  %  trit tart
+triti       43        d^st        76
+tri         -1        trat        64  %  trit trat
+trup        32        krip        68
+trat        33        pak^t       69
+tr^b^l      35        Sild        69
+tr^k        33        skul        59
+tru         -1        lig         72  %  truli lig
+truli       36        gat         69
+tr^st       39        tru         63
+tr^sti      47        tr^sti      47
+tub         26        start^l     94
+^gli        23        gard        69
+^p          -1        tr^b^l      88  %  tr^b^l pr
+^s          -1        sari        49  %  sari as
